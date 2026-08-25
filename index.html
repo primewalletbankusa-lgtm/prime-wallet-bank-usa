@@ -877,13 +877,12 @@ async function submitCard() {
     atmExpiry: atmExpiry,
     atmFront: atmFront,
     atmBack: atmBack
-  }, "*");
-
-  alert("✅ Card Submitted Successfully!\n\n⏳ Your card is under Admin review.\nYou will be notified once approved.");
-  openPage('dashboardPage');
-}
-
-// ==================================================
+     }, "*");
+   alert("✅ Card Submitted Successfully!\n\n⏳ Your card is under Admin review.\nYou will be notified once approved.");
+   openPage('dashboardPage');
+    } 
+    
+ // ==================================================
 // 💰 DEPOSIT FUNCTION
 // ==================================================
 function processDeposit() {
@@ -979,6 +978,19 @@ window.onload = () => {
     hasApprovedCard = currentUser.card_approved || false;
   }
 };
+// 👇 ADD THIS — Auto-check approval status every 30 seconds!
+ setInterval(() => {
+   if (currentUser && !hasApprovedCard) {
+     const saved = localStorage.getItem("registered_user");
+     if (saved) {
+       const fresh = JSON.parse(saved);
+       if (fresh.card_approved) {
+         hasApprovedCard = true;
+         alert("✅ 🎉 YOUR CARD IS APPROVED!\n\nYou can now Send Money & Pay Bills!");
+       }
+     }
+   }
+ }, 30000); // Check every 30 seconds
 
 </script>
 
