@@ -761,30 +761,41 @@ async function submitRegistration() {
 // ==================================================
 // 🔑 LOGIN
 // ==================================================
-function login() {
+async function login() {
   const email = document.getElementById("loginEmail").value.trim();
-  const pass = document.getElementById("loginPass").value;
-  const savedUser = JSON.parse(localStorage.getItem("registered_user") || "null");
+  const password = document.getElementById("loginPass").value;
 
-  if (!email || !pass) return alert("❌ Enter email and password");
-  if (!savedUser) return alert("❌ No account found. Please register first.");
-  if (savedUser.email !== email || savedUser.password !== pass) return alert("❌ Email or password incorrect");
+  if (!email || !password) return alert("❌ Please fill in all fields");
+  if (!email.includes("@")) return alert("❌ Enter a valid email address");
+  if (password.length < 6) return alert("❌ Password must be at least 6 characters");
 
-  currentUser = savedUser;
-  hasApprovedCard = savedUser.card_approved || false;
-  
-  document.getElementById('userBalance').textContent = Number(savedUser.balance || 0).toFixed(2);
-  document.getElementById('userAccount').textContent = savedUser.account_number;
-  
-  if (!savedUser.approved) document.getElementById('pendingNotice').style.display = 'block';
-  if (!hasApprovedCard) {
-    document.getElementById('noCardNotice').style.display = 'block';
-    document.getElementById('sendLock').innerHTML = '🔒 Locked — Get Card First';
-    document.getElementById('payLock').innerHTML = '🔒 Locked — Get Card First';
+  // ✅ Find saved user
+  const savedUser = localStorage.getItem("registered_user");
+  if (!savedUser) {
+    return alert("❌ No account found with this email.\n\nPlease register first.");
   }
 
-  alert("✅ Welcome back, " + savedUser.full_name + "!");
-  showPage('dashboardPage');
+  const user = JSON.parse(savedUser);
+
+  // ✅ Match BOTH email AND password
+  if (user.email.toLowerCase() !== email.toLowerCase() || user.password !== password) {
+    return alert("❌ Email or password incorrect.\n\nUse the same details you registered with.");
+  }
+
+  // ✅ LOGIN SUCCESS — set token & go to dashboard
+  token = "user_token_" + Date.now();
+  localStorage.setItem("pw_token", token);
+  currentUser = user;
+  hasApprovedCard = user.card_approved || false;
+  pinVerified = false;
+
+  alert("✅ Login successful! Welcome back, " + user.full_name);
+  loadDashboardData();
+  showPage("dashboardPage");
+
+  if (!user.approved) {
+    alert("⏳ Your account is under review. Full features activate after admin approval.");
+  }
 }
 
 // ==================================================
