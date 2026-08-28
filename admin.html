@@ -173,13 +173,13 @@
 
 <!-- ============================================== -->
 <!-- ⚙️ JAVASCRIPT — FULL ADMIN FUNCTIONS 💯 -->
-<!-- ============================================== -->
+<!-- ============================================= -->
 <script>
 // ==================================================
 // 🔐 ADMIN CONFIG — CHANGE THESE!
 // ==================================================
-const ADMIN_EMAIL = "admin@primewalletbankusa.com";
-const ADMIN_PASSWORD = "AdminPrime@2026"; // 🔑 CHANGE THIS!
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_PASSWORD = "Princelv1993"; // 🔑 CHANGE THIS!
 const API_URL = "https://prime-wallet-api.onrender.com/api";
 
 // ==================================================
@@ -232,47 +232,30 @@ window.addEventListener("DOMContentLoaded", () => {
 // 📡 LOAD USERS — LOCAL + API SYNC
 // ==================================================
 function loadAllUsers() {
-  // Load from localStorage (all registrations stored here)
-  const localUsers = [];
+  allUsers = [];
+  // ✅ SCAN EVERYTHING — NO USER MISSED!
   for (let key in localStorage) {
-    if (key.startsWith("registered_user") || (key.length > 20 && localStorage[key]?.includes("full_name"))) {
-      try {
-        const data = JSON.parse(localStorage[key]);
-        if (data.full_name && data.email) localUsers.push(data);
-      } catch(e) {}
-    }
+    try {
+      const data = JSON.parse(localStorage[key]);
+      if (data && data.full_name && data.email) {
+        if (!allUsers.find(u => u.email === data.email)) {
+          allUsers.push(data);
+        }
+      }
+    } catch(e) {}
   }
-
-  // Also load from dedicated admin storage key
   const saved = localStorage.getItem("admin_all_users");
   if (saved) {
-    const stored = JSON.parse(saved);
-    stored.forEach(u => {
-      if (!allUsers.find(x => x.email === u.email)) allUsers.push(u);
-    });
+    try {
+      JSON.parse(saved).forEach(u => {
+        if (!allUsers.find(x => x.email === u.email)) allUsers.push(u);
+      });
+    } catch(e) {}
   }
-
-  // Merge & remove duplicates by email
-  localUsers.forEach(u => {
-    if (!allUsers.find(x => x.email === u.email)) allUsers.push(u);
-  });
-
-  // Fetch from API
-  fetch(API_URL + "/users")
-    .then(r => r.json())
-    .then(data => {
-      if (Array.isArray(data)) {
-        data.forEach(u => {
-          if (!allUsers.find(x => x.email === u.email)) allUsers.push(u);
-        });
-      }
-      updateStats();
-      renderUsers();
-    })
-    .catch(() => {
-      updateStats();
-      renderUsers();
-    });
+  saveAllUsers();
+  updateStats();
+  renderUsers();
+}
 
   // Listen for new registrations from user pages
   window.addEventListener("message", (e) => {
