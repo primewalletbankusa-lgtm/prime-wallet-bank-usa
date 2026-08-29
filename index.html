@@ -710,6 +710,28 @@ let transactions = [];
 let userNotifications = [];
 
 // ==================================================
+// ✅ SWITCH BETWEEN CREATE ACCOUNT / SIGN IN
+// ==================================================
+function switchAuthTab(tab) {
+  const createTab = document.getElementById("tabCreate");
+  const signinTab = document.getElementById("tabSignIn");
+  const createForm = document.getElementById("registrationPage"); // adjust your ID
+  const signinForm = document.getElementById("loginPage");        // adjust your ID
+
+  if (tab === "create") {
+    createTab.classList.add("active");
+    signinTab.classList.remove("active");
+    createForm.classList.remove("hidden");
+    signinForm.classList.add("hidden");
+  } else {
+    signinTab.classList.add("active");
+    createTab.classList.remove("active");
+    signinForm.classList.remove("hidden");
+    createForm.classList.add("hidden");
+  }
+}
+
+// ==================================================
 // ✅ SWITCH REGISTER / SIGN IN — EXACT DESIGN
 // ==================================================
 function switchAuthTab(tab) {
