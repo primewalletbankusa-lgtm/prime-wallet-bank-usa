@@ -1885,7 +1885,7 @@ function processDeposit() {
   saveCurrentUser();
   
   // ✅ SHOW SUBMITTED — BALANCE NOT CHANGED YET
-  showToast(`✅ Deposit of $${amount.toFixed(2)} submitted!\n⏳ Waiting for Admin Approval...\nBalance remains $0.00 until approved. 📋`, "info");
+  showToast(`✅ Deposit of $${amount.toFixed(2)} submitted!\n⏳ Waiting for Bank Approval...\nBalance remains $0.00 until approved. 📋`, "info");
   
   document.getElementById("depositAmount").value = "";
   setTimeout(() => openPage("dashboardPage"), 1500);
