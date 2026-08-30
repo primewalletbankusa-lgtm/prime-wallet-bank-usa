@@ -1856,43 +1856,41 @@ function checkCardThenOpen(pageId) {
 }
 
 // ==================================================
-// ✅ ADMIN APPROVES PENDING DEPOSITS — BALANCE UPDATES ONLY AFTER APPROVAL
+// 💰 DEPOSIT FUNCTION — LOCKED UNTIL CARD APPROVED ✅
 // ==================================================
-function approveDeposit(userIndex, depositIndex) {
-  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
+function processDeposit() {
+  if (!currentUser) return showToast("❌ Please login first", "error");
   
-  const deposit = allUsers[userIndex].pendingDeposits[depositIndex];
+  // 🔒 BLOCK DEPOSIT IF NO APPROVED CARD
+  if (!currentUser.card_approved) {
+    showToast("🔒 Deposit requires an approved Prime Wallet Card first!\n\nClick 'Get Card' to purchase your Prime Wallet ATM Card. 📋", "warn");
+    openPage("cardPage");
+    return;
+  }
+
+  const amount = parseFloat(document.getElementById("depositAmount").value);
+  const method = document.getElementById("depositMethod").value;
   
-  // ✅ ADD TO BALANCE ONLY WHEN ADMIN APPROVES
-  allUsers[userIndex].balance = (Number(allUsers[userIndex].balance) || 0) + deposit.amount;
+  if (!amount || amount <= 0) return showToast("⚠️ Enter valid amount", "error");
   
-  // MARK AS APPROVED & MOVE TO TRANSACTIONS
-  deposit.status = "approved";
-  allUsers[userIndex].transactions.unshift({
-    type: "Deposit — Approved",
-    amount: deposit.amount,
-    method: deposit.method,
+  // ⏳ SAVE AS PENDING — BALANCE REMAINS $0.00 UNTIL ADMIN APPROVES
+  if (!currentUser.pendingDeposits) currentUser.pendingDeposits = [];
+  currentUser.pendingDeposits.push({
+    amount: amount,
+    method: method,
     date: new Date().toISOString(),
-    approved_at: new Date().toISOString()
+    status: "pending"
   });
+
+  saveCurrentUser();
   
-  // REMOVE FROM PENDING
-  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  // ✅ SHOW SUBMITTED — BALANCE NOT CHANGED YET
+  showToast(`✅ Deposit of $${amount.toFixed(2)} submitted!\n⏳ Waiting for Admin Approval...\nBalance remains $0.00 until approved. 📋`, "info");
   
-  saveAllUsers();
-  showAdminToast(`✅ Deposit of $${deposit.amount.toFixed(2)} APPROVED! Balance updated. 🎉`, "success");
-  loadAllUsers();
+  document.getElementById("depositAmount").value = "";
+  setTimeout(() => openPage("dashboardPage"), 1500);
 }
 
-// ❌ ADMIN REJECTS DEPOSIT
-function rejectDeposit(userIndex, depositIndex) {
-  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
-  const amount = allUsers[userIndex].pendingDeposits[depositIndex].amount;
-  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
-  saveAllUsers();
-  showAdminToast(`❌ Deposit of $${amount.toFixed(2)} REJECTED. User notified.`, "error");
-  loadAllUsers();
-}
 
 // ==================================================
 // 💳 CARD PRICING & PURCHASE
