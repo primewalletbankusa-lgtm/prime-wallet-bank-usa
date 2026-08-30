@@ -1364,7 +1364,72 @@ setInterval(() => {
   }
 }, 30000);
 
-// 🏁 AUTO-LOGIN ON PAGE LOAD
+
+// ==================================================
+// 🔗 ADMIN SYNC — REAL-TIME CONNECTION ✅
+// ==================================================
+
+// Save user to shared storage (admin reads this)
+function saveUserToAdmin() {
+  if (!currentUser) return;
+  // Get all users from shared storage
+  let allUsers = JSON.parse(localStorage.getItem("all_registered_users") || "[]");
+  
+  // Check if user already exists — update or add
+  const existingIndex = allUsers.findIndex(u => u.email === currentUser.email);
+  if (existingIndex >= 0) {
+    allUsers[existingIndex] = currentUser;
+  } else {
+    allUsers.unshift(currentUser); // New user at top
+  }
+  
+  // Save back — ADMIN SEES THIS!
+  localStorage.setItem("all_registered_users", JSON.stringify(allUsers));
+  console.log("✅ Synced to Admin — Total Users:", allUsers.length);
+}
+
+// Auto-sync to admin whenever user data changes
+setInterval(() => {
+  if (currentUser) saveUserToAdmin();
+}, 10000); // Sync every 10 seconds
+
+// Check for admin approval updates — auto-refresh
+setInterval(() => {
+  if (!currentUser) return;
+  const saved = localStorage.getItem("registered_user");
+  if (saved) {
+    const fresh = JSON.parse(saved);
+    // Account approved notification
+    if (!currentUser.approved && fresh.approved) {
+      currentUser.approved = true;
+      alert("✅ 🎉 YOUR ACCOUNT IS APPROVED!\n\nFull features now unlocked!");
+      updateDashboard();
+    }
+    // Card approved notification
+    if (!hasApprovedCard && fresh.card_approved) {
+      hasApprovedCard = true;
+      currentUser.card_approved = true;
+      alert("✅ 🎉 YOUR PRIME WALLET CARD IS APPROVED!\n\nSend Money & Pay Bills UNLOCKED!");
+      updateDashboard();
+    }
+    // Account frozen alert
+    if (!currentUser.frozen && fresh.frozen) {
+      currentUser.frozen = true;
+      alert("⚠️ NOTICE: Your account has been temporarily frozen.\nPlease contact Admin.");
+      updateDashboard();
+    }
+    // Account unfrozen alert
+    if (currentUser.frozen && !fresh.frozen) {
+      currentUser.frozen = false;
+      alert("✅ ✅ Your account has been UNFROZEN!\nFull access restored.");
+      updateDashboard();
+    }
+  }
+}, 5000); // Check every 5 seconds
+
+// ==================================================
+// 🏁 FINAL AUTO-LOGIN ON PAGE LOAD ✅
+// ==================================================
 window.onload = function() {
   const saved = localStorage.getItem("registered_user");
   const session = localStorage.getItem("current_session");
@@ -1374,10 +1439,11 @@ window.onload = function() {
     hasApprovedCard = currentUser.card_approved || false;
     updateDashboard();
     openPage("dashboardPage");
+    saveUserToAdmin(); // Auto-sync to Admin on load!
   }
   
   updateTime();
-  console.log("✅ Prime Wallet Bank — All Systems Ready!");
+  console.log("✅ Prime Wallet Bank — All Systems Online!");
 };
 </script>
 
