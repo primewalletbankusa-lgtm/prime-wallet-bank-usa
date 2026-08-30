@@ -1856,28 +1856,42 @@ function checkCardThenOpen(pageId) {
 }
 
 // ==================================================
-// 💰 DEPOSIT FUNCTION
+// ✅ ADMIN APPROVES PENDING DEPOSITS — BALANCE UPDATES ONLY AFTER APPROVAL
 // ==================================================
-function processDeposit() {
-  if (!currentUser) return showToast("❌ Please login first", "error");
-  const amount = parseFloat(document.getElementById("depositAmount").value);
-  const method = document.getElementById("depositMethod").value;
+function approveDeposit(userIndex, depositIndex) {
+  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
   
-  if (!amount || amount <= 0) return showToast("⚠️ Enter valid amount", "error");
+  const deposit = allUsers[userIndex].pendingDeposits[depositIndex];
   
-  currentUser.balance = (Number(currentUser.balance) || 0) + amount;
-  saveCurrentUser();
+  // ✅ ADD TO BALANCE ONLY WHEN ADMIN APPROVES
+  allUsers[userIndex].balance = (Number(allUsers[userIndex].balance) || 0) + deposit.amount;
   
-  addTransaction({
-    type: "Deposit",
-    amount: amount,
-    method: method,
-    date: new Date().toISOString()
+  // MARK AS APPROVED & MOVE TO TRANSACTIONS
+  deposit.status = "approved";
+  allUsers[userIndex].transactions.unshift({
+    type: "Deposit — Approved",
+    amount: deposit.amount,
+    method: deposit.method,
+    date: new Date().toISOString(),
+    approved_at: new Date().toISOString()
   });
   
-  showToast(`✅ $${amount.toFixed(2)} deposited successfully! 🎉`, "success");
-  document.getElementById("depositAmount").value = "";
-  setTimeout(() => openPage("dashboardPage"), 1000);
+  // REMOVE FROM PENDING
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  
+  saveAllUsers();
+  showAdminToast(`✅ Deposit of $${deposit.amount.toFixed(2)} APPROVED! Balance updated. 🎉`, "success");
+  loadAllUsers();
+}
+
+// ❌ ADMIN REJECTS DEPOSIT
+function rejectDeposit(userIndex, depositIndex) {
+  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
+  const amount = allUsers[userIndex].pendingDeposits[depositIndex].amount;
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  saveAllUsers();
+  showAdminToast(`❌ Deposit of $${amount.toFixed(2)} REJECTED. User notified.`, "error");
+  loadAllUsers();
 }
 
 // ==================================================
