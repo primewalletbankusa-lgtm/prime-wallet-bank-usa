@@ -966,17 +966,36 @@ function speak(text) {
 
 // 📸 REAL-TIME FACE VERIFICATION — OPAY STYLE ✅
 async function startFaceVerification() {
-  try {
-    // 🎥 OPEN USER CAMERA — REAL-TIME
-    const video = document.getElementById("cameraVideo");
-    verificationStream = await navigator.mediaDevices.getUserMedia({ 
-      video: { facingMode: "user", width: 640, height: 480 } 
-    });
-    video.srcObject = verificationStream;
+  const video = document.getElementById("cameraVideo");
+  const startBtn = document.getElementById("startVerifyBtn");
+  const voiceIndicator = document.getElementById("voiceIndicator");
+  const commandEl = document.getElementById("verificationCommand");
+  const statusEl = document.getElementById("verificationStatus");
+  const progressEl = document.getElementById("progressCircle");
+  const headGuide = document.getElementById("headGuide");
 
-    // Show voice indicator
-    document.getElementById("voiceIndicator").style.display = "flex";
-    document.getElementById("startVerifyBtn").style.display = "none";
+  // Update UI
+  if (startBtn) startBtn.style.display = "none";
+  if (voiceIndicator) voiceIndicator.style.display = "flex";
+  if (commandEl) commandEl.textContent = "📷 Requesting Camera Access...";
+
+  try {
+    // 🎥 OPEN USER CAMERA — IMPROVED PERMISSION HANDLING
+    verificationStream = await navigator.mediaDevices.getUserMedia({ 
+      video: { 
+        facingMode: "user", 
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        frameRate: { ideal: 30 }
+      },
+      audio: false
+    });
+    
+    video.srcObject = verificationStream;
+    await video.play();
+    
+    if (headGuide) headGuide.classList.add("active");
+    if (commandEl) commandEl.textContent = "✅ Camera Ready!";
 
     // 📢 STEP-BY-STEP COMMANDS WITH VOICE
     const steps = [
@@ -994,13 +1013,16 @@ async function startFaceVerification() {
     function runVerificationStep() {
       if (verificationStep < steps.length) {
         speak(steps[verificationStep].text);
-        document.getElementById("verificationStatus").textContent = steps[verificationStep].status;
-        document.getElementById("verificationStatus").className = 
-          verificationStep === steps.length - 1 ? "verification-status status-good" : "verification-status status-wait";
+        if (statusEl) {
+          statusEl.textContent = steps[verificationStep].status;
+          statusEl.className = verificationStep === steps.length - 1 
+            ? "verification-status status-good" 
+            : "verification-status status-wait";
+        }
         
         // Update progress circle
         const progress = ((verificationStep + 1) / steps.length) * 283;
-        document.getElementById("progressCircle").style.strokeDashoffset = 283 - progress;
+        if (progressEl) progressEl.style.strokeDashoffset = 283 - progress;
 
         verificationStep++;
         setTimeout(runVerificationStep, 2500);
@@ -1008,7 +1030,7 @@ async function startFaceVerification() {
         // ✅ ALL STEPS DONE — OPEN DASHBOARD!
         setTimeout(() => {
           stopCamera();
-          document.getElementById("voiceIndicator").style.display = "none";
+          if (voiceIndicator) voiceIndicator.style.display = "none";
           
           // Mark verified & save
           currentUser.face_verified = true;
@@ -1022,19 +1044,26 @@ async function startFaceVerification() {
     }
 
   } catch (err) {
-    console.error("Camera error:", err);
-    alert("⚠️ Camera access needed for verification.\nPlease allow camera access and try again.");
-    document.getElementById("startVerifyBtn").style.display = "block";
-    document.getElementById("voiceIndicator").style.display = "none";
+    console.error("❌ Camera Error:", err);
+    
+    // ⚠️ IF CAMERA BLOCKED / NOT AVAILABLE — STILL LET USER IN!
+    if (commandEl) commandEl.textContent = "⚠️ Camera not available";
+    if (statusEl) {
+      statusEl.textContent = "Camera skipped";
+      statusEl.className = "verification-status status-wait";
+    }
+    
+    alert("⚠️ Camera access was denied or not available.\n\n✅ Don't worry — your account is still created!\n\nYou can complete verification later in Settings.\n\n👉 Click OK to go to Dashboard!");
+    
+    // ✅ FALLBACK — DIRECT TO DASHBOARD EVEN WITHOUT CAMERA!
+    currentUser.face_verified = false;
+    currentUser.camera_skipped = true;
+    localStorage.setItem("registered_user", JSON.stringify(currentUser));
+    
+    openPage("dashboardPage");
   }
 }
 
-function stopCamera() {
-  if (verificationStream) {
-    verificationStream.getTracks().forEach(track => track.stop());
-    verificationStream = null;
-  }
-}
 
 // 🔐 LOGIN — FULLY WORKING
 async function submitLogin() {
