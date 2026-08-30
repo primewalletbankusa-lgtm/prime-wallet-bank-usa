@@ -10,523 +10,363 @@
       --white:#FFFFFF; --bg:#F5F7FA; --card:#FFFFFF;
       --text-dark:#1A1A2E; --text-muted:#6B7280; --border:#E5E7EB;
       --success:#10B981; --error:#EF4444; --warn:#F59E0B; --info:#3B82F6;
-      --blue-gradient:linear-gradient(180deg, #0052CC 0%, #003D99 100%);
-      --shadow:0 4px 20px rgba(0,82,204,0.15);
-      --radius:12px;
     }
-    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,sans-serif}
-    body{background:var(--bg);color:var(--text-dark);min-height:100vh;padding-bottom:40px}
-    .admin-header{background:var(--blue-gradient);color:white;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
-    .admin-header h1{font-size:22px;font-weight:800}
-    .admin-header .user-info{display:flex;align-items:center;gap:12px;font-size:14px}
-    .logout-btn{background:rgba(255,255,255,0.25);border:none;color:white;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:600;transition:all 0.2s}
-    .logout-btn:hover{background:rgba(255,255,255,0.4)}
-    .container{max-width:1200px;margin:0 auto;padding:24px}
-    .card{background:var(--card);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
-    .card-title{font-size:20px;font-weight:700;color:var(--pri);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
-    .stat-card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-left:4px solid var(--pri)}
-    .stat-card h3{font-size:32px;font-weight:800;color:var(--pri);margin-bottom:4px}
-    .stat-card p{color:var(--text-muted);font-size:14px}
-    .search-bar{width:100%;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:15px;margin-bottom:20px}
-    .search-bar:focus{outline:none;border-color:var(--pri);box-shadow:0 0 0 4px rgba(0,82,204,0.1)}
-    .user-card{border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:all 0.2s}
-    .user-card:hover{border-color:var(--pri);box-shadow:var(--shadow)}
-    .user-card.pending{border-left:5px solid var(--warn)}
-    .user-card.approved{border-left:5px solid var(--success)}
-    .user-card.frozen{border-left:5px solid var(--error)}
-    .user-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:12px}
-    .user-name{font-size:18px;font-weight:700;color:var(--pri)}
-    .user-meta{font-size:13px;color:var(--text-muted);margin-top:4px}
-    .badge{display:inline-block;padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700}
-    .badge-pending{background:#FEF3C7;color:#92400E}
-    .badge-approved{background:#D1FAE5;color:#065F46}
-    .badge-frozen{background:#FEE2E2;color:#991B1B}
-    .badge-card-pending{background:#E0E7FF;color:#3730A3}
-    .badge-card-approved{background:#D1FAE5;color:#065F46}
-    .detail-row{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;font-size:14px}
-    .detail-label{font-weight:600;color:var(--text-muted);min-width:120px}
-    .detail-value{color:var(--text-dark);flex:1}
-    .images-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-top:16px}
-    .img-preview{width:100%;height:100px;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid var(--border);transition:all 0.2s}
-    .img-preview:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,0.15)}
-    .btn-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
-    button{padding:10px 16px;border-radius:8px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;font-size:14px}
-    .btn-primary{background:var(--pri);color:white}
-    .btn-primary:hover{background:var(--pri-dark)}
-    .btn-success{background:var(--success);color:white}
-    .btn-danger{background:var(--error);color:white}
-    .btn-warning{background:var(--warn);color:white}
-    .btn-secondary{background:var(--border);color:var(--text-dark)}
-    .btn-sm{padding:6px 12px;font-size:13px}
-    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
-    .modal.hidden{display:none}
-    .modal-content{background:white;border-radius:16px;padding:24px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto}
-    .modal-img{width:100%;height:auto;border-radius:8px;margin-top:12px}
-    .close-btn{float:right;font-size:24px;cursor:pointer;color:var(--text-muted)}
-    .tab-bar{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;border-bottom:2px solid var(--border);padding-bottom:0}
-    .tab{padding:12px 20px;cursor:pointer;font-weight:600;color:var(--text-muted);border-bottom:3px solid transparent}
-    .tab.active{color:var(--pri);border-bottom-color:var(--pri)}
-    .hidden{display:none !important}
-    .input-group{margin-bottom:12px}
-    input,select{width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:8px;font-size:14px}
-    input:focus,select:focus{outline:none;border-color:var(--pri)}
-    .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted)}
-    .empty-state span{font-size:48px;display:block;margin-bottom:16px}
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+    body{background:var(--bg);min-height:100vh;}
+    .admin-header{background:linear-gradient(135deg,var(--pri)0%,var(--pri-dark)100%);color:white;padding:20px 30px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;}
+    .admin-header h1{font-size:22px;display:flex;align-items:center;gap:10px;}
+    .admin-actions{display:flex;gap:12px;align-items:center;}
+    .btn{padding:10px 18px;border:none;border-radius:8px;font-weight:600;cursor:pointer;transition:0.2s;font-size:14px;}
+    .btn-primary{background:var(--pri);color:white;}
+    .btn-primary:hover{background:var(--pri-dark);}
+    .btn-success{background:var(--success);color:white;}
+    .btn-danger{background:var(--error);color:white;}
+    .btn-warning{background:var(--warn);color:white;}
+    .btn-secondary{background:var(--border);color:var(--text-dark);}
+    .container{max-width:1400px;margin:0 auto;padding:25px;}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:30px;}
+    .stat-card{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border-left:4px solid var(--pri);}
+    .stat-card h3{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+    .stat-card .num{font-size:28px;font-weight:800;color:var(--pri);}
+    .stat-card.pending{border-color:var(--warn);}
+    .stat-card.approved{border-color:var(--success);}
+    .stat-card.frozen{border-color:var(--error);}
+    .search-bar{width:100%;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:15px;margin-bottom:25px;}
+    .users-list{display:flex;flex-direction:column;gap:15px;}
+    .user-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,0.05);border:1px solid var(--border);transition:0.2s;}
+    .user-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+    .user-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:15px;}
+    .user-name{font-size:20px;font-weight:700;color:var(--text-dark);}
+    .user-meta{font-size:13px;color:var(--text-muted);margin-top:4px;}
+    .status-badge{display:inline-block;padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;}
+    .badge-pending{background:#FEF3C7;color:#92400E;}
+    .badge-approved{background:#D1FAE5;color:#065F46;}
+    .badge-frozen{background:#FEE2E2;color:#B91C1C;}
+    .badge-card-pending{background:#E0E7FF;color:#3730A3;}
+    .badge-card-approved{background:#D1FAE5;color:#065F46;}
+    .detail-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:10px 0;}
+    .detail-col{font-size:14px;}
+    .detail-col strong{color:var(--text-dark);}
+    .images-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-top:15px;}
+    .img-container{text-align:center;}
+    .img-preview{width:100%;height:120px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid var(--border);transition:0.2s;}
+    .img-preview:hover{border-color:var(--pri);transform:scale(1.02);}
+    .img-label{font-size:12px;color:var(--text-muted);margin-top:6px;}
+    .action-buttons{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;padding-top:15px;border-top:1px solid var(--border);}
+    .hidden{display:none !important;}
+    .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;z-index:1000;}
+    .modal-content{background:white;padding:25px;border-radius:12px;max-width:90%;max-height:90vh;overflow:auto;}
+    .modal-img{max-width:100%;max-height:70vh;border-radius:8px;}
+    .close{float:right;font-size:28px;cursor:pointer;color:#888;}
+    .tabs{display:flex;gap:5px;margin-bottom:20px;border-bottom:2px solid var(--border);}
+    .tab{padding:12px 20px;cursor:pointer;border-bottom:3px solid transparent;font-weight:600;color:var(--text-muted);}
+    .tab.active{border-bottom-color:var(--pri);color:var(--pri);}
+    .empty-state{text-align:center;padding:60px 20px;color:var(--text-muted);}
+    .refresh-btn{margin-left:auto;background:var(--pri-light);color:white;}
+    .login-box{max-width:420px;margin:100px auto;background:white;padding:30px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.15);text-align:center;}
+    .login-box h2{margin-bottom:24px;color:var(--pri);}
+    .login-box input{width:100%;padding:14px;border:2px solid var(--border);border-radius:8px;margin-bottom:16px;font-size:15px;}
+    .login-box input:focus{outline:none;border-color:var(--pri);}
   </style>
 </head>
 <body>
 
-<!-- ============================================== -->
-<!-- 🔐 ADMIN LOGIN -->
-<!-- ============================================== -->
+<!-- ================================================== -->
+<!-- 🔐 ADMIN LOGIN PAGE -->
+<!-- ================================================== -->
 <div class="page" id="adminLoginPage">
-  <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--blue-gradient);padding:24px">
-    <div class="card" style="width:100%;max-width:420px">
-      <h2 style="text-align:center;color:var(--pri);font-size:28px;margin-bottom:8px">🔐 Admin Console</h2>
-      <p style="text-align:center;color:var(--text-muted);margin-bottom:28px">Prime Wallet Bank — Secure Admin Access</p>
-      
-      <div class="input-group">
-        <label style="display:block;margin-bottom:6px;font-weight:600">Admin Email</label>
-        <input type="email" id="adminEmail" placeholder="admin@primewalletbankusa.com">
-      </div>
-      
-      <div class="input-group">
-        <label style="display:block;margin-bottom:6px;font-weight:600">Admin Password</label>
-        <input type="password" id="adminPass" placeholder="Enter admin password">
-      </div>
-      
-      <button class="btn-primary" onclick="adminLogin()" style="width:100%;margin-top:12px;padding:14px;font-size:16px">🔑 Sign In to Admin</button>
-      
-      <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--text-muted)">
-        Only authorized administrators. All actions are logged.
-      </p>
-    </div>
+  <div class="login-box">
+    <h2>🔐 Admin Console Login</h2>
+    <p style="color:#666;margin-bottom:24px;">Prime Wallet Bank — Admin Control Center</p>
+    <input type="email" id="adminEmail" placeholder="Admin Email">
+    <input type="password" id="adminPassword" placeholder="Admin Password">
+    <button class="btn btn-primary" style="width:100%;font-size:16px;" onclick="adminLogin()">🔑 Sign In</button>
+    <p style="margin-top:20px;font-size:13px;color:#888;">
+      Default: admin@primewalletbankusa.com<br>Change password after first login
+    </p>
   </div>
 </div>
 
-<!-- ============================================== -->
-<!-- 🎛️ ADMIN DASHBOARD — MAIN CONSOLE -->
-<!-- ============================================== -->
+<!-- ================================================== -->
+<!-- 📊 ADMIN DASHBOARD — FULL CONTROL CENTER -->
+<!-- ================================================== -->
 <div class="page hidden" id="adminDashboardPage">
   <div class="admin-header">
     <h1>🏦 Prime Wallet Bank — Admin Console</h1>
-    <div class="user-info">
-      <span id="adminName">👑 Admin</span>
-      <button class="logout-btn" onclick="adminLogout()">🚪 Logout</button>
+    <div class="admin-actions">
+      <span id="adminTime"></span>
+      <button class="btn refresh-btn" onclick="loadAllUsers()">🔄 Refresh</button>
+      <button class="btn btn-secondary" onclick="adminLogout()">🚪 Logout</button>
     </div>
   </div>
 
   <div class="container">
-    <!-- 📊 STATS OVERVIEW -->
-    <div class="stats-grid">
+    <!-- 📈 STATS -->
+    <div class="stats-row">
       <div class="stat-card">
-        <h3 id="totalUsers">0</h3>
-        <p>👤 Total Users</p>
+        <h3>👤 Total Users</h3>
+        <div class="num" id="statTotal">0</div>
       </div>
-      <div class="stat-card">
-        <h3 id="pendingUsers">0</h3>
-        <p>⏳ Pending Approval</p>
+      <div class="stat-card pending">
+        <h3>⏳ Pending Approval</h3>
+        <div class="num" id="statPending">0</div>
       </div>
-      <div class="stat-card">
-        <h3 id="cardPending">0</h3>
-        <p>💳 Card Requests</p>
+      <div class="stat-card approved">
+        <h3>✅ Approved</h3>
+        <div class="num" id="statApproved">0</div>
       </div>
-      <div class="stat-card">
-        <h3 id="totalFunds">$0.00</h3>
-        <p>💰 System Balance</p>
+      <div class="stat-card frozen">
+        <h3>❄️ Frozen</h3>
+        <div class="num" id="statFrozen">0</div>
       </div>
     </div>
 
+    <!-- 🔍 SEARCH -->
+    <input type="text" class="search-bar" id="searchInput" placeholder="🔍 Search by name, email, account number..." oninput="filterUsers()">
+
     <!-- 📋 TABS -->
-    <div class="tab-bar">
+    <div class="tabs">
       <div class="tab active" onclick="switchAdminTab('all')">👥 All Users</div>
       <div class="tab" onclick="switchAdminTab('pending')">⏳ Pending</div>
       <div class="tab" onclick="switchAdminTab('cards')">💳 Card Requests</div>
       <div class="tab" onclick="switchAdminTab('frozen')">❄️ Frozen</div>
-      <div class="tab" onclick="switchAdminTab('settings')">⚙️ Settings</div>
     </div>
 
-    <!-- 🔍 SEARCH -->
-    <input type="text" class="search-bar" id="searchUsers" placeholder="🔍 Search by name, email, account number..." oninput="filterUsers()">
-
     <!-- 👥 USERS LIST -->
-    <div id="usersList">
+    <div class="users-list" id="usersList">
       <div class="empty-state">
-        <span>📭</span>
-        <p>No users registered yet. Waiting for first registration...</p>
+        <p>🔄 Loading users...</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ============================================== -->
 <!-- 🖼️ IMAGE PREVIEW MODAL -->
-<!-- ============================================== -->
 <div class="modal hidden" id="imgModal">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <h3 id="imgTitle">Document Preview</h3>
-    <img id="imgFull" class="modal-img" alt="Preview">
+  <div class="modal-content" style="text-align:center;">
+    <span class="close" onclick="closeModal()">✕</span>
+    <h3 id="modalTitle" style="margin-bottom:15px;"></h3>
+    <img id="modalImg" class="modal-img" alt="Preview">
   </div>
 </div>
 
-<!-- ============================================== -->
-<!-- ⚙️ JAVASCRIPT — FULL ADMIN FUNCTIONS 💯 -->
-<!-- ============================================= -->
+<!-- ================================================== -->
+<!-- ⚙️ ADMIN JAVASCRIPT — FULL CONTROL SYSTEM ✅ -->
+<!-- ================================================== -->
 <script>
-// ==================================================
-// 🔐 ADMIN CONFIG — CHANGE THESE!
-// ==================================================
-const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
-const ADMIN_PASSWORD = "Princelv1993"; // 🔑 CHANGE THIS!
-const API_URL = "https://prime-wallet-api.onrender.com/api";
-
-// ==================================================
-// 📦 GLOBAL DATA
-// ==================================================
+let adminLoggedIn = false;
 let allUsers = [];
-let filteredUsers = [];
-let currentTab = 'all';
+let currentFilter = 'all';
 
-// ==================================================
-// 🔐 ADMIN LOGIN
-// ==================================================
+// 🔐 ADMIN LOGIN — CHANGE EMAIL & PASSWORD HERE!
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_PASSWORD = "Princelv1993$"; // 👉 CHANGE THIS TO YOUR OWN PASSWORD!
+
 function adminLogin() {
   const email = document.getElementById("adminEmail").value.trim();
-  const pass = document.getElementById("adminPass").value;
+  const pass = document.getElementById("adminPassword").value;
 
+  if (!email || !pass) return alert("❌ Enter email and password!");
+  
   if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
-    localStorage.setItem("admin_auth", "true");
-    document.getElementById("adminLoginPage").classList.add("hidden");
-    document.getElementById("adminDashboardPage").classList.remove("hidden");
+    adminLoggedIn = true;
+    localStorage.setItem("admin_logged_in", "true");
+    openAdminPage("adminDashboardPage");
     loadAllUsers();
-    startRealtimeSync();
   } else {
-    alert("❌ Invalid admin credentials!");
+    alert("❌ Incorrect Admin Email or Password!");
   }
 }
 
 function adminLogout() {
-  localStorage.removeItem("admin_auth");
-  allUsers = [];
-  document.getElementById("adminDashboardPage").classList.add("hidden");
-  document.getElementById("adminLoginPage").classList.remove("hidden");
-  document.getElementById("adminEmail").value = "";
-  document.getElementById("adminPass").value = "";
+  if (confirm("Logout from Admin Console?")) {
+    adminLoggedIn = false;
+    localStorage.removeItem("admin_logged_in");
+    openAdminPage("adminLoginPage");
+  }
 }
 
-// ==================================================
-// 🚀 AUTO-CHECK ADMIN SESSION ON LOAD
-// ==================================================
-window.addEventListener("DOMContentLoaded", () => {
-  if (localStorage.getItem("admin_auth") === "true") {
-    document.getElementById("adminLoginPage").classList.add("hidden");
-    document.getElementById("adminDashboardPage").classList.remove("hidden");
-    loadAllUsers();
-    startRealtimeSync();
-  }
-});
+function openAdminPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(pageId).classList.remove("hidden");
+}
 
-// ==================================================
-// 📡 LOAD USERS — LOCAL + API SYNC
-// ==================================================
+// 📊 LOAD ALL USERS — READS FROM SHARED STORAGE
 function loadAllUsers() {
-  allUsers = [];
-  // ✅ SCAN EVERYTHING — NO USER MISSED!
-  for (let key in localStorage) {
-    try {
-      const data = JSON.parse(localStorage[key]);
-      if (data && data.full_name && data.email) {
-        if (!allUsers.find(u => u.email === data.email)) {
-          allUsers.push(data);
-        }
-      }
-    } catch(e) {}
-  }
-  const saved = localStorage.getItem("admin_all_users");
-  if (saved) {
-    try {
-      JSON.parse(saved).forEach(u => {
-        if (!allUsers.find(x => x.email === u.email)) allUsers.push(u);
-      });
-    } catch(e) {}
-  }
-  saveAllUsers();
+  allUsers = JSON.parse(localStorage.getItem("all_registered_users") || "[]");
   updateStats();
   renderUsers();
+  document.getElementById("adminTime").textContent = new Date().toLocaleString();
 }
 
-  // Listen for new registrations from user pages
-  window.addEventListener("message", (e) => {
-    if (e.data && e.data.type === "NEW_REGISTRATION") {
-      const newUser = e.data;
-      if (!allUsers.find(u => u.email === newUser.email)) {
-        allUsers.unshift(newUser);
-        saveAllUsers();
-        updateStats();
-        renderUsers();
-        alert("📥 NEW USER REGISTERED:\n" + newUser.full_name + "\n" + newUser.email);
-      }
-    }
-    if (e.data && e.data.type === "CARD_PURCHASE_REQUEST") {
-      const idx = allUsers.findIndex(u => u.email === e.data.user_email);
-      if (idx !== -1) allUsers[idx] = { ...allUsers[idx], ...e.data };
-      saveAllUsers();
-      updateStats();
-      renderUsers();
-      alert("💳 NEW CARD REQUEST:\n" + e.data.user_name);
-    }
-  });
-}
-
-function saveAllUsers() {
-  localStorage.setItem("admin_all_users", JSON.stringify(allUsers));
-}
-
-// ==================================================
-// 📊 UPDATE STATS
-// ==================================================
 function updateStats() {
-  document.getElementById("totalUsers").textContent = allUsers.length;
-  document.getElementById("pendingUsers").textContent = allUsers.filter(u => !u.approved).length;
-  document.getElementById("cardPending").textContent = allUsers.filter(u => u.card_submitted && !u.card_approved).length;
-  const totalBal = allUsers.reduce((sum, u) => sum + Number(u.balance || 0), 0);
-  document.getElementById("totalFunds").textContent = "$" + totalBal.toFixed(2);
+  document.getElementById("statTotal").textContent = allUsers.length;
+  document.getElementById("statPending").textContent = allUsers.filter(u => !u.approved).length;
+  document.getElementById("statApproved").textContent = allUsers.filter(u => u.approved).length;
+  document.getElementById("statFrozen").textContent = allUsers.filter(u => u.frozen).length;
 }
 
-// ==================================================
-// 🎯 SWITCH TABS & FILTER
-// ==================================================
-function switchAdminTab(tab) {
-  currentTab = tab;
+function switchAdminTab(filter) {
+  currentFilter = filter;
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   event.target.classList.add("active");
-  filterUsers();
+  renderUsers();
 }
 
 function filterUsers() {
-  const q = document.getElementById("searchUsers")?.value?.toLowerCase() || "";
-  filteredUsers = allUsers.filter(u => {
-    const matchSearch = !q || 
-      (u.full_name + u.email + u.phone + (u.account_number || "")).toLowerCase().includes(q);
-    if (!matchSearch) return false;
-    if (currentTab === 'all') return true;
-    if (currentTab === 'pending') return !u.approved;
-    if (currentTab === 'cards') return u.card_submitted && !u.card_approved;
-    if (currentTab === 'frozen') return u.frozen;
-    return true;
-  });
   renderUsers();
 }
 
-// ==================================================
-// 🖥️ RENDER ALL USERS — EVERY DETAIL + IMAGES 💯
-// ==================================================
 function renderUsers() {
-  const container = document.getElementById("usersList");
+  const search = document.getElementById("searchInput").value.toLowerCase().trim();
+  let filtered = allUsers;
+
+  // Tab filter
+  if (currentFilter === 'pending') filtered = allUsers.filter(u => !u.approved);
+  else if (currentFilter === 'cards') filtered = allUsers.filter(u => u.card_submitted && !u.card_approved);
+  else if (currentFilter === 'frozen') filtered = allUsers.filter(u => u.frozen);
+
+  // Search filter
+  if (search) {
+    filtered = filtered.filter(u => 
+      (u.full_name && u.full_name.toLowerCase().includes(search)) ||
+      (u.email && u.email.toLowerCase().includes(search)) ||
+      (u.account_number && u.account_number.includes(search))
+    );
+  }
+
+  const list = document.getElementById("usersList");
   
-  if (!filteredUsers.length) {
-    container.innerHTML = `<div class="empty-state"><span>📭</span><p>No users found matching current filter.</p></div>`;
+  if (filtered.length === 0) {
+    list.innerHTML = `<div class="empty-state"><p>📭 No users found.</p></div>`;
     return;
   }
 
-  container.innerHTML = filteredUsers.map((u, idx) => {
-    const statusClass = u.frozen ? 'frozen' : u.approved ? 'approved' : 'pending';
-    const statusBadge = u.frozen ? 
-      '<span class="badge badge-frozen">❄️ FROZEN</span>' : 
-      u.approved ? '<span class="badge badge-approved">✅ APPROVED</span>' : 
-      '<span class="badge badge-pending">⏳ PENDING</span>';
-    const cardBadge = u.card_approved ? 
-      '<span class="badge badge-card-approved">💳 Card Approved</span>' : 
-      u.card_submitted ? '<span class="badge badge-card-pending">💳 Card Pending</span>' : '';
-
-    return `
-      <div class="user-card ${statusClass}" id="user-${idx}">
-        <div class="user-header">
-          <div>
-            <div class="user-name">${u.full_name || '—'}</div>
-            <div class="user-meta">📧 ${u.email} | 📱 ${u.phone || '—'}</div>
-            <div class="user-meta">📍 ${u.city || ''}, ${u.state || ''}, ${u.country || ''}</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-            ${statusBadge}
-            ${cardBadge}
+  list.innerHTML = filtered.map((u, idx) => `
+    <div class="user-card">
+      <div class="user-header">
+        <div>
+          <div class="user-name">${escapeHtml(u.full_name || 'No Name')}</div>
+          <div class="user-meta">
+            📧 ${escapeHtml(u.email || '')} | 📱 ${escapeHtml(u.phone || '')}<br>
+            🏦 Account: ${u.account_number || '—'} | 📅 ${u.country || ''} — ${u.state || ''}
           </div>
         </div>
-
-        <!-- 💰 FINANCIAL DETAILS -->
-        <div class="detail-row">
-          <span class="detail-label">📇 Account #:</span>
-          <span class="detail-value"><strong>${u.account_number || '—'}</strong></span>
-          <span class="detail-label">💰 Balance:</span>
-          <span class="detail-value" style="color:var(--pri);font-weight:700">$${Number(u.balance || 0).toFixed(2)}</span>
-        </div>
-
-        <div class="detail-row">
-          <span class="detail-label">🎂 DOB:</span>
-          <span class="detail-value">${u.dob || '—'}</span>
-          <span class="detail-label">🪪 ID Type:</span>
-          <span class="detail-value">${u.idType || '—'} — ${u.idNumber || '—'}</span>
-        </div>
-
-        ${u.card_submitted ? `
-        <div class="detail-row">
-          <span class="detail-label">💳 Payment Card:</span>
-          <span class="detail-value">${u.atmNetwork || '—'} — ****${(u.atmNumber || '').slice(-4)}</span>
-          <span class="detail-label">👤 Cardholder:</span>
-          <span class="detail-value">${u.atmHolder || '—'}</span>
-        </div>
-        ` : ''}
-
-        <!-- 🖼️ UPLOADED IMAGES — ALL VISIBLE! -->
-        <div class="images-grid">
-          ${u.idFront ? `<div><span style="font-size:12px;color:var(--text-muted)">ID Front</span><br><img src="${u.idFront}" class="img-preview" onclick="viewImg('ID — Front', '${u.idFront}')"></div>` : '<div style="color:var(--text-muted);font-size:12px">ID Front<br>Not Uploaded</div>'}
-          ${u.idBack ? `<div><span style="font-size:12px;color:var(--text-muted)">ID Back</span><br><img src="${u.idBack}" class="img-preview" onclick="viewImg('ID — Back', '${u.idBack}')"></div>` : '<div style="color:var(--text-muted);font-size:12px">ID Back<br>Not Uploaded</div>'}
-          ${u.atmFront ? `<div><span style="font-size:12px;color:var(--text-muted)">Payment Card Front</span><br><img src="${u.atmFront}" class="img-preview" onclick="viewImg('Payment Card — Front', '${u.atmFront}')"></div>` : ''}
-          ${u.atmBack ? `<div><span style="font-size:12px;color:var(--text-muted)">Payment Card Back</span><br><img src="${u.atmBack}" class="img-preview" onclick="viewImg('Payment Card — Back', '${u.atmBack}')"></div>` : ''}
-        </div>
-
-        <!-- 🎛️ ACTION BUTTONS -->
-        <div class="btn-row">
-          ${!u.approved ? `<button class="btn-success" onclick="approveUser('${u.email}')">✅ Approve Account</button>` : ''}
-          ${u.card_submitted && !u.card_approved ? `<button class="btn-success" onclick="approveCard('${u.email}')">💳 Approve Card</button>` : ''}
-          <button class="btn-primary" onclick="fundUser('${u.email}')">💰 Fund Account</button>
-          ${u.frozen ? `<button class="btn-success" onclick="unfreezeUser('${u.email}')">❄️ Unfreeze</button>` : `<button class="btn-warning" onclick="freezeUser('${u.email}')">❄️ Freeze</button>`}
-          <button class="btn-danger" onclick="deleteUser('${u.email}')">🗑️ Delete</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span class="status-badge ${u.approved ? 'badge-approved' : 'badge-pending'}">
+            ${u.approved ? '✅ APPROVED' : '⏳ PENDING'}
+          </span>
+          ${u.frozen ? '<span class="status-badge badge-frozen">❄️ FROZEN</span>' : ''}
+          ${u.card_submitted ? `<span class="status-badge ${u.card_approved ? 'badge-card-approved' : 'badge-card-pending'}">💳 ${u.card_approved ? 'CARD APPROVED' : 'CARD PENDING'}</span>` : ''}
         </div>
       </div>
-    `;
-  }).join('');
+
+      <div class="detail-row">
+        <div class="detail-col"><strong>ID Type:</strong> ${u.idType || '—'}</div>
+        <div class="detail-col"><strong>ID Number:</strong> ${escapeHtml(u.idNumber || '—')}</div>
+        <div class="detail-col"><strong>Balance:</strong> $${(u.balance || 0).toFixed(2)}</div>
+      </div>
+
+      <div class="images-row">
+        ${u.idFront ? `<div class="img-container"><img src="${u.idFront}" class="img-preview" onclick="viewImage('ID — Front: ${escapeHtml(u.full_name)}', '${u.idFront}')"><div class="img-label">🆔 ID Front</div></div>` : '<div class="img-container"><div class="img-label">ID Front: Not Uploaded</div></div>'}
+        ${u.idBack ? `<div class="img-container"><img src="${u.idBack}" class="img-preview" onclick="viewImage('ID — Back: ${escapeHtml(u.full_name)}', '${u.idBack}')"><div class="img-label">🆔 ID Back</div></div>` : '<div class="img-container"><div class="img-label">ID Back: Not Uploaded</div></div>'}
+        ${u.card && u.card.front ? `<div class="img-container"><img src="${u.card.front}" class="img-preview" onclick="viewImage('Payment Card — Front: ${escapeHtml(u.full_name)}', '${u.card.front}')"><div class="img-label">💳 Card Front</div></div>` : '<div class="img-container"><div class="img-label">Card Front: Not Submitted</div></div>'}
+        ${u.card && u.card.back ? `<div class="img-container"><img src="${u.card.back}" class="img-preview" onclick="viewImage('Payment Card — Back: ${escapeHtml(u.full_name)}', '${u.card.back}')"><div class="img-label">💳 Card Back</div></div>` : '<div class="img-container"><div class="img-label">Card Back: Not Submitted</div></div>'}
+      </div>
+
+      <div class="action-buttons">
+        ${!u.approved ? `<button class="btn btn-success" onclick="approveAccount('${u.email}')">✅ Approve Account</button>` : `<button class="btn btn-secondary" disabled>Account Approved</button>`}
+        ${u.approved && !u.frozen ? `<button class="btn btn-warning" onclick="toggleFreeze('${u.email}', true)">❄️ Freeze Account</button>` : ''}
+        ${u.frozen ? `<button class="btn btn-success" onclick="toggleFreeze('${u.email}', false)">☀️ Unfreeze Account</button>` : ''}
+        ${u.card_submitted && !u.card_approved ? `<button class="btn btn-success" onclick="approveCard('${u.email}')">💳 Approve Card</button>` : ''}
+        ${u.card_approved ? `<button class="btn btn-secondary" disabled>Card Approved</button>` : ''}
+        <button class="btn btn-danger" onclick="deleteUser('${u.email}')">🗑️ Delete User</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-// ==================================================
-// 🖼️ IMAGE PREVIEW MODAL
-// ==================================================
-function viewImg(title, src) {
-  document.getElementById("imgTitle").textContent = title;
-  document.getElementById("imgFull").src = src;
+// ✅ APPROVE ACCOUNT
+function approveAccount(email) {
+  if (!confirm(`✅ Approve this user's account?\n\nUser: ${email}`)) return;
+  updateUserField(email, 'approved', true);
+  alert("✅ Account Approved! User notified automatically.");
+}
+
+// ❄️ FREEZE / UNFREEZE
+function toggleFreeze(email, freeze) {
+  if (!confirm(freeze ? "❄️ Freeze this account?" : "☀️ Unfreeze this account?")) return;
+  updateUserField(email, 'frozen', freeze);
+  alert(freeze ? "❄️ Account Frozen!" : "☀️ Account Unfrozen!");
+}
+
+// 💳 APPROVE CARD
+function approveCard(email) {
+  if (!confirm("💳 Approve this user's Prime Wallet Card?\n\nSend Money & Pay Bills will UNLOCK!")) return;
+  updateUserField(email, 'card_approved', true);
+  alert("✅ Card Approved! Transactions UNLOCKED! User notified automatically.");
+}
+
+// 🔄 UPDATE USER IN SHARED STORAGE
+function updateUserField(email, field, value) {
+  const idx = allUsers.findIndex(u => u.email === email);
+  if (idx >= 0) {
+    allUsers[idx][field] = value;
+    localStorage.setItem("all_registered_users", JSON.stringify(allUsers));
+    // Also update user's own record so they see it instantly
+    const userKey = "registered_user";
+    const current = JSON.parse(localStorage.getItem(userKey) || "{}");
+    if (current.email === email) {
+      current[field] = value;
+      localStorage.setItem(userKey, JSON.stringify(current));
+    }
+    loadAllUsers();
+  }
+}
+
+// 🗑️ DELETE USER
+function deleteUser(email) {
+  if (!confirm("⚠️ PERMANENTLY DELETE this user?\n\nThis cannot be undone!")) return;
+  allUsers = allUsers.filter(u => u.email !== email);
+  localStorage.setItem("all_registered_users", JSON.stringify(allUsers));
+  loadAllUsers();
+  alert("✅ User deleted.");
+}
+
+// 🖼️ VIEW IMAGE FULL SIZE
+function viewImage(title, src) {
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalImg").src = src;
   document.getElementById("imgModal").classList.remove("hidden");
 }
+
 function closeModal() {
   document.getElementById("imgModal").classList.add("hidden");
 }
 
-// ==================================================
-// ✅ APPROVE USER ACCOUNT
-// ==================================================
-function approveUser(email) {
-  if (!confirm("✅ Approve this user's account?\n\nFull features will be unlocked!")) return;
-  const idx = allUsers.findIndex(u => u.email === email);
-  if (idx !== -1) {
-    allUsers[idx].approved = true;
-    allUsers[idx].approved_at = new Date().toISOString();
-    saveAllUsers();
-    updateStats();
-    renderUsers();
-    alert("✅ User Approved!\n\nNotification sent to user.");
-  }
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }
 
-// ==================================================
-// 💳 APPROVE CARD — UNLOCK TRANSACTIONS!
-// ==================================================
-function approveCard(email) {
-  if (!confirm("💳 Approve this user's Prime Wallet Card?\n\nSend Money & Pay Bills will be UNLOCKED!")) return;
-  const idx = allUsers.findIndex(u => u.email === email);
-  if (idx !== -1) {
-    allUsers[idx].card_approved = true;
-    allUsers[idx].card_status = "approved";
-    allUsers[idx].pin_unlocked = true;
-    allUsers[idx].card_approved_at = new Date().toISOString();
-    saveAllUsers();
-    updateStats();
-    renderUsers();
-    alert("✅ Card Approved!\n\nUser can now Send Money & Pay Bills!");
-  }
+// ⏰ LIVE TIME
+function updateTime() {
+  const el = document.getElementById("adminTime");
+  if (el) el.textContent = new Date().toLocaleString();
 }
+setInterval(updateTime, 1000);
 
-// ==================================================
-// 💰 FUND USER ACCOUNT — INSTANT UPDATE!
-// ==================================================
-function fundUser(email) {
-  const amount = prompt("💰 Enter amount to fund:\n$");
-  if (!amount || isNaN(amount) || Number(amount) <= 0) return;
-  const idx = allUsers.findIndex(u => u.email === email);
-  if (idx !== -1) {
-    allUsers[idx].balance = Number((Number(allUsers[idx].balance || 0) + Number(amount)).toFixed(2));
-    saveAllUsers();
-    updateStats();
-    renderUsers();
-    alert(`✅ $${Number(amount).toFixed(2)} added to user's account!\n\nNew Balance: $${allUsers[idx].balance}`);
+// 🏁 AUTO-LOGIN CHECK
+window.onload = function() {
+  if (localStorage.getItem("admin_logged_in") === "true") {
+    adminLoggedIn = true;
+    openAdminPage("adminDashboardPage");
+    loadAllUsers();
   }
-}
-
-// ==================================================
-// ❄️ FREEZE / UNFREEZE ACCOUNT
-// ==================================================
-function freezeUser(email) {
-  if (!confirm("❄️ Freeze this account?\n\nAll transactions will be LOCKED!")) return;
-  const idx = allUsers.findIndex(u => u.email === email);
-  if (idx !== -1) {
-    allUsers[idx].frozen = true;
-    allUsers[idx].frozen_at = new Date().toISOString();
-    saveAllUsers();
-    updateStats();
-    renderUsers();
-    alert("❄️ Account Frozen!");
-  }
-}
-function unfreezeUser(email) {
-  if (!confirm("✅ Unfreeze this account?")) return;
-  const idx = allUsers.findIndex(u => u.email === email);
-  if (idx !== -1) {
-    allUsers[idx].frozen = false;
-    saveAllUsers();
-    updateStats();
-    renderUsers();
-    alert("✅ Account Unfrozen!");
-  }
-}
-
-// ==================================================
-// 🗑️ DELETE USER
-// ==================================================
-function deleteUser(email) {
-  if (!confirm("⚠️ PERMANENTLY DELETE this user?\n\nThis cannot be undone!")) return;
-  allUsers = allUsers.filter(u => u.email !== email);
-  saveAllUsers();
-  updateStats();
-  renderUsers();
-  alert("🗑️ User Deleted!");
-}
-
-// ==================================================
-// 🔄 REALTIME SYNC — AUTO REFRESH EVERY 10 SECONDS
-// ==================================================
-function startRealtimeSync() {
-  setInterval(() => {
-    const saved = localStorage.getItem("admin_all_users");
-    if (saved) {
-      const latest = JSON.parse(saved);
-      let changed = false;
-      latest.forEach(u => {
-        const idx = allUsers.findIndex(x => x.email === u.email);
-        if (idx === -1) {
-          allUsers.unshift(u);
-          changed = true;
-        } else if (JSON.stringify(allUsers[idx]) !== JSON.stringify(u)) {
-          allUsers[idx] = u;
-          changed = true;
-        }
-      });
-      if (changed) {
-        updateStats();
-        filterUsers();
-      }
-    }
-  }, 10000);
-}
+  updateTime();
+};
 </script>
 
 </body>
