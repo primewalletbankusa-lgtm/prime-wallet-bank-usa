@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console — Prime Wallet Bank USA 🇺🇸</title>
+  <style>
+    :root{
+      --pri:#0047AB; --pri-hover:#003380; --pri-light:#2563EB;
+      --success:#10B981; --error:#EF4444; --warn:#F59E0B; --info:#3B82F6;
+      --bg:#F8FAFC; --card:#FFFFFF; --text:#1E293B; --muted:#64748B;
+      --border:#E2E8F0; --shadow:0 2px 8px rgba(0,0,0,0.08);
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+    body{background:var(--bg);color:var(--text);line-height:1.5;}
+    .container{max-width:1400px;margin:0 auto;padding:20px;}
+    
+    /* ===== HEADER ===== */
+    .admin-header{background:linear-gradient(135deg,var(--pri),var(--pri-light));color:white;padding:20px 30px;border-radius:12px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+    .admin-brand{font-size:24px;font-weight:800;}
+    .admin-brand span{opacity:0.9;font-weight:400;}
+    .header-actions{display:flex;gap:12px;align-items:center;}
+    .admin-info{font-size:14px;opacity:0.9;}
+    
+    /* ===== LOGIN SCREEN ===== */
+    .login-box{max-width:420px;margin:100px auto;background:var(--card);padding:40px;border-radius:16px;box-shadow:var(--shadow);}
+    .login-box h2{text-align:center;color:var(--pri);margin-bottom:24px;}
+    .form-group{margin-bottom:16px;}
+    label{display:block;margin-bottom:6px;font-weight:600;font-size:14px;}
+    input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;outline:none;transition:border 0.2s;}
+    input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,71,171,0.1);}
+    .btn{padding:12px 20px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+    .btn-primary{background:var(--pri);color:white;width:100%;}
+    .btn-primary:hover{background:var(--pri-hover);}
+    .btn-success{background:var(--success);color:white;}
+    .btn-danger{background:var(--error);color:white;}
+    .btn-warning{background:var(--warn);color:white;}
+    .btn-secondary{background:var(--muted);color:white;}
+    .btn-sm{padding:6px 12px;font-size:13px;}
+    .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+    
+    /* ===== DASHBOARD ===== */
+    .hidden{display:none !important;}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px;}
+    .stat-card{background:var(--card);padding:20px;border-radius:12px;box-shadow:var(--shadow);border-left:4px solid var(--pri);}
+    .stat-card h3{font-size:14px;color:var(--muted);margin-bottom:8px;}
+    .stat-card .value{font-size:28px;font-weight:800;color:var(--pri);}
+    .stat-card.success{border-left-color:var(--success);}
+    .stat-card.warn{border-left-color:var(--warn);}
+    .stat-card.error{border-left-color:var(--error);}
+    
+    /* ===== SEARCH & FILTER ===== */
+    .search-bar{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
+    .search-bar input{flex:1;min-width:250px;}
+    .search-bar select{width:auto;min-width:150px;}
+    
+    /* ===== USERS TABLE ===== */
+    .card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:24px;margin-bottom:24px;}
+    .card-title{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--pri);padding-bottom:12px;border-bottom:1px solid var(--border);}
+    table{width:100%;border-collapse:collapse;font-size:14px;}
+    th,td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle;}
+    th{background:var(--bg);font-weight:700;color:var(--pri);position:sticky;top:0;}
+    tr:hover{background:rgba(0,71,171,0.02);}
+    .status-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;}
+    .status-pending{background:#FEF3C7;color:#92400E;}
+    .status-approved{background:#D1FAE5;color:#065F46;}
+    .status-rejected{background:#FEE2E2;color:#991B1B;}
+    .status-frozen{background:#E0E7FF;color:#3730A3;}
+    
+    /* ===== USER DETAILS MODAL ===== */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}
+    .modal.hidden{display:none;}
+    .modal-content{background:white;border-radius:16px;max-width:900px;width:100%;max-height:90vh;overflow-y:auto;animation:modalIn 0.3s ease;}
+    @keyframes modalIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
+    .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;}
+    .modal-header h3{font-size:20px;color:var(--pri);}
+    .close-btn{background:none;border:none;font-size:28px;cursor:pointer;color:var(--muted);line-height:1;}
+    .modal-body{padding:24px;}
+    .detail-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;}
+    .detail-group{flex:1;min-width:200px;}
+    .detail-group label{font-size:12px;color:var(--muted);margin-bottom:4px;}
+    .detail-group p{font-size:15px;font-weight:600;}
+    .section-title{font-size:16px;font-weight:700;color:var(--pri);margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--pri);}
+    .images-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0;}
+    .img-preview{width:100%;height:140px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid var(--border);transition:border 0.2s;}
+    .img-preview:hover{border-color:var(--pri);}
+    .detail-label{font-size:13px;color:var(--muted);margin-bottom:4px;}
+    
+    /* ===== TOAST ===== */
+    .toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:10px;color:white;font-weight:600;z-index:10000;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:350px;}
+    .toast.show{transform:translateY(0);opacity:1;}
+    .toast.success{background:var(--success);}
+    .toast.error{background:var(--error);}
+    .toast.info{background:var(--info);}
+    
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:768px){
+      .admin-header{flex-direction:column;text-align:center;}
+      table{display:block;overflow-x:auto;}
+      .detail-row{flex-direction:column;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================================================== -->
+<!-- 🔐 ADMIN LOGIN SCREEN -->
+<!-- ================================================== -->
+<div class="container" id="adminLoginPage">
+  <div class="login-box">
+    <h2>🏦 Admin Console — Prime Wallet Bank</h2>
+    <p style="text-align:center;color:var(--muted);margin-bottom:24px;">Secure Administration Portal</p>
+    <div class="form-group">
+      <label>Admin Email</label>
+      <input type="email" id="adminEmail" placeholder="primewalletbankusa@gmail.com">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="adminPassword" placeholder="Enter admin password" style="padding-right:40px;">
+        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;" onclick="toggleAdminPass()">👁️</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="adminLogin()">🔐 Sign In to Admin</button>
+    <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">
+      Authorized Personnel Only<br>
+      Support: primewalletbankusa@gmail.com
+    </p>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 📊 ADMIN DASHBOARD — HIDDEN UNTIL LOGIN -->
+<!-- ================================================== -->
+<div class="container hidden" id="adminDashboard">
+  <!-- HEADER -->
+  <div class="admin-header">
+    <div>
+      <div class="admin-brand">🏦 Prime Wallet Bank <span>— Admin Console</span></div>
+      <div class="admin-info">Secure Administration Portal • Global User Management</div>
+    </div>
+    <div class="header-actions">
+      <span id="adminLoggedIn" style="font-size:14px;">Admin: primewalletbankusa@gmail.com</span>
+      <button class="btn btn-sm btn-secondary" onclick="adminLogout()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <!-- STATS OVERVIEW -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>👤 Total Users</h3>
+      <div class="value" id="statTotalUsers">0</div>
+    </div>
+    <div class="stat-card success">
+      <h3>✅ Approved</h3>
+      <div class="value" id="statApproved">0</div>
+    </div>
+    <div class="stat-card warn">
+      <h3>⏳ Pending Review</h3>
+      <div class="value" id="statPending">0</div>
+    </div>
+    <div class="stat-card error">
+      <h3>💳 Card Requests</h3>
+      <div class="value" id="statCardRequests">0</div>
+    </div>
+  </div>
+
+  <!-- SEARCH & FILTER -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="🔍 Search by name, email, account number..." oninput="filterUsers()">
+    <select id="statusFilter" onchange="filterUsers()">
+      <option value="all">All Status</option>
+      <option value="pending">⏳ Pending Approval</option>
+      <option value="approved">✅ Approved</option>
+      <option value="card_pending">💳 Card Pending</option>
+      <option value="frozen">❄️ Frozen Accounts</option>
+    </select>
+    <select id="countryFilter" onchange="filterUsers()">
+      <option value="all">All Countries</option>
+    </select>
+    <button class="btn btn-sm btn-primary" onclick="loadAllUsers()">🔄 Refresh</button>
+  </div>
+
+  <!-- USERS TABLE -->
+  <div class="card">
+    <h3 class="card-title">👤 Registered Users — Full List</h3>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead>
+          <tr>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Account #</th>
+            <th>Country</th>
+            <th>Balance</th>
+            <th>Account Status</th>
+            <th>Card Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <tr>
+            <td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">Loading users...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 🔍 USER DETAILS MODAL — ALL INFO & IMAGES + PENDING DEPOSITS -->
+<!-- ================================================== -->
+<div class="modal hidden" id="userDetailModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalUserTitle">User Details</h3>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalUserContent">
+      <!-- DYNAMIC CONTENT LOADED HERE -->
+    </div>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 🖼️ IMAGE VIEWER MODAL -->
+<!-- ================================================== -->
+<div class="modal hidden" id="imageViewerModal">
+  <div class="modal-content" style="max-width:600px;">
+    <div class="modal-header">
+      <h3 id="imgViewerTitle">Document Preview</h3>
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div style="padding:20px;text-align:center;">
+      <img id="imgViewerFull" style="max-width:100%;border-radius:8px;" alt="Document">
+    </div>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 🔔 TOAST NOTIFICATION -->
+<!-- ================================================== -->
+<div class="toast" id="adminToast"></div>
+
+<!-- ================================================== -->
+<!-- ⚙️ JAVASCRIPT — FULL ADMIN FUNCTIONS + DEPOSIT APPROVAL SYSTEM -->
+<!-- ================================================== -->
+<script>
+// ==================================================
+// 🔐 ADMIN CREDENTIALS — YOURS!
+// ==================================================
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_PASSWORD = "AdminPrime2026$"; // ✅ CHANGE ANYTIME!
+
+let allUsers = [];
+let currentViewingUser = null;
+
+// ==================================================
+// 🔐 ADMIN LOGIN
+// ==================================================
+function adminLogin() {
+  const email = document.getElementById("adminEmail").value.trim().toLowerCase();
+  const pass = document.getElementById("adminPassword").value;
+  
+  if (!email || !pass) return showAdminToast("⚠️ Enter email & password", "error");
+  
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+    localStorage.setItem("admin_auth", "true");
+    document.getElementById("adminLoginPage").classList.add("hidden");
+    document.getElementById("adminDashboard").classList.remove("hidden");
+    loadAllUsers();
+    showAdminToast("✅ Welcome, Admin! 🔓", "success");
+  } else {
+    showAdminToast("❌ Invalid email or password", "error");
+  }
+}
+
+function checkAdminAuth() {
+  if (localStorage.getItem("admin_auth") === "true") {
+    document.getElementById("adminLoginPage").classList.add("hidden");
+    document.getElementById("adminDashboard").classList.remove("hidden");
+    loadAllUsers();
+  }
+}
+
+function adminLogout() {
+  localStorage.removeItem("admin_auth");
+  document.getElementById("adminDashboard").classList.add("hidden");
+  document.getElementById("adminLoginPage").classList.remove("hidden");
+  document.getElementById("adminEmail").value = "";
+  document.getElementById("adminPassword").value = "";
+  showAdminToast("🔒 Logged out successfully", "info");
+}
+
+function toggleAdminPass() {
+  const inp = document.getElementById("adminPassword");
+  inp.type = inp.type === "password" ? "text" : "password";
+}
+
+// ==================================================
+// 📥 LOAD ALL USERS FROM STORAGE
+// ==================================================
+function loadAllUsers() {
+  allUsers = JSON.parse(localStorage.getItem("all_users") || "[]");
+  
+  // Update stats
+  const total = allUsers.length;
+  const approved = allUsers.filter(u => u.approved === true).length;
+  const pending = allUsers.filter(u => !u.approved).length;
+  const cardRequests = allUsers.filter(u => u.card_request && !u.card_approved).length;
+  
+  document.getElementById("statTotalUsers").textContent = total;
+  document.getElementById("statApproved").textContent = approved;
+  document.getElementById("statPending").textContent = pending;
+  document.getElementById("statCardRequests").textContent = cardRequests;
+  
+  // Populate country filter
+  const countries = [...new Set(allUsers.map(u => u.country).filter(Boolean))].sort();
+  const countrySelect = document.getElementById("countryFilter");
+  countrySelect.innerHTML = '<option value="all">All Countries</option>';
+  countries.forEach(c => {
+    countrySelect.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+  
+  filterUsers();
+  showAdminToast(`✅ Loaded ${total} user(s)`, "success");
+}
+
+// ==================================================
+// 🔍 FILTER & SEARCH USERS
+// ==================================================
+function filterUsers() {
+  const search = document.getElementById("searchInput").value.toLowerCase().trim();
+  const statusFilter = document.getElementById("statusFilter").value;
+  const countryFilter = document.getElementById("countryFilter").value;
+  
+  let filtered = allUsers;
+  
+  if (search) {
+    filtered = filtered.filter(u => 
+      (u.full_name || "").toLowerCase().includes(search) ||
+      (u.email || "").toLowerCase().includes(search) ||
+      (u.account_number || "").includes(search)
+    );
+  }
+  
+  if (statusFilter !== "all") {
+    if (statusFilter === "pending") filtered = filtered.filter(u => !u.approved);
+    else if (statusFilter === "approved") filtered = filtered.filter(u => u.approved === true);
+    else if (statusFilter === "card_pending") filtered = filtered.filter(u => u.card_request && !u.card_approved);
+    else if (statusFilter === "frozen") filtered = filtered.filter(u => u.frozen === true);
+  }
+  
+  if (countryFilter !== "all") {
+    filtered = filtered.filter(u => u.country === countryFilter);
+  }
+  
+  renderUsersTable(filtered);
+}
+
+// ==================================================
+// 📊 RENDER USERS TABLE
+// ==================================================
+function renderUsersTable(users) {
+  const tbody = document.getElementById("usersTableBody");
+  
+  if (!users.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--muted);">No users found</td></tr>';
+    return;
+  }
+  
+  tbody.innerHTML = users.map(u => {
+    let accStatus = '<span class="status-badge status-pending">⏳ Pending</span>';
+    if (u.frozen) accStatus = '<span class="status-badge status-frozen">❄️ Frozen</span>';
+    else if (u.approved) accStatus = '<span class="status-badge status-approved">✅ Approved</span>';
+    
+    let cardStatus = '<span class="status-badge" style="background:#F3F4F6;color:#6B7280;">No Request</span>';
+    if (u.card_approved) cardStatus = '<span class="status-badge status-approved">✅ Approved</span>';
+    else if (u.card_request) cardStatus = '<span class="status-badge status-pending">⏳ Pending</span>';
+    
+    return `
+      <tr>
+        <td><strong>${escapeHtml(u.full_name || "N/A")}</strong></td>
+        <td>${escapeHtml(u.email || "N/A")}</td>
+        <td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">${escapeHtml(u.account_number || "N/A")}</code></td>
+        <td>${escapeHtml(u.country || "N/A")}</td>
+        <td><strong>$${Number(u.balance || 0).toFixed(2)}</strong></td>
+        <td>${accStatus}</td>
+        <td>${cardStatus}</td>
+        <td>
+          <div class="btn-row">
+            <button class="btn btn-sm btn-primary" onclick="viewUserDetails('${u.id}')">👁️ View</button>
+            ${!u.approved ? `<button class="btn btn-sm btn-success" onclick="approveUser('${u.id}')">✅ Approve</button>` : ""}
+            ${u.approved && !u.frozen ? `<button class="btn btn-sm btn-warning" onclick="freezeUser('${u.id}')">❄️ Freeze</button>` : ""}
+            ${u.frozen ? `<button class="btn btn-sm btn-success" onclick="unfreezeUser('${u.id}')">🔥 Unfreeze</button>` : ""}
+            <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join("");
+}
+
+// ==================================================
+// 🔍 VIEW FULL USER DETAILS — ALL DATA + PENDING DEPOSITS
+// ==================================================
+function viewUserDetails(userId) {
+  const user = allUsers.find(u => u.id == userId);
+  if (!user) return;
+  currentViewingUser = user;
+  
+  document.getElementById("modalUserTitle") = `👤 ${escapeHtml(user.full_name || "User")} — Full Profile`;
+  
+  const content = document.getElementById("modalUserContent");
+  content.innerHTML = `
+    <!-- BASIC INFO -->
+    <div class="section-title">📋 Personal Information</div>
+    <div class="detail-row">
+      <div class="detail-group"><label>Full Name</label><p>${escapeHtml(user.full_name || "N/A")}</p></div>
+      <div class="detail-group"><label>Email Address</label><p>${escapeHtml(user.email || "N/A")}</p></div>
+      <div class="detail-group"><label>Phone Number</label><p>${escapeHtml(user.phone || "N/A")}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-group"><label>Date of Birth</label><p>${escapeHtml(user.dob || "N/A")}</p></div>
+      <div class="detail-group"><label>Gender</label><p>${escapeHtml(user.gender || "N/A")}</p></div>
+      <div class="detail-group"><label>Account Number</label><p><strong>${escapeHtml(user.account_number || "N/A")}</strong></p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-group"><label>Country</label><p>${escapeHtml(user.country || "N/A")}</p></div>
+      <div class="detail-group"><label>State / Province</label><p>${escapeHtml(user.state || "N/A")}</p></div>
+      <div class="detail-group"><label>City / Town</label><p>${escapeHtml(user.city || "N/A")}</p></div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-group"><label>Account Balance</label><p style="font-size:20px;color:var(--pri);font-weight:800;">$${Number(user.balance || 0).toFixed(2)}</p></div>
+      <div class="detail-group"><label>Account Status</label><p>${user.approved ? '<span style="color:var(--success);">✅ APPROVED</span>' : '<span style="color:var(--warn);">⏳ PENDING APPROVAL</span>'}</p></div>
+      <div class="detail-group"><label>Registration Date</label><p>${user.created_at ? new Date(user.created_at).toLocaleString() : "N/A"}</p></div>
+    </div>
+
+    <!-- 💰 PENDING DEPOSITS — WAITING ADMIN APPROVAL -->
+    <div class="section-title">💰 Pending Deposits — Waiting Approval</div>
+    ${user.pendingDeposits && user.pendingDeposits.length > 0 ? user.pendingDeposits.map((d, idx) => `
+      <div style="background:#FFFBEB;padding:16px;border-radius:8px;margin-bottom:12px;border:1px solid #FCD34D;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+          <div>
+            <strong style="font-size:18px;color:#B45309;">$${d.amount.toFixed(2)}</strong>
+            <span style="color:#78716C;margin-left:10px;">via ${d.method}</span>
+          </div>
+          <span class="status-badge status-pending">⏳ Pending</span>
+        </div>
+        <p style="font-size:13px;color:#78716C;margin:8px 0 12px;">Submitted: ${new Date(d.date).toLocaleString()}</p>
+        <div class="btn-row">
+          <button class="btn btn-sm btn-success" onclick="approveDeposit(${allUsers.indexOf(user)}, ${idx}); viewUserDetails('${user.id}');">✅ Approve & Credit</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectDeposit(${allUsers.indexOf(user)}, ${idx}); viewUserDetails('${user.id}');">❌ Reject</button>
+        </div>
+      </div>
+    `).join("") : '<p style="color:var(--muted);padding:10px 0;">No pending deposits.</p>'}
+
+    <!-- 📄 GOVERNMENT ID -->
+    <div class="section-title">📄 Government Issued ID</div>
+    <div class="detail-row">
+      <div class="detail-group"><label>ID Type</label><p>${escapeHtml(user.id_type || "N/A")}</p></div>
+      <div class="detail-group"><label>ID Number</label><p>${escapeHtml(user.id_number || "N/A")}</p></div>
+    </div>
+    <div class="images-row">
+      ${user.idFront ? `
+        <div>
+          <div class="detail-label">ID — Front Side</div>
+          <img src="${user.idFront}" class="img-preview" onclick="viewFullImage('ID Front — ${escapeHtml(user.full_name)}', '${user.idFront}')" alt="ID Front">
+        </div>` : '<div class="detail-label">ID Front: Not Uploaded</div>'}
+      ${user.idBack ? `
+        <div>
+          <div class="detail-label">ID — Back Side</div>
+          <img src="${user.idBack}" class="img-preview" onclick="viewFullImage('ID Back — ${escapeHtml(user.full_name)}', '${user.idBack}')" alt="ID Back">
+        </div>` : '<div class="detail-label">ID Back: Not Uploaded</div>'}
+    </div>
+
+    <!-- 💳 PRIME WALLET CARD — PURCHASE REQUEST -->
+    <div class="section-title">💳 Prime Wallet Card — Purchase Request</div>
+    ${user.card_request ? `
+      <div class="detail-row">
+        <div class="detail-group"><label>Card Network</label><p>${escapeHtml(user.card_request.network || "N/A")}</p></div>
+        <div class="detail-group"><label>Cardholder Name</label><p>${escapeHtml(user.card_request.holder || "N/A")}</p></div>
+        <div class="detail-group"><label>Card Number</label><p><code>**** **** **** ${(user.card_request.number || "").slice(-4)}</code></p></div>
+      </div>
+      <div class="detail-row">
+        <div class="detail-group"><label>Expiry Date</label><p>${escapeHtml(user.card_request.expiry || "N/A")}</p></div>
+        <div class="detail-group"><label>Price Paid</label><p>$${Number(user.card_request.price || 0).toFixed(2)}</p></div>
+        <div class="detail-group"><label>Card Status</label><p>${user.card_approved ? '<span style="color:var(--success);">✅ APPROVED</span>' : '<span style="color:var(--warn);">⏳ PENDING APPROVAL</span>'}</p></div>
+      </div>
+      <div class="images-row">
+        ${user.card_request.cardFront ? `
+          <div>
+            <div class="detail-label">Payment Card — Front</div>
+            <img src="${user.card_request.cardFront}" class="img-preview" onclick="viewFullImage('Payment Card Front — ${escapeHtml(user.full_name)}', '${user.card_request.cardFront}')" alt="Card Front">
+          </div>` : '<div class="detail-label">Card Front: Not Uploaded</div>'}
+        ${user.card_request.cardBack ? `
+          <div>
+            <div class="detail-label">Payment Card — Back</div>
+            <img src="${user.card_request.cardBack}" class="img-preview" onclick="viewFullImage('Payment Card Back — ${escapeHtml(user.full_name)}', '${user.card_request.cardBack}')" alt="Card Back">
+          </div>` : '<div class="detail-label">Card Back: Not Uploaded</div>'}
+      </div>
+    ` : '<p style="color:var(--muted);padding:10px 0;">No card purchase request submitted yet.</p>'}
+
+    <!-- ⚡ ADMIN ACTIONS -->
+    <div style="margin-top:30px;padding-top:20px;border-top:1px solid var(--border);">
+      <h4 style="margin-bottom:16px;color:var(--pri);">⚡ Admin Actions</h4>
+      <div class="btn-row">
+        ${!user.approved ? `<button class="btn btn-success" onclick="approveUser('${user.id}'); closeModal();">✅ Approve Account</button>` : ""}
+        ${user.approved && !user.frozen ? `<button class="btn btn-warning" onclick="freezeUser('${user.id}'); closeModal();">❄️ Freeze Account</button>` : ""}
+        ${user.frozen ? `<button class="btn btn-success" onclick="unfreezeUser('${user.id}'); closeModal();">🔥 Unfreeze Account</button>` : ""}
+        ${user.card_request && !user.card_approved ? `<button class="btn btn-success" onclick="approveCard('${user.id}');">💳 Approve Card</button>` : ""}
+        ${user.card_request && !user.card_approved ? `<button class="btn btn-danger" onclick="rejectCard('${user.id}');">❌ Reject Card</button>` : ""}
+        <button class="btn btn-secondary" onclick="closeModal()">← Close</button>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById("userDetailModal").classList.remove("hidden");
+}
+
+// ==================================================
+// ✅ ADMIN APPROVES PENDING DEPOSITS — BALANCE UPDATES ONLY AFTER APPROVAL
+// ==================================================
+function approveDeposit(userIndex, depositIndex) {
+  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
+  
+  const deposit = allUsers[userIndex].pendingDeposits[depositIndex];
+  
+  // ✅ ADD TO BALANCE ONLY WHEN ADMIN APPROVES
+  allUsers[userIndex].balance = (Number(allUsers[userIndex].balance) || 0) + deposit.amount;
+  
+  // MARK AS APPROVED & MOVE TO TRANSACTIONS
+  deposit.status = "approved";
+  if (!allUsers[userIndex].transactions) allUsers[userIndex].transactions = [];
+  allUsers[userIndex].transactions.unshift({
+    type: "Deposit — Approved",
+    amount: deposit.amount,
+    method: deposit.method,
+    date: new Date().toISOString(),
+    approved_at: new Date().toISOString()
+  });
+  
+  // REMOVE FROM PENDING
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  
+  saveAllUsers();
+  showAdminToast(`✅ Deposit of $${deposit.amount.toFixed(2)} APPROVED! Balance updated. 🎉`, "success");
+  loadAllUsers();
+}
+
+// ❌ ADMIN REJECTS DEPOSIT
+function rejectDeposit(userIndex, depositIndex) {
+  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
+  const amount = allUsers[userIndex].pendingDeposits[depositIndex].amount;
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  saveAllUsers();
+  showAdminToast(`❌ Deposit of $${amount.toFixed(2)} REJECTED. User notified.`, "error");
+  loadAllUsers();
+}
+
+// ==================================================
+// ✅ APPROVE / ❌ REJECT / ❄️ FREEZE ACTIONS
+// ==================================================
+function approveUser(userId) {
+  const idx = allUsers.findIndex(u => u.id == userId);
+  if (idx === -1) return;
+  allUsers[idx].approved = true;
+  saveAllUsers();
+  showAdminToast("✅ User account APPROVED! Notification sent.", "success");
+  loadAllUsers();
+}
+
+function freezeUser(userId) {
+  const idx = allUsers.findIndex(u => u.id == userId);
+  if (idx === -1) return;
+  allUsers[idx].frozen = true;
+  saveAllUsers();
+  showAdminToast("❄️ Account FROZEN! User notified.", "warn");
+  loadAllUsers();
+}
+
+function unfreezeUser(userId) {
+  const idx = allUsers.findIndex(u => u.id == userId);
+  if (idx === -1) return;
+  delete allUsers[idx].frozen;
+  saveAllUsers();
+  showAdminToast("🔥 Account UNFROZEN! Full access restored.", "success");
+  loadAllUsers();
+}
+
+function approveCard(userId) {
+  const idx = allUsers.findIndex(u => u.id == userId);
+  if (idx === -1) return;
+  allUsers[idx].card_approved = true;
+  if (allUsers[idx].card_request) allUsers[idx].card_request.status = "approved";
+  saveAllUsers();
+  showAdminToast("💳 Card APPROVED! User can now Send Money & Pay Bills! 🎉", "success");
+  viewUserDetails(userId);
+  loadAllUsers();
+}
+
+function rejectCard(userId) {
+  const idx = allUsers.findIndex(u => u.id == userId);
+  if (idx === -1) return;
+  if (allUsers[idx].card_request) {
+    const refund = allUsers[idx].card_request.price || 0;
+    allUsers[idx].balance = (Number(allUsers[idx].balance) || 0) + refund;
+    allUsers[idx].card_request = null;
+  }
+  saveAllUsers();
+  showAdminToast("❌ Card REJECTED. Amount refunded to user balance.", "error");
+  viewUserDetails(userId);
+  loadAllUsers();
+}
+
+function deleteUser(userId) {
+  if (!confirm("⚠️ Permanently DELETE this user?\n\nThis action cannot be undone!")) return;
+  allUsers = allUsers.filter(u => u.id != userId);
+  saveAllUsers();
+  showAdminToast("🗑️ User deleted successfully", "info");
+  loadAllUsers();
+}
+
+// ==================================================
+// 🖼️ IMAGE VIEWER
+// ==================================================
+function viewFullImage(title, src) {
+  document.getElementById("imgViewerTitle").textContent = title;
+  document.getElementById("imgViewerFull").src = src;
+  document.getElementById("imageViewerModal").classList.remove("hidden");
+}
+
+// ==================================================
+// 💾 SAVE ALL USERS TO STORAGE
+// ==================================================
+function saveAllUsers() {
+  localStorage.setItem("all_users", JSON.stringify(allUsers));
+}
+
+// ==================================================
+// 🔔 TOAST SYSTEM
+// ==================================================
+function showAdminToast(msg, type = "info") {
+  const t = document.getElementById("adminToast");
+  t.className = `toast ${type} show`;
+  t.textContent = msg;
+  setTimeout(() => t.classList.remove("show"), 4000);
+}
+
+function closeModal() {
+  document.querySelectorAll(".modal").forEach(m => m.classList.add("hidden"));
+  currentViewingUser = null;
+}
+
+function escapeHtml(text) {
+  if (!text) return "N/A";
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// ==================================================
+// 🚀 AUTO-CHECK LOGIN ON PAGE LOAD
+// ==================================================
+document.addEventListener("DOMContentLoaded", checkAdminAuth);
+
+</script>
+
+</body>
+</html>
