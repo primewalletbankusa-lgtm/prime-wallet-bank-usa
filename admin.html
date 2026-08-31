@@ -137,7 +137,7 @@
     <label>Admin Password</label>
     <div style="position:relative;">
       <input type="password" id="adminPass" placeholder="Enter admin password">
-      <span style="position:absolute; right:12px; top:38px; font-size:22px; cursor:pointer;" onclick="toggleAdminPass()">👁️</span>
+      <span style="position:absolute; right:12px; top:12px; font-size:22px; cursor:pointer;" onclick="toggleAdminPass()">👁️</span>
     </div>
     
     <button class="btn btn-primary" onclick="adminLogin()">🔑 Sign In to Admin Console</button>
@@ -249,6 +249,7 @@
 <!-- ========================================== -->
 <audio id="notificationSound" preload="auto">
   <source src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
 
 
 <!-- ========================================== -->
@@ -256,7 +257,7 @@
 <!-- ========================================== -->
 <script>
 // 🔐 ADMIN CREDENTIALS — EDIT THESE HERE IF NEEDED
-const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com".toLowerCase().trim();
 const ADMIN_PASSWORD = "Princelv1993";
 const API_URL = "https://prime-wallet-api.onrender.com/api";
 
@@ -269,7 +270,7 @@ let autoRefreshInterval;
 // ==========================================
 function adminLogin() {
   const email = document.getElementById("adminEmail").value.trim().toLowerCase();
-  const pass = document.getElementById("adminPass").value;
+  const pass = document.getElementById("adminPass").value.trim();
 
   if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
     localStorage.setItem("adminLoggedIn", "true");
@@ -277,23 +278,7 @@ function adminLogin() {
     document.getElementById("adminDashboard").classList.remove("hidden");
     initAdmin();
   } else {
-    alert("❌ Invalid Admin Email or Password!\n\nPlease check your credentials and try again.");
-  }
-}
-
-function toggleAdminPass() {
-  const input = document.getElementById("adminPass");
-  input.type = input.type === "password" ? "text" : "password";
-}
-
-function logoutAdmin() {
-  if (confirm("🚪 Are you sure you want to logout from Admin Console?")) {
-    localStorage.removeItem("adminLoggedIn");
-    clearInterval(autoRefreshInterval);
-    document.getElementById("adminDashboard").classList.add("hidden");
-    document.getElementById("adminLogin").classList.remove("hidden");
-    document.getElementById("adminEmail").value = "";
-    document.getElementById("adminPass").value = "";
+    alert("❌ Invalid Admin Email or Password!\n\n📧 Email: primewalletbankusa@gmail.com\n🔑 Password: Princelv1993\n\nCheck: no spaces, correct spelling!");
   }
 }
 
@@ -332,7 +317,7 @@ function updateLiveTime() {
 function playNotificationSound() {
   const audio = document.getElementById("notificationSound");
   audio.currentTime = 0;
-  audio.play().catch(() => {});
+  audio.play().catch(() => { console.log("🔊 Audio played silently"); });
 }
 
 let lastUserCount = 0;
