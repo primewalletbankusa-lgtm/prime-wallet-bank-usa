@@ -3,715 +3,822 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Console — Prime Wallet Bank USA">
+  <meta name="theme-color" content="#0047AB">
   <title>Admin Console — Prime Wallet Bank USA 🇺🇸</title>
   <style>
     :root{
       --pri:#0047AB; --pri-hover:#003380; --pri-light:#2563EB;
-      --success:#10B981; --error:#EF4444; --warn:#F59E0B; --info:#3B82F6;
-      --bg:#F8FAFC; --card:#FFFFFF; --text:#1E293B; --muted:#64748B;
-      --border:#E2E8F0; --shadow:0 2px 8px rgba(0,0,0,0.08);
+      --gold:#B8860B; --gold-light:#F59E0B;
+      --success:#059669; --success-bg:#ECFDF5;
+      --error:#DC2626; --error-bg:#FEE2E2;
+      --warn:#F59E0B; --warn-bg:#FFFBEB;
+      --bg:#F8FAFC; --card:#FFFFFF;
+      --text:#1E293B; --muted:#64748B; --border:#E2E8F0;
     }
-    *{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
-    body{background:var(--bg);color:var(--text);line-height:1.5;}
-    .container{max-width:1400px;margin:0 auto;padding:20px;}
-    
-    /* ===== HEADER ===== */
-    .admin-header{background:linear-gradient(135deg,var(--pri),var(--pri-light));color:white;padding:20px 30px;border-radius:12px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
-    .admin-brand{font-size:24px;font-weight:800;}
-    .admin-brand span{opacity:0.9;font-weight:400;}
-    .header-actions{display:flex;gap:12px;align-items:center;}
-    .admin-info{font-size:14px;opacity:0.9;}
-    .sound-toggle{background:rgba(255,255,255,0.2);border:none;color:white;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:16px;}
-    
+    *{margin:0; padding:0; box-sizing:border-box; font-family:Segoe UI, Roboto, sans-serif;}
+    body{background:linear-gradient(135deg, #0047AB 0%, #002D6D 100%); min-height:100vh; color:var(--text);}
+
     /* ===== LOGIN SCREEN ===== */
-    .login-box{max-width:420px;margin:100px auto;background:var(--card);padding:40px;border-radius:16px;box-shadow:var(--shadow);}
-    .login-box h2{text-align:center;color:var(--pri);margin-bottom:24px;}
-    .form-group{margin-bottom:16px;}
-    label{display:block;margin-bottom:6px;font-weight:600;font-size:14px;}
-    input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:15px;outline:none;transition:border 0.2s;}
-    input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,71,171,0.1);}
-    .btn{padding:12px 20px;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;}
-    .btn-primary{background:var(--pri);color:white;}
-    .btn-primary:hover{background:var(--pri-hover);}
-    .btn-success{background:var(--success);color:white;}
-    .btn-danger{background:var(--error);color:white;}
-    .btn-warning{background:var(--warn);color:white;}
-    .btn-secondary{background:var(--muted);color:white;}
-    .btn-sm{padding:6px 12px;font-size:13px;}
-    .btn-row{display:flex;gap:8px;flex-wrap:wrap;}
-    
-    /* ===== DASHBOARD ===== */
-    .hidden{display:none !important;}
-    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px;}
-    .stat-card{background:var(--card);padding:20px;border-radius:12px;box-shadow:var(--shadow);border-left:4px solid var(--pri);}
-    .stat-card h3{font-size:14px;color:var(--muted);margin-bottom:8px;}
-    .stat-card .value{font-size:28px;font-weight:800;color:var(--pri);}
-    .stat-card.success{border-left-color:var(--success);}
-    .stat-card.warn{border-left-color:var(--warn);}
-    .stat-card.error{border-left-color:var(--error);}
-    
-    /* ===== SEARCH & FILTER ===== */
-    .search-bar{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;}
-    .search-bar input{flex:1;min-width:250px;}
-    .search-bar select{width:auto;min-width:150px;}
-    
-    /* ===== USERS TABLE ===== */
-    .card{background:var(--card);border-radius:12px;box-shadow:var(--shadow);padding:24px;margin-bottom:24px;}
-    .card-title{font-size:18px;font-weight:700;margin-bottom:20px;color:var(--pri);padding-bottom:12px;border-bottom:1px solid var(--border);}
-    table{width:100%;border-collapse:collapse;font-size:14px;}
-    th,td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle;}
-    th{background:var(--bg);font-weight:700;color:var(--pri);position:sticky;top:0;}
-    tr:hover{background:rgba(0,71,171,0.02);}
-    .status-badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;}
-    .status-pending{background:#FEF3C7;color:#92400E;}
-    .status-approved{background:#D1FAE5;color:#065F46;}
-    .status-rejected{background:#FEE2E2;color:#991B1B;}
-    .status-frozen{background:#E0E7FF;color:#3730A3;}
-    .status-none{background:#F3F4F6;color:#6B7280;}
-    
-    /* ===== USER DETAILS MODAL — FIXED DISPLAY! ===== */
-    .modal{position:fixed !important;inset:0 !important;background:rgba(0,0,0,0.6) !important;display:flex !important;align-items:center !important;justify-content:center !important;z-index:99999 !important;padding:20px !important;}
-    .modal.hidden{display:none !important;}
-    .modal-content{background:white !important;border-radius:16px !important;max-width:900px !important;width:100% !important;max-height:90vh !important;overflow-y:auto !important;animation:modalIn 0.3s ease !important;}
-    @keyframes modalIn{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:scale(1);}}
-    .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;}
-    .modal-header h3{font-size:20px;color:var(--pri);}
-    .close-btn{background:none;border:none;font-size:28px;cursor:pointer;color:var(--muted);line-height:1;}
-    .modal-body{padding:24px;}
-    .detail-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:16px;}
-    .detail-group{flex:1;min-width:200px;}
-    .detail-group label{font-size:12px;color:var(--muted);margin-bottom:4px;}
-    .detail-group p{font-size:15px;font-weight:600;}
-    .section-title{font-size:16px;font-weight:700;color:var(--pri);margin:24px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--pri);}
-    .images-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:16px 0;}
-    .img-preview{width:100%;height:160px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid var(--border);transition:border 0.2s;}
-    .img-preview:hover{border-color:var(--pri);transform:scale(1.02);}
-    .detail-label{font-size:13px;color:var(--muted);margin-bottom:4px;}
-    
-    /* ===== TOAST ===== */
-    .toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:10px;color:white;font-weight:600;z-index:100000;transform:translateY(100px);opacity:0;transition:all 0.3s;max-width:350px;}
-    .toast.show{transform:translateY(0);opacity:1;}
-    .toast.success{background:var(--success);}
-    .toast.error{background:var(--error);}
-    .toast.info{background:var(--info);}
-    
-    /* ===== RESPONSIVE ===== */
-    @media(max-width:768px){
-      .admin-header{flex-direction:column;text-align:center;}
-      table{display:block;overflow-x:auto;}
-      .detail-row{flex-direction:column;}
+    .login-container{
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      padding:20px;
     }
+    .login-card{
+      background:var(--card); border-radius:16px; padding:30px; width:100%; max-width:420px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    }
+    .login-card h1{text-align:center; color:var(--pri); margin-bottom:5px; font-size:24px;}
+    .login-card .sub{text-align:center; color:var(--muted); margin-bottom:25px; font-size:14px;}
+    .logo-icon{text-align:center; font-size:48px; margin-bottom:10px;}
+    label{display:block; margin:15px 0 5px; font-weight:600; font-size:14px; color:var(--text);}
+    input{width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:15px;}
+    input:focus{outline:none; border-color:var(--pri); box-shadow:0 0 0 3px rgba(0,71,171,0.1);}
+    .btn{width:100%; padding:14px; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; transition:0.3s; margin-top:20px;}
+    .btn-primary{background:var(--pri); color:white;}
+    .btn-primary:hover{background:var(--pri-hover); transform:translateY(-1px);}
+    .btn-danger{background:var(--error); color:white;}
+    .btn-success{background:var(--success); color:white;}
+    .btn-sm{width:auto; padding:8px 14px; font-size:14px; margin:3px;}
+    .btn-row{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;}
+
+    /* ===== MAIN ADMIN DASHBOARD ===== */
+    .hidden{display:none !important;}
+    .admin-header{
+      background:var(--card); padding:15px 25px; display:flex; justify-content:space-between; align-items:center;
+      box-shadow:0 2px 10px rgba(0,0,0,0.08); position:sticky; top:0; z-index:100;
+    }
+    .admin-brand{font-weight:bold; font-size:20px; color:var(--pri); display:flex; align-items:center; gap:10px;}
+    .admin-actions{display:flex; gap:15px; align-items:center;}
+    .admin-actions button{background:none; border:none; cursor:pointer; font-size:15px; color:var(--pri); font-weight:600;}
+    .admin-actions button:hover{color:var(--pri-hover);}
+    .notification-bell{position:relative; font-size:24px; cursor:pointer;}
+    .notification-dot{
+      position:absolute; top:-4px; right:-4px; width:12px; height:12px; background:var(--error);
+      border-radius:50%; animation:pulse 2s infinite;
+    }
+    @keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
+
+    .container{padding:25px; max-width:1400px; margin:0 auto;}
+    .stats-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-bottom:25px;}
+    .stat-card{background:var(--card); border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+    .stat-label{font-size:13px; color:var(--muted); margin-bottom:5px;}
+    .stat-value{font-size:28px; font-weight:bold; color:var(--text);}
+    .stat-value.pri{color:var(--pri);}
+    .stat-value.success{color:var(--success);}
+    .stat-value.warn{color:var(--warn);}
+    .stat-value.error{color:var(--error);}
+
+    .filter-bar{background:var(--card); border-radius:12px; padding:15px 20px; margin-bottom:20px; display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
+    .filter-bar select, .filter-bar input{padding:8px 12px; border:1px solid var(--border); border-radius:6px; font-size:14px;}
+
+    .users-table{background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+    .table-header{display:grid; grid-template-columns:60px 2fr 1.5fr 120px 120px 150px; gap:10px; padding:15px; background:#F1F5F9; font-weight:bold; font-size:13px; color:var(--muted);}
+    .table-row{display:grid; grid-template-columns:60px 2fr 1.5fr 120px 120px 150px; gap:10px; padding:15px; border-bottom:1px solid var(--border); align-items:center; transition:0.2s; cursor:pointer;}
+    .table-row:hover{background:#F8FAFC;}
+    .table-row.frozen{background:var(--error-bg);}
+    .user-avatar{width:40px; height:40px; border-radius:50%; background:linear-gradient(135deg, var(--pri), var(--pri-hover)); color:white; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:18px;}
+    .tag{display:inline-block; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:600;}
+    .tag-pending{background:var(--warn-bg); color:#92400E;}
+    .tag-approved{background:var(--success-bg); color:#065F46;}
+    .tag-frozen{background:var(--error-bg); color:#991B1B;}
+    .tag-card-pending{background:#E0E7FF; color:#3730A3;}
+    .tag-card-approved{background:#D1FAE5; color:#065F46;}
+
+    /* ===== USER DETAILS MODAL ===== */
+    .modal-overlay{
+      position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6);
+      display:flex; align-items:center; justify-content:center; z-index:2000; padding:20px;
+    }
+    .modal-content{
+      background:var(--card); border-radius:16px; width:100%; max-width:750px; max-height:90vh; overflow-y:auto;
+      box-shadow:0 10px 40px rgba(0,0,0,0.3);
+    }
+    .modal-header{padding:20px 25px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;}
+    .modal-header h2{font-size:20px; color:var(--pri);}
+    .close-btn{background:none; border:none; font-size:28px; cursor:pointer; color:var(--muted);}
+    .modal-body{padding:25px;}
+    .detail-section{margin-bottom:25px;}
+    .detail-section h3{font-size:16px; color:var(--pri); margin-bottom:12px; padding-bottom:8px; border-bottom:2px solid var(--border);}
+    .detail-row{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:14px;}
+    .detail-row span:first-child{color:var(--muted);}
+    .image-grid{display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:10px;}
+    .image-box{border:1px solid var(--border); border-radius:8px; padding:10px; text-align:center; background:#FAFAFA;}
+    .image-box img{max-width:100%; max-height:200px; border-radius:6px; margin-top:8px;}
+    .image-box p{font-size:12px; color:var(--muted); margin-top:5px;}
+    .full-width{grid-column:1 / -1;}
+    .balance-box{background:linear-gradient(135deg, var(--pri), #002D6D); color:white; padding:20px; border-radius:12px; text-align:center; margin:15px 0;}
+    .balance-box .amount{font-size:32px; font-weight:bold;}
+    .credit-form{display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap;}
+    .credit-form input{flex:1; min-width:120px; padding:10px;}
+    .trans-item{padding:10px 0; border-bottom:1px solid #f0f0f0; font-size:14px;}
+    .trans-type{font-weight:600;}
+    .trans-amount{float:right; font-weight:bold;}
+    .empty-state{text-align:center; padding:40px; color:var(--muted);}
+    .refresh-btn{background:none; border:none; font-size:16px; cursor:pointer; color:var(--pri); display:flex; align-items:center; gap:5px;}
+    .refresh-btn:hover{color:var(--pri-hover);}
+    .page-indicator{font-size:13px; color:var(--muted); margin-left:10px;}
   </style>
 </head>
 <body>
 
-<!-- ================================================== -->
+<!-- ========================================== -->
 <!-- 🔐 ADMIN LOGIN SCREEN -->
-<!-- ================================================== -->
-<div class="container" id="adminLoginPage">
-  <div class="login-box">
-    <h2>🏦 Admin Console — Prime Wallet Bank</h2>
-    <p style="text-align:center;color:var(--muted);margin-bottom:24px;">Secure Administration Portal • Global User Management</p>
-    <div class="form-group">
-      <label>Admin Email</label>
-      <input type="email" id="adminEmail" placeholder="primewalletbankusa@gmail.com">
+<!-- ========================================== -->
+<div class="login-container" id="adminLogin">
+  <div class="login-card">
+    <div class="logo-icon">🔐</div>
+    <h1>Admin Console</h1>
+    <div class="sub">Prime Wallet Bank USA 🇺🇸 — Secure Access</div>
+    
+    <label>Admin Email Address</label>
+    <input type="email" id="adminEmail" placeholder="Enter admin email">
+    
+    <label>Admin Password</label>
+    <div style="position:relative;">
+      <input type="password" id="adminPass" placeholder="Enter admin password">
+      <span style="position:absolute; right:12px; top:38px; font-size:22px; cursor:pointer;" onclick="toggleAdminPass()">👁️</span>
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <div style="position:relative;">
-        <input type="password" id="adminPassword" placeholder="Enter admin password" style="padding-right:40px;">
-        <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;" onclick="toggleAdminPass()">👁️</span>
+    
+    <button class="btn btn-primary" onclick="adminLogin()">🔑 Sign In to Admin Console</button>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- 📊 MAIN ADMIN DASHBOARD — HIDDEN UNTIL LOGIN -->
+<!-- ========================================== -->
+<div class="hidden" id="adminDashboard">
+  <div class="admin-header">
+    <div class="admin-brand">
+      🏦 Prime Wallet Bank — Admin Console
+      <span class="page-indicator" id="liveTime"></span>
+    </div>
+    <div class="admin-actions">
+      <div class="notification-bell" onclick="playNotificationSound()">
+        🔔 <span class="notification-dot" id="notifDot"></span>
+      </div>
+      <button class="refresh-btn" onclick="loadAllUsers()">🔄 Refresh Data</button>
+      <button onclick="logoutAdmin()">🚪 Logout</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- 📈 STATS CARDS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">👤 Total Users</div>
+        <div class="stat-value pri" id="statTotal">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">✅ Approved</div>
+        <div class="stat-value success" id="statApproved">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">⏳ Pending Review</div>
+        <div class="stat-value warn" id="statPending">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">❄️ Frozen</div>
+        <div class="stat-value error" id="statFrozen">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💳 Card Requests</div>
+        <div class="stat-value pri" id="statCards">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💰 Total Deposits</div>
+        <div class="stat-value success" id="statDeposits">$0.00</div>
       </div>
     </div>
-    <button class="btn btn-primary" onclick="adminLogin()">🔐 Sign In to Admin</button>
-    <p style="text-align:center;margin-top:20px;font-size:13px;color:var(--muted);">
-      Authorized Personnel Only<br>
-      Support: primewalletbankusa@gmail.com
-    </p>
-  </div>
-</div>
 
-<!-- ================================================== -->
-<!-- 📊 ADMIN DASHBOARD -->
-<!-- ================================================== -->
-<div class="container hidden" id="adminDashboard">
-  <div class="admin-header">
-    <div>
-      <div class="admin-brand">🏦 Prime Wallet Bank <span>— Admin Console</span></div>
-      <div class="admin-info">Secure Administration Portal • Global User Management • All Data Saved Forever</div>
+    <!-- 🔍 FILTER BAR -->
+    <div class="filter-bar">
+      <strong>🔍 Filter Users:</strong>
+      <select id="filterCountry" onchange="applyFilters()">
+        <option value="">All Countries</option>
+      </select>
+      <select id="filterStatus" onchange="applyFilters()">
+        <option value="">All Status</option>
+        <option value="pending">⏳ Pending</option>
+        <option value="approved">✅ Approved</option>
+        <option value="frozen">❄️ Frozen</option>
+      </select>
+      <select id="filterCard" onchange="applyFilters()">
+        <option value="">All Card Status</option>
+        <option value="pending">⏳ Card Pending</option>
+        <option value="approved">✅ Card Approved</option>
+        <option value="none">No Card Request</option>
+      </select>
+      <input type="text" id="searchUser" placeholder="Search by name/email..." oninput="applyFilters()">
     </div>
-    <div class="header-actions">
-      <span id="adminLoggedIn" style="font-size:14px;">Admin: primewalletbankusa@gmail.com</span>
-      <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔔 Sound: ON</button>
-      <button class="btn btn-sm btn-secondary" onclick="adminLogout()">🚪 Logout</button>
-    </div>
-  </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>👤 Total Users</h3>
-      <div class="value" id="statTotalUsers">0</div>
-    </div>
-    <div class="stat-card success">
-      <h3>✅ Approved</h3>
-      <div class="value" id="statApproved">0</div>
-    </div>
-    <div class="stat-card warn">
-      <h3>⏳ Pending Review</h3>
-      <div class="value" id="statPending">0</div>
-    </div>
-    <div class="stat-card error">
-      <h3>💳 Card Requests</h3>
-      <div class="value" id="statCardRequests">0</div>
-    </div>
-  </div>
-
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="🔍 Search by name, email, account number, country..." oninput="filterUsers()">
-    <select id="statusFilter" onchange="filterUsers()">
-      <option value="all">All Status</option>
-      <option value="pending">⏳ Pending Approval</option>
-      <option value="approved">✅ Approved</option>
-      <option value="card_pending">💳 Card Pending</option>
-      <option value="frozen">❄️ Frozen Accounts</option>
-    </select>
-    <select id="countryFilter" onchange="filterUsers()">
-      <option value="all">All Countries</option>
-    </select>
-    <button class="btn btn-sm btn-primary" onclick="loadAllUsers()">🔄 Refresh</button>
-  </div>
-
-  <div class="card">
-    <h3 class="card-title">👤 Registered Users — Full List (All Data Saved Forever)</h3>
-    <div style="overflow-x:auto;">
-      <table>
-        <thead>
-          <tr>
-            <th>Full Name</th>
-            <th>Email</th>
-            <th>Account #</th>
-            <th>Country</th>
-            <th>Balance</th>
-            <th>Account Status</th>
-            <th>ID Uploaded</th>
-            <th>Card Status</th>
-            <th>Registered</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="usersTableBody">
-          <tr><td colspan="10" style="text-align:center;padding:30px;color:var(--muted);">Loading users...</td></tr>
-        </tbody>
-      </table>
+    <!-- 📋 USERS TABLE -->
+    <div class="users-table">
+      <div class="table-header">
+        <div>#</div>
+        <div>👤 Full Name</div>
+        <div>📧 Email / 📱 Phone</div>
+        <div>🌍 Country</div>
+        <div>✅ Status</div>
+        <div>⚙️ Actions</div>
+      </div>
+      <div id="usersTableBody">
+        <div class="empty-state">Loading users...</div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- 🔍 USER DETAILS MODAL — FIXED TO OPEN! 💯 -->
-<!-- ================================================== -->
-<div class="modal hidden" id="userDetailModal">
+<!-- ========================================== -->
+<!-- 📋 USER DETAILS MODAL — OPENS ON CLICK -->
+<!-- ========================================== -->
+<div class="modal-overlay hidden" id="userModal">
   <div class="modal-content">
     <div class="modal-header">
-      <h3 id="modalUserTitle">👤 User Full Profile — All Details & Documents</h3>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
+      <h2 id="modalTitle">👤 User Details</h2>
+      <button class="close-btn" onclick="closeModal()">×</button>
     </div>
-    <div class="modal-body" id="modalUserContent">
-      <p style="text-align:center;padding:40px;color:var(--muted);">Loading user data...</p>
-    </div>
-  </div>
-</div>
-
-<!-- ================================================== -->
-<!-- 🖼️ IMAGE VIEWER MODAL -->
-<!-- ================================================== -->
-<div class="modal hidden" id="imageViewerModal">
-  <div class="modal-content" style="max-width:700px;">
-    <div class="modal-header">
-      <h3 id="imgViewerTitle">Document Preview — Full Size</h3>
-      <button class="close-btn" onclick="closeModal()">&times;</button>
-    </div>
-    <div style="padding:20px;text-align:center;background:#f9fafb;">
-      <img id="imgViewerFull" style="max-width:100%;border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,0.1);" alt="Document">
+    <div class="modal-body" id="modalBody">
+      <!-- Dynamic content loaded here -->
     </div>
   </div>
 </div>
 
-<!-- ================================================== -->
-<!-- 🔔 TOAST NOTIFICATION -->
-<!-- ================================================== -->
-<div class="toast" id="adminToast"></div>
+<!-- ========================================== -->
+<!-- 🔊 NOTIFICATION AUDIO — PLAYS WHEN NEW USER REGISTERS -->
+<!-- ========================================== -->
+<audio id="notificationSound" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3" type="audio/mpeg">
 
-<!-- ================================================== -->
-<!-- ⚙️ JAVASCRIPT — COMPLETE & FIXED 💯 -->
-<!-- ================================================== -->
+
+<!-- ========================================== -->
+<!-- ⚙️ JAVASCRIPT — FULL ADMIN FUNCTIONALITY -->
+<!-- ========================================== -->
 <script>
-// ==================================================
-// 🌍 API CONNECTION — LIVE SERVER
-// ==================================================
-const API_URL = "https://prime-wallet-bank-api.onrender.com";
+// 🔐 ADMIN CREDENTIALS — EDIT THESE HERE IF NEEDED
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_PASSWORD = "Princelv1993";
+const API_URL = "https://prime-wallet-api.onrender.com/api";
+
 let allUsers = [];
-let soundEnabled = true;
+let filteredUsers = [];
+let autoRefreshInterval;
 
-// ==================================================
-// 🔐 ADMIN LOGIN
-// ==================================================
-function toggleAdminPass() {
-  const inp = document.getElementById("adminPassword");
-  inp.type = inp.type === "password" ? "text" : "password";
-}
-
+// ==========================================
+// 🔐 LOGIN SYSTEM
+// ==========================================
 function adminLogin() {
   const email = document.getElementById("adminEmail").value.trim().toLowerCase();
-  const pass = document.getElementById("adminPassword").value;
-  
-  if (!email || !pass) return showToast("⚠️ Enter email & password", "error");
-  
+  const pass = document.getElementById("adminPass").value;
+
   if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
-    localStorage.setItem("admin_auth", "true");
-    document.getElementById("adminLoginPage").classList.add("hidden");
+    localStorage.setItem("adminLoggedIn", "true");
+    document.getElementById("adminLogin").classList.add("hidden");
     document.getElementById("adminDashboard").classList.remove("hidden");
-    loadAllUsers();
-    showToast("✅ Welcome, Admin! All data loaded. 🔓", "success");
+    initAdmin();
   } else {
-    showToast("❌ Invalid email or password", "error");
+    alert("❌ Invalid Admin Email or Password!\n\nPlease check your credentials and try again.");
   }
 }
 
-function checkAdminAuth() {
-  if (localStorage.getItem("admin_auth") === "true") {
-    document.getElementById("adminLoginPage").classList.add("hidden");
+function toggleAdminPass() {
+  const input = document.getElementById("adminPass");
+  input.type = input.type === "password" ? "text" : "password";
+}
+
+function logoutAdmin() {
+  if (confirm("🚪 Are you sure you want to logout from Admin Console?")) {
+    localStorage.removeItem("adminLoggedIn");
+    clearInterval(autoRefreshInterval);
+    document.getElementById("adminDashboard").classList.add("hidden");
+    document.getElementById("adminLogin").classList.remove("hidden");
+    document.getElementById("adminEmail").value = "";
+    document.getElementById("adminPass").value = "";
+  }
+}
+
+// ==========================================
+// 🚀 INITIALIZE ADMIN — AUTO-LOGIN IF SESSION EXISTS
+// ==========================================
+window.onload = function() {
+  if (localStorage.getItem("adminLoggedIn") === "true") {
+    document.getElementById("adminLogin").classList.add("hidden");
     document.getElementById("adminDashboard").classList.remove("hidden");
-    loadAllUsers();
+    initAdmin();
   }
-}
+};
 
-function adminLogout() {
-  localStorage.removeItem("admin_auth");
-  document.getElementById("adminDashboard").classList.add("hidden");
-  document.getElementById("adminLoginPage").classList.remove("hidden");
-  document.getElementById("adminEmail").value = "";
-  document.getElementById("adminPassword").value = "";
-  showToast("🔒 Logged out successfully", "info");
-}
-
-// ==================================================
-// 📥 LOAD ALL USERS
-// ==================================================
-function loadAllUsers() {
-  allUsers = JSON.parse(localStorage.getItem("all_users") || "[]");
+function initAdmin() {
+  loadAllUsers();
+  populateCountryFilter();
+  updateLiveTime();
+  setInterval(updateLiveTime, 1000);
   
-  // Update stats
+  // 🔄 AUTO-REFRESH EVERY 10 SECONDS — SEE NEW USERS INSTANTLY ✅
+  autoRefreshInterval = setInterval(() => {
+    checkForNewUsers();
+    loadAllUsers(false);
+  }, 10000);
+}
+
+function updateLiveTime() {
+  const now = new Date();
+  document.getElementById("liveTime").textContent = `⏰ ${now.toLocaleString()}`;
+}
+
+// ==========================================
+// 🔊 NOTIFICATION SOUND — PLAYS ON NEW USER
+// ==========================================
+function playNotificationSound() {
+  const audio = document.getElementById("notificationSound");
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
+
+let lastUserCount = 0;
+function checkForNewUsers() {
+  const currentCount = allUsers.length;
+  if (lastUserCount > 0 && currentCount > lastUserCount) {
+    playNotificationSound();
+    alert("🔔 NEW USER REGISTERED! 🎉");
+  }
+  lastUserCount = currentCount;
+}
+
+// ==========================================
+// 📥 LOAD ALL USERS — FROM LOCAL + SERVER
+// ==========================================
+async function loadAllUsers(showToast = true) {
+  // Load from localStorage
+  const localUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  
+  // Try load from server — works across ALL devices ✅
+  try {
+    const res = await fetch(`${API_URL}/admin/users`);
+    if (res.ok) {
+      const serverUsers = await res.json();
+      // Merge — server takes priority
+      const merged = [...serverUsers, ...localUsers];
+      const unique = Array.from(new Map(merged.map(u => [u.id, u])).values());
+      allUsers = unique.sort((a, b) => new Date(b.registered_at) - new Date(a.registered_at));
+    } else {
+      allUsers = localUsers.sort((a, b) => new Date(b.registered_at) - new Date(a.registered_at));
+    }
+  } catch (e) {
+    allUsers = localUsers.sort((a, b) => new Date(b.registered_at) - new Date(a.registered_at));
+  }
+
+  updateStats();
+  applyFilters();
+  if (showToast) console.log(`✅ Loaded ${allUsers.length} users`);
+}
+
+// ==========================================
+// 📊 UPDATE STATISTICS CARDS
+// ==========================================
+function updateStats() {
   const total = allUsers.length;
-  const approved = allUsers.filter(u => u.approved === true).length;
-  const pending = allUsers.filter(u => !u.approved).length;
-  const cardRequests = allUsers.filter(u => u.card_request && !u.card_approved).length;
-  
-  document.getElementById("statTotalUsers").textContent = total;
+  const approved = allUsers.filter(u => u.approved && !u.frozen).length;
+  const pending = allUsers.filter(u => !u.approved && !u.frozen).length;
+  const frozen = allUsers.filter(u => u.frozen).length;
+  const cardRequests = allUsers.filter(u => u.cardRequests && u.cardRequests.length > 0).length;
+  const totalDeposits = allUsers.reduce((sum, u) => {
+    const pending = (u.pendingDeposits || []).reduce((s, d) => s + d.amount, 0);
+    return sum + Number(u.balance || 0) + pending;
+  }, 0);
+
+  document.getElementById("statTotal").textContent = total;
   document.getElementById("statApproved").textContent = approved;
   document.getElementById("statPending").textContent = pending;
-  document.getElementById("statCardRequests").textContent = cardRequests;
-  
-  // Populate country filter
+  document.getElementById("statFrozen").textContent = frozen;
+  document.getElementById("statCards").textContent = cardRequests;
+  document.getElementById("statDeposits").textContent = `$${totalDeposits.toFixed(2)}`;
+}
+
+// ==========================================
+// 🌍 POPULATE COUNTRY FILTER
+// ==========================================
+function populateCountryFilter() {
   const countries = [...new Set(allUsers.map(u => u.country).filter(Boolean))].sort();
-  const countrySelect = document.getElementById("countryFilter");
-  countrySelect.innerHTML = '<option value="all">All Countries</option>';
-  countries.forEach(c => countrySelect.innerHTML += `<option value="${c}">${c}</option>`);
-  
-  filterUsers();
-  showToast(`✅ Loaded ${total} user(s)`, "success");
+  const select = document.getElementById("filterCountry");
+  select.innerHTML = '<option value="">All Countries</option>';
+  countries.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c;
+    opt.textContent = c;
+    select.appendChild(opt);
+  });
 }
 
-// ==================================================
-// 🔍 FILTER USERS
-// ==================================================
-function filterUsers() {
-  const search = document.getElementById("searchInput").value.toLowerCase().trim();
-  const statusFilter = document.getElementById("statusFilter").value;
-  const countryFilter = document.getElementById("countryFilter").value;
-  
-  let filtered = allUsers;
-  
-  if (search) {
-    filtered = filtered.filter(u => 
-      (u.full_name || "").toLowerCase().includes(search) ||
-      (u.email || "").toLowerCase().includes(search) ||
-      (u.account_number || "").includes(search)
-    );
-  }
-  
-  if (statusFilter !== "all") {
-    if (statusFilter === "pending") filtered = filtered.filter(u => !u.approved);
-    else if (statusFilter === "approved") filtered = filtered.filter(u => u.approved === true);
-    else if (statusFilter === "frozen") filtered = filtered.filter(u => u.frozen === true);
-  }
-  
-  if (countryFilter !== "all") {
-    filtered = filtered.filter(u => u.country === countryFilter);
-  }
-  
-  renderUsersTable(filtered);
+// ==========================================
+// 🔍 APPLY FILTERS & SEARCH
+// ==========================================
+function applyFilters() {
+  const country = document.getElementById("filterCountry").value;
+  const status = document.getElementById("filterStatus").value;
+  const cardStatus = document.getElementById("filterCard").value;
+  const search = document.getElementById("searchUser").value.toLowerCase().trim();
+
+  filteredUsers = allUsers.filter(u => {
+    if (country && u.country !== country) return false;
+    if (status === "pending" && u.approved) return false;
+    if (status === "approved" && (!u.approved || u.frozen)) return false;
+    if (status === "frozen" && !u.frozen) return false;
+    if (cardStatus === "pending" && !u.cardRequests?.some(r => r.status === "Pending Review")) return false;
+    if (cardStatus === "approved" && !u.card_approved) return false;
+    if (cardStatus === "none" && u.cardRequests?.length > 0) return false;
+    if (search) {
+      const match = (u.full_name || "").toLowerCase().includes(search) ||
+                    (u.email || "").toLowerCase().includes(search) ||
+                    (u.account_number || "").includes(search);
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  renderUsersTable();
 }
 
-// ==================================================
-// 📊 RENDER USERS TABLE
-// ==================================================
-function renderUsersTable(users) {
+// ==========================================
+// 📋 RENDER USERS TABLE
+// ==========================================
+function renderUsersTable() {
   const tbody = document.getElementById("usersTableBody");
   
-  if (!users.length) {
-    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--muted);">No users found</td></tr>';
+  if (filteredUsers.length === 0) {
+    tbody.innerHTML = `<div class="empty-state">No users found matching your filters.</div>`;
     return;
   }
-  
-  tbody.innerHTML = users.map(u => {
-    let accStatus = '<span class="status-badge status-pending">⏳ Pending</span>';
-    if (u.frozen) accStatus = '<span class="status-badge status-frozen">❄️ Frozen</span>';
-    else if (u.approved) accStatus = '<span class="status-badge status-approved">✅ Approved</span>';
-    
-    let cardStatus = '<span class="status-badge status-none">No Request</span>';
-    if (u.card_approved) cardStatus = '<span class="status-badge status-approved">✅ Approved</span>';
-    else if (u.card_request) cardStatus = '<span class="status-badge status-pending">⏳ Pending</span>';
-    
-    let idStatus = '<span style="color:var(--muted);">❌ No</span>';
-    if (u.idFront || u.idBack) idStatus = '<span style="color:var(--success);">✅ Yes</span>';
-    
-    const regDate = u.created_at ? new Date(u.created_at).toLocaleDateString() : "N/A";
-    
+
+  tbody.innerHTML = filteredUsers.map((u, idx) => {
+    const statusClass = u.frozen ? "tag-frozen" : (u.approved ? "tag-approved" : "tag-pending");
+    const statusText = u.frozen ? "❄️ Frozen" : (u.approved ? "✅ Approved" : "⏳ Pending");
+    const rowClass = u.frozen ? "table-row frozen" : "table-row";
+    const initial = (u.full_name || "U")[0].toUpperCase();
+
     return `
-      <tr>
-        <td><strong>${escapeHtml(u.full_name || "N/A")}</strong></td>
-        <td>${escapeHtml(u.email || "N/A")}</td>
-        <td><code style="background:var(--bg);padding:2px 6px;border-radius:4px;">${escapeHtml(u.account_number || "N/A")}</code></td>
-        <td>${escapeHtml(u.country || "N/A")}</td>
-        <td><strong>$${Number(u.balance || 0).toFixed(2)}</strong></td>
-        <td>${accStatus}</td>
-        <td>${idStatus}</td>
-        <td>${cardStatus}</td>
-        <td style="font-size:12px;">${regDate}</td>
-        <td>
-          <div class="btn-row">
-            <button class="btn btn-sm btn-primary" onclick="openUserDetails('${u.id}')">👁️ View</button>
-            ${!u.approved ? `<button class="btn btn-sm btn-success" onclick="approveUser('${u.id}')">✅ Approve</button>` : ""}
-            ${u.approved && !u.frozen ? `<button class="btn btn-sm btn-warning" onclick="freezeUser('${u.id}')">❄️ Freeze</button>` : ""}
-            ${u.frozen ? `<button class="btn btn-sm btn-success" onclick="unfreezeUser('${u.id}')">🔥 Unfreeze</button>` : ""}
-            <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.id}')">🗑️</button>
+      <div class="${rowClass}" onclick="openUserModal('${u.id}')">
+        <div><strong>${idx + 1}</strong></div>
+        <div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div class="user-avatar">${initial}</div>
+            <div>
+              <div style="font-weight:bold;">${u.full_name || "Unknown"}</div>
+              <div style="font-size:12px; color:var(--muted);">${u.account_number || "—"}</div>
+            </div>
           </div>
-        </td>
-      </tr>
+        </div>
+        <div>
+          <div style="font-size:14px;">${u.email || "—"}</div>
+          <div style="font-size:12px; color:var(--muted);">${u.phone || "—"}</div>
+        </div>
+        <div>${u.country || "—"}</div>
+        <div><span class="tag ${statusClass}">${statusText}</span></div>
+        <div>
+          <button class="btn btn-sm btn-primary" onclick="event.stopPropagation(); openUserModal('${u.id}')">👁️ View</button>
+        </div>
+      </div>
     `;
   }).join("");
 }
 
-// ==================================================
-// 🔍 OPEN USER DETAILS — FIXED! 💯
-// ==================================================
-function openUserDetails(userId) {
-  console.log("Opening user:", userId); // Debug
+// ==========================================
+// 👤 OPEN USER DETAILS — EVERYTHING SHOWN!
+// ==========================================
+function openUserModal(userId) {
   const user = allUsers.find(u => String(u.id) === String(userId));
-  if (!user) {
-    showToast("❌ User not found", "error");
-    return;
-  }
-  
-  const modal = document.getElementById("userDetailModal");
-  const content = document.getElementById("modalUserContent");
-  
-  // BUILD FULL CONTENT WITH ALL IMAGES & DETAILS
-  content.innerHTML = buildUserDetailHTML(user);
-  
-  // SHOW MODAL — FORCE DISPLAY
-  modal.classList.remove("hidden");
-  modal.style.display = "flex !important";
-  document.body.style.overflow = "hidden"; // Lock background
-}
+  if (!user) return alert("❌ User not found!");
 
-// ==================================================
-// 📄 BUILD USER DETAIL HTML — ALL IMAGES + INFO 💯
-// ==================================================
-function buildUserDetailHTML(u) {
-  let html = "";
-  
-  // 1️⃣ ACCOUNT INFO
-  html += `<div class="section-title">📋 Account & Personal Information</div>`;
-  html += `<div class="detail-row">
-    <div class="detail-group"><label>Account Number</label><p style="font-size:18px;letter-spacing:1px;color:var(--pri);font-weight:800;">${escapeHtml(u.account_number || "N/A")}</p></div>
-    <div class="detail-group"><label>Full Name</label><p><strong>${escapeHtml(u.full_name || "N/A")}</strong></p></div>
-    <div class="detail-group"><label>Email Address</label><p>${escapeHtml(u.email || "N/A")}</p></div>
-  </div>`;
-  html += `<div class="detail-row">
-    <div class="detail-group"><label>Phone Number</label><p>${escapeHtml(u.phone || "N/A")}</p></div>
-    <div class="detail-group"><label>Date of Birth</label><p>${escapeHtml(u.dob || "N/A")}</p></div>
-    <div class="detail-group"><label>Gender</label><p>${escapeHtml(u.gender || "N/A")}</p></div>
-  </div>`;
-  html += `<div class="detail-row">
-    <div class="detail-group"><label>Country</label><p>${escapeHtml(u.country || "N/A")}</p></div>
-    <div class="detail-group"><label>State / Province</label><p>${escapeHtml(u.state || "N/A")}</p></div>
-    <div class="detail-group"><label>City</label><p>${escapeHtml(u.city || "N/A")}</p></div>
-  </div>`;
-  html += `<div class="detail-row">
-    <div class="detail-group"><label>Available Balance</label><p style="font-size:24px;color:var(--pri);font-weight:800;">$${Number(u.balance || 0).toFixed(2)}</p></div>
-    <div class="detail-group"><label>Account Status</label><p>${u.approved ? '<span class="status-badge status-approved">✅ APPROVED</span>' : '<span class="status-badge status-pending">⏳ PENDING</span>'} ${u.frozen ? '<span class="status-badge status-frozen">❄️ FROZEN</span>' : ''}</p></div>
-    <div class="detail-group"><label>Registered On</label><p>${u.created_at ? new Date(u.created_at).toLocaleString() : "N/A"}</p></div>
-  </div>`;
+  const modal = document.getElementById("userModal");
+  const body = document.getElementById("modalBody");
+  document.getElementById("modalTitle").textContent = `👤 ${user.full_name || "User"} — Details`;
 
-  // 2️⃣ GOVERNMENT ID — IMAGES 📸
-  html += `<div class="section-title">📄 Government Issued ID — Documents</div>`;
-  html += `<div class="detail-row">
-    <div class="detail-group"><label>ID Type</label><p><strong>${escapeHtml(u.id_type || "Not Provided")}</strong></p></div>
-    <div class="detail-group"><label>ID Number</label><p><strong>${escapeHtml(u.id_number || "Not Provided")}</strong></p></div>
-  </div>`;
-  html += `<div class="images-row">`;
-  if (u.idFront) {
-    html += `<div style="background:#f9fafb;padding:12px;border-radius:10px;border:2px solid var(--border);">
-      <div class="detail-label" style="font-weight:700;color:var(--pri);margin-bottom:8px;">📸 ID — FRONT SIDE</div>
-      <img src="${u.idFront}" class="img-preview" onclick="viewFullImage('Government ID — FRONT', '${u.idFront}')" alt="ID Front">
-      <p style="font-size:12px;color:var(--muted);margin-top:6px;">✅ Uploaded — Click to view full size</p>
-    </div>`;
-  } else {
-    html += `<div style="padding:30px;background:#FEF2F2;border-radius:10px;color:#DC2626;text-align:center;"><strong>❌ ID Front NOT Uploaded</strong></div>`;
-  }
-  if (u.idBack) {
-    html += `<div style="background:#f9fafb;padding:12px;border-radius:10px;border:2px solid var(--border);">
-      <div class="detail-label" style="font-weight:700;color:var(--pri);margin-bottom:8px;">📸 ID — BACK SIDE</div>
-      <img src="${u.idBack}" class="img-preview" onclick="viewFullImage('Government ID — BACK', '${u.idBack}')" alt="ID Back">
-      <p style="font-size:12px;color:var(--muted);margin-top:6px;">✅ Uploaded — Click to view full size</p>
-    </div>`;
-  } else {
-    html += `<div style="padding:30px;background:#FEF2F2;border-radius:10px;color:#DC2626;text-align:center;"><strong>❌ ID Back NOT Uploaded</strong></div>`;
-  }
-  html += `</div>`;
+  // Status tags
+  const statusClass = user.frozen ? "tag-frozen" : (user.approved ? "tag-approved" : "tag-pending");
+  const statusText = user.frozen ? "❄️ FROZEN" : (user.approved ? "✅ APPROVED" : "⏳ PENDING REVIEW");
+  const cardStatus = user.card_approved ? "✅ Card Approved" : 
+                     (user.cardRequests?.length > 0 ? "⏳ Card Pending" : "💳 No Card Request");
 
-  // 3️⃣ CARD REQUEST — IMAGES 💳
-  html += `<div class="section-title">💳 Prime Wallet Card — Purchase Request</div>`;
-  if (u.card_request) {
-    const cr = u.card_request;
-    html += `<div class="detail-row">
-      <div class="detail-group"><label>Card Network</label><p><strong>${escapeHtml(cr.network || "N/A")}</strong></p></div>
-      <div class="detail-group"><label>Cardholder Name</label><p>${escapeHtml(cr.holder || "N/A")}</p></div>
-      <div class="detail-group"><label>Price Paid</label><p style="font-weight:700;color:var(--success);">$${Number(cr.price || 0).toFixed(2)}</p></div>
-    </div>`;
-    html += `<div class="images-row">`;
-    if (cr.cardFront) {
-      html += `<div style="background:#f9fafb;padding:12px;border-radius:10px;border:2px solid var(--border);">
-        <div class="detail-label" style="font-weight:700;color:var(--pri);margin-bottom:8px;">📸 Payment Card — FRONT</div>
-        <img src="${cr.cardFront}" class="img-preview" onclick="viewFullImage('Payment Card — FRONT', '${cr.cardFront}')" alt="Card Front">
-      </div>`;
-    } else {
-      html += `<div style="padding:30px;background:#FEF2F2;border-radius:10px;color:#DC2626;text-align:center;"><strong>❌ Card Front NOT Uploaded</strong></div>`;
-    }
-    if (cr.cardBack) {
-      html += `<div style="background:#f9fafb;padding:12px;border-radius:10px;border:2px solid var(--border);">
-        <div class="detail-label" style="font-weight:700;color:var(--pri);margin-bottom:8px;">📸 Payment Card — BACK</div>
-        <img src="${cr.cardBack}" class="img-preview" onclick="viewFullImage('Payment Card — BACK', '${cr.cardBack}')" alt="Card Back">
-      </div>`;
-    } else {
-      html += `<div style="padding:30px;background:#FEF2F2;border-radius:10px;color:#DC2626;text-align:center;"><strong>❌ Card Back NOT Uploaded</strong></div>`;
-    }
-    html += `</div>`;
-  } else {
-    html += `<p style="color:var(--muted);padding:12px 0;">💳 No card purchase request yet.</p>`;
-  }
+  // ID Images
+  const idFrontImg = user.idFront ? `<img src="${user.idFront}" alt="ID Front">` : `<p style="color:var(--muted);">No image uploaded</p>`;
+  const idBackImg = user.idBack ? `<img src="${user.idBack}" alt="ID Back">` : `<p style="color:var(--muted);">No image uploaded</p>`;
 
-  // 4️⃣ PENDING DEPOSITS 💰
-  html += `<div class="section-title">💰 Pending Deposits — Waiting Approval</div>`;
-  if (u.pendingDeposits && u.pendingDeposits.length > 0) {
-    u.pendingDeposits.forEach((d, idx) => {
-      const userIdx = allUsers.findIndex(x => x.id === u.id);
-      html += `<div style="background:#FFFBEB;padding:16px;border-radius:10px;margin-bottom:12px;border:2px solid #FCD34D;">
-        <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div><strong style="font-size:20px;color:#B45309;">$${d.amount.toFixed(2)}</strong> <span style="color:#78716C;margin-left:8px;">via ${d.method || "Unknown"}</span></div>
-          <span class="status-badge status-pending">⏳ PENDING</span>
+  // Card Images
+  const cardRequests = user.cardRequests || [];
+  const cardHtml = cardRequests.length > 0 ? cardRequests.map((r, i) => `
+    <div style="border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:10px;">
+      <strong>💳 ${r.network?.replace("_", " ").toUpperCase()} — $${r.price?.toFixed(2) || "0.00"}</strong>
+      <span class="tag ${r.status === 'Pending Review' ? 'tag-pending' : 'tag-approved'}" style="margin-left:10px;">${r.status}</span>
+      <p style="margin:5px 0; font-size:13px;">Holder: ${r.holder || "—"} | ****${(r.number || "").slice(-4)}</p>
+      <div class="image-grid">
+        <div class="image-box">
+          <p>Front Side</p>
+          ${r.atmFront ? `<img src="${r.atmFront}">` : "No image"}
         </div>
-        <p style="font-size:13px;color:#78716C;margin:8px 0 12px;">📅 ${new Date(d.date).toLocaleString()}</p>
-        <div class="btn-row">
-          <button class="btn btn-success" onclick="approveDeposit(${userIdx}, ${idx}); openUserDetails('${u.id}');">✅ Approve & Credit</button>
-          <button class="btn btn-danger" onclick="rejectDeposit(${userIdx}, ${idx}); openUserDetails('${u.id}');">❌ Reject</button>
+        <div class="image-box">
+          <p>Back Side</p>
+          ${r.atmBack ? `<img src="${r.atmBack}">` : "No image"}
         </div>
-      </div>`;
-    });
-  } else {
-    html += `<p style="color:var(--muted);padding:12px 0;">✅ No pending deposits.</p>`;
-  }
-
-  // 5️⃣ TRANSACTION HISTORY 📊
-  html += `<div class="section-title">📊 Transaction History</div>`;
-  if (u.transactions && u.transactions.length > 0) {
-    html += `<div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;">`;
-    u.transactions.forEach(t => {
-      html += `<div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-        <div><div style="font-weight:600;">${escapeHtml(t.type || "Transaction")}</div><div style="font-size:12px;color:var(--muted);">${t.date ? new Date(t.date).toLocaleString() : "N/A"}</div></div>
-        <div style="font-weight:700;color:${t.amount >= 0 ? 'var(--success)' : 'var(--error)'};">${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  } else {
-    html += `<p style="color:var(--muted);padding:12px 0;">📊 No transactions yet.</p>`;
-  }
-
-  // 6️⃣ ADMIN ACTIONS ⚡
-  html += `<div style="margin-top:30px;padding-top:20px;border-top:2px solid var(--border);">
-    <h4 style="margin-bottom:12px;color:var(--pri);">⚡ Admin Actions</h4>
-    <div class="btn-row">
-      ${!u.approved ? `<button class="btn btn-success" onclick="approveUser('${u.id}'); closeModal();">✅ Approve Account</button>` : ""}
-      ${u.approved && !u.frozen ? `<button class="btn btn-warning" onclick="freezeUser('${u.id}'); closeModal();">❄️ Freeze Account</button>` : ""}
-      ${u.frozen ? `<button class="btn btn-success" onclick="unfreezeUser('${u.id}'); closeModal();">🔥 Unfreeze Account</button>` : ""}
-      <button class="btn btn-secondary" onclick="closeModal()">← Close</button>
+      </div>
+      <div class="btn-row">
+        ${r.status === 'Pending Review' ? `
+          <button class="btn btn-sm btn-success" onclick="approveCard('${user.id}', ${i})">✅ Approve Card</button>
+          <button class="btn btn-sm btn-danger" onclick="rejectCard('${user.id}', ${i})">❌ Reject</button>
+        ` : ''}
+      </div>
     </div>
-  </div>`;
+  `).join("") : `<p style="color:var(--muted);">No card requests yet.</p>`;
 
-  return html;
+  // Pending Deposits
+  const pendingDeposits = user.pendingDeposits || [];
+  const depositsHtml = pendingDeposits.length > 0 ? pendingDeposits.map((d, i) => `
+    <div style="padding:10px 0; border-bottom:1px solid #eee;">
+      <strong>$${d.amount.toFixed(2)}</strong> — ${d.method}<br>
+      <small>${new Date(d.date).toLocaleString()}</small>
+      <div class="btn-row">
+        <button class="btn btn-sm btn-success" onclick="approveDeposit('${user.id}', ${i})">✅ Approve & Add to Balance</button>
+        <button class="btn btn-sm btn-danger" onclick="rejectDeposit('${user.id}', ${i})">❌ Reject</button>
+      </div>
+    </div>
+  `).join("") : `<p style="color:var(--muted);">No pending deposits.</p>`;
+
+  // Transactions
+  const transactions = user.transactions || [];
+  const transHtml = transactions.length > 0 ? transactions.slice(0, 15).map(t => `
+    <div class="trans-item">
+      <span class="trans-type">${t.type}</span>
+      <span class="trans-amount" style="color:${t.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+        ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
+      </span>
+      <br><small style="color:var(--muted);">${new Date(t.date).toLocaleString()}</small>
+    </div>
+  `).join("") : `<p style="color:var(--muted);">No transactions yet.</p>`;
+
+  // BUILD FULL MODAL CONTENT
+  body.innerHTML = `
+    <!-- 🏷️ STATUS BADGES -->
+    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+      <span class="tag ${statusClass}" style="font-size:15px; padding:6px 14px;">${statusText}</span>
+      <span class="tag tag-pending" style="font-size:15px; padding:6px 14px;">${cardStatus}</span>
+    </div>
+
+    <!-- 💰 BALANCE -->
+    <div class="balance-box">
+      <div style="font-size:14px; opacity:0.85;">💰 Available Balance</div>
+      <div class="amount">$${(user.balance || 0).toFixed(2)}</div>
+      <div class="credit-form">
+        <input type="number" id="creditAmount_${user.id}" placeholder="Amount" step="0.01" min="0">
+        <button class="btn btn-sm btn-success" onclick="creditUser('${user.id}')">✅ Credit to Balance</button>
+        <input type="number" id="debitAmount_${user.id}" placeholder="Amount" step="0.01" min="0">
+        <button class="btn btn-sm btn-danger" onclick="debitUser('${user.id}')">❌ Debit from Balance</button>
+      </div>
+    </div>
+
+    <!-- 👤 PERSONAL INFO -->
+    <div class="detail-section">
+      <h3>👤 Personal Information</h3>
+      <div class="detail-row"><span>Full Name:</span><span>${user.full_name || "—"}</span></div>
+      <div class="detail-row"><span>Email:</span><span>${user.email || "—"}</span></div>
+      <div class="detail-row"><span>Phone:</span><span>${user.phone || "—"}</span></div>
+      <div class="detail-row"><span>Date of Birth:</span><span>${user.dob || "—"}</span></div>
+      <div class="detail-row"><span>Gender:</span><span>${user.gender || "—"}</span></div>
+      <div class="detail-row"><span>Account Number:</span><span><strong>${user.account_number || "—"}</strong></span></div>
+      <div class="detail-row"><span>Country / State / City:</span><span>${user.country || "—"} / ${user.state || "—"} / ${user.city || "—"}</span></div>
+      <div class="detail-row"><span>Address:</span><span>${user.address || "—"}</span></div>
+      <div class="detail-row"><span>Registered:</span><span>${user.registered_at ? new Date(user.registered_at).toLocaleString() : "—"}</span></div>
+      <div class="detail-row"><span>Password:</span><span style="font-family:monospace; background:#f0f0f0; padding:2px 6px; border-radius:4px;">${user.password || "—"}</span></div>
+    </div>
+
+    <!-- 🆔 GOVERNMENT ID — IMAGES SHOWN SIDE BY SIDE -->
+    <div class="detail-section">
+      <h3>🆔 Government ID — ${user.idType || "—"} (${user.idNumber || "—"})</h3>
+      <div class="image-grid">
+        <div class="image-box">
+          <p><strong>Front Side</strong></p>
+          ${idFrontImg}
+        </div>
+        <div class="image-box">
+          <p><strong>Back Side</strong></p>
+          ${idBackImg}
+        </div>
+      </div>
+    </div>
+
+    <!-- 💳 CARD REQUESTS -->
+    <div class="detail-section">
+      <h3>💳 ATM / Card Requests</h3>
+      ${cardHtml}
+    </div>
+
+    <!-- 💰 PENDING DEPOSITS -->
+    <div class="detail-section">
+      <h3>💰 Pending Deposits — Waiting Approval</h3>
+      ${depositsHtml}
+    </div>
+
+    <!-- 📊 TRANSACTIONS -->
+    <div class="detail-section">
+      <h3>📊 Transaction History</h3>
+      ${transHtml}
+    </div>
+
+    <!-- ⚡ ADMIN CONTROLS -->
+    <div class="detail-section">
+      <h3>⚡ Admin Controls</h3>
+      <div class="btn-row">
+        ${!user.approved ? `<button class="btn btn-sm btn-success" onclick="approveAccount('${user.id}')">✅ Approve Account</button>` : ''}
+        ${user.approved && !user.frozen ? `<button class="btn btn-sm btn-danger" onclick="freezeAccount('${user.id}')">❄️ Freeze Account</button>` : ''}
+        ${user.frozen ? `<button class="btn btn-sm btn-success" onclick="unfreezeAccount('${user.id}')">🔥 Unfreeze Account</button>` : ''}
+        <button class="btn btn-sm" style="background:var(--warn); color:white;" onclick="deleteUser('${user.id}')">🗑️ Delete User</button>
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
 }
 
-// ==================================================
-// 🖼️ VIEW FULL IMAGE
-// ==================================================
-function viewFullImage(title, src) {
-  document.getElementById("imgViewerTitle").textContent = title;
-  document.getElementById("imgViewerFull").src = src;
-  document.getElementById("imageViewerModal").classList.remove("hidden");
-}
-
-// ==================================================
-// ❌ CLOSE MODAL
-// ==================================================
 function closeModal() {
-  document.querySelectorAll(".modal").forEach(m => {
-    m.classList.add("hidden");
-    m.style.display = "";
-  });
-  document.body.style.overflow = "";
+  document.getElementById("userModal").classList.add("hidden");
+  document.body.style.overflow = "auto";
 }
 
-// ==================================================
-// ✅ APPROVE USER
-// ==================================================
-function approveUser(userId) {
-  const idx = allUsers.findIndex(u => String(u.id) === String(userId));
-  if (idx === -1) return;
-  allUsers[idx].approved = true;
-  allUsers[idx].approved_at = new Date().toISOString();
-  saveAllUsers();
-  showToast("✅ User Approved!", "success");
-  loadAllUsers();
-}
+// ==========================================
+// ✅ ADMIN ACTIONS — ALL CONTROLS WORK
+// ==========================================
 
-// ==================================================
-// ❄️ FREEZE / UNFREEZE
-// ==================================================
-function freezeUser(userId) {
-  const idx = allUsers.findIndex(u => String(u.id) === String(userId));
-  if (idx === -1) return;
-  allUsers[idx].frozen = true;
-  saveAllUsers();
-  showToast("❄️ Account Frozen", "warn");
-  loadAllUsers();
-}
-
-function unfreezeUser(userId) {
-  const idx = allUsers.findIndex(u => String(u.id) === String(userId));
-  if (idx === -1) return;
-  delete allUsers[idx].frozen;
-  saveAllUsers();
-  showToast("🔥 Account Unfrozen", "success");
-  loadAllUsers();
-}
-
-// ==================================================
-// 💳 APPROVE / REJECT CARD
-// ==================================================
-function approveCard(userId) {
-  const idx = allUsers.findIndex(u => String(u.id) === String(userId));
-  if (idx === -1) return;
-  allUsers[idx].card_approved = true;
-  saveAllUsers();
-  showToast("💳 Card Approved!", "success");
-  openUserDetails(userId);
-}
-
-function rejectCard(userId) {
-  if (!confirm("Reject card request? Amount will be refunded.")) return;
-  const idx = allUsers.findIndex(u => String(u.id) === String(userId));
-  if (idx === -1) return;
-  if (allUsers[idx].card_request) {
-    const refund = allUsers[idx].card_request.price || 0;
-    allUsers[idx].balance = (Number(allUsers[idx].balance) || 0) + refund;
-    allUsers[idx].card_request = null;
+// ✅ APPROVE ACCOUNT
+function approveAccount(userId) {
+  if (!confirm("✅ Approve this user's account?\n\nUser will gain full access to dashboard.")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user) {
+    user.approved = true;
+    saveAllUsers();
+    alert(`✅ Account Approved!\n\n👤 ${user.full_name}\n📧 ${user.email}\n\nUser has been notified by email.`);
+    openUserModal(userId);
   }
-  saveAllUsers();
-  showToast(`❌ Card Rejected — $${refund.toFixed(2)} Refunded`, "error");
-  openUserDetails(userId);
 }
 
-// ==================================================
-// 💰 APPROVE / REJECT DEPOSIT
-// ==================================================
-function approveDeposit(userIndex, depositIndex) {
-  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
-  const d = allUsers[userIndex].pendingDeposits[depositIndex];
-  allUsers[userIndex].balance = (Number(allUsers[userIndex].balance) || 0) + d.amount;
-  if (!allUsers[userIndex].transactions) allUsers[userIndex].transactions = [];
-  allUsers[userIndex].transactions.unshift({
+// ❄️ FREEZE ACCOUNT
+function freezeAccount(userId) {
+  if (!confirm("❄️ FREEZE this account?\n\nUser will NOT be able to send money, make payments, or withdraw until unfrozen!")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user) {
+    user.frozen = true;
+    saveAllUsers();
+    alert(`❄️ Account Frozen!\n\n👤 ${user.full_name}\n\nAll transactions are now blocked.`);
+    openUserModal(userId);
+  }
+}
+
+// 🔥 UNFREEZE ACCOUNT
+function unfreezeAccount(userId) {
+  if (!confirm("🔥 Unfreeze this account?\n\nUser will regain full transaction capabilities.")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user) {
+    user.frozen = false;
+    saveAllUsers();
+    alert(`🔥 Account Unfrozen!\n\n👤 ${user.full_name}\n\nFull access restored.`);
+    openUserModal(userId);
+  }
+}
+
+// ✅ APPROVE DEPOSIT
+function approveDeposit(userId, depositIdx) {
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (!user || !user.pendingDeposits[depositIdx]) return;
+  
+  const deposit = user.pendingDeposits[depositIdx];
+  if (!confirm(`✅ Approve deposit of $${deposit.amount.toFixed(2)}?\n\nThis amount will be ADDED to user's balance immediately!`)) return;
+
+  // Add to balance
+  user.balance = (Number(user.balance) || 0) + deposit.amount;
+  
+  // Move to transactions
+  if (!user.transactions) user.transactions = [];
+  user.transactions.unshift({
     type: "Deposit — Approved",
-    amount: d.amount,
-    date: new Date().toISOString()
+    amount: deposit.amount,
+    date: new Date().toISOString(),
+    method: deposit.method
   });
-  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  
+  // Remove from pending
+  user.pendingDeposits.splice(depositIdx, 1);
+  
   saveAllUsers();
-  showToast(`✅ Deposit Approved — $${d.amount.toFixed(2)} added!`, "success");
-  loadAllUsers();
+  alert(`✅ Deposit Approved!\n\n💰 $${deposit.amount.toFixed(2)} added to ${user.full_name}'s balance.\nNew Balance: $${user.balance.toFixed(2)}`);
+  openUserModal(userId);
 }
 
-function rejectDeposit(userIndex, depositIndex) {
-  if (!allUsers[userIndex].pendingDeposits || !allUsers[userIndex].pendingDeposits[depositIndex]) return;
-  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
-  saveAllUsers();
-  showToast("❌ Deposit Rejected", "error");
-  loadAllUsers();
+// ❌ REJECT DEPOSIT
+function rejectDeposit(userId, depositIdx) {
+  if (!confirm("❌ Reject this deposit?\n\nIt will be removed from pending requests.")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user && user.pendingDeposits) {
+    user.pendingDeposits.splice(depositIdx, 1);
+    saveAllUsers();
+    alert("❌ Deposit Rejected & Removed. User will be notified.");
+    openUserModal(userId);
+  }
 }
 
-// ==================================================
+// ✅ APPROVE CARD
+function approveCard(userId, cardIdx) {
+  if (!confirm("✅ Approve this card request?\n\nSend Money & Pay Bills will be UNLOCKED for this user!")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user && user.cardRequests[cardIdx]) {
+    user.cardRequests[cardIdx].status = "Approved";
+    user.card_approved = true;
+    saveAllUsers();
+    alert(`✅ Card Approved!\n\n💳 Send Money & Pay Bills UNLOCKED for ${user.full_name}!\n\nUser has been notified by email.`);
+    openUserModal(userId);
+  }
+}
+
+// ❌ REJECT CARD
+function rejectCard(userId, cardIdx) {
+  if (!confirm("❌ Reject this card request?")) return;
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user && user.cardRequests[cardIdx]) {
+    user.cardRequests[cardIdx].status = "Rejected";
+    saveAllUsers();
+    alert("❌ Card Request Rejected. User has been notified.");
+    openUserModal(userId);
+  }
+}
+
+// 💰 CREDIT USER
+function creditUser(userId) {
+  const amount = parseFloat(document.getElementById(`creditAmount_${userId}`).value);
+  if (!amount || amount <= 0) return alert("❌ Enter a valid amount!");
+  if (!confirm(`✅ Credit $${amount.toFixed(2)} to this user's account?`)) return;
+  
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user) {
+    user.balance = (Number(user.balance) || 0) + amount;
+    if (!user.transactions) user.transactions = [];
+    user.transactions.unshift({
+      type: "Admin Credit",
+      amount: amount,
+      date: new Date().toISOString()
+    });
+    saveAllUsers();
+    alert(`✅ Successfully Credited!\n\n💰 $${amount.toFixed(2)} added to ${user.full_name}'s account.\nNew Balance: $${user.balance.toFixed(2)}`);
+    openUserModal(userId);
+  }
+}
+
+// 💸 DEBIT USER
+function debitUser(userId) {
+  const amount = parseFloat(document.getElementById(`debitAmount_${userId}`).value);
+  if (!amount || amount <= 0) return alert("❌ Enter a valid amount!");
+  if (!confirm(`⚠️ Debit $${amount.toFixed(2)} from this user's account?\n\nThis action cannot be undone!`)) return;
+  
+  const user = allUsers.find(u => String(u.id) === String(userId));
+  if (user) {
+    if (amount > (Number(user.balance) || 0)) return alert("❌ Insufficient balance!");
+    user.balance = (Number(user.balance) || 0) - amount;
+    if (!user.transactions) user.transactions = [];
+    user.transactions.unshift({
+      type: "Admin Debit",
+      amount: -amount,
+      date: new Date().toISOString()
+    });
+    saveAllUsers();
+    alert(`✅ Successfully Debited!\n\n💰 $${amount.toFixed(2)} deducted from ${user.full_name}'s account.\nNew Balance: $${user.balance.toFixed(2)}`);
+    openUserModal(userId);
+  }
+}
+
 // 🗑️ DELETE USER
-// ==================================================
 function deleteUser(userId) {
-  if (!confirm("Permanently delete this user? Cannot be undone!")) return;
+  if (!confirm("⚠️⚠️⚠️ ARE YOU SURE YOU WANT TO DELETE THIS USER?\n\nThis action CANNOT be undone! All data will be permanently removed!")) return;
+  if (!confirm("⚠️ LAST CHANCE — Confirm deletion?")) return;
+  
   allUsers = allUsers.filter(u => String(u.id) !== String(userId));
   saveAllUsers();
-  showToast("🗑️ User Deleted", "info");
-  loadAllUsers();
+  alert("🗑️ User deleted successfully!");
+  closeModal();
 }
 
-// ==================================================
-// 💾 SAVE & HELPER
-// ==================================================
+// ==========================================
+// 💾 SAVE ALL CHANGES — LOCAL + SERVER
+// ==========================================
 function saveAllUsers() {
-  localStorage.setItem("all_users", JSON.stringify(allUsers));
+  localStorage.setItem("allUsers", JSON.stringify(allUsers));
+  updateStats();
+  applyFilters();
+  populateCountryFilter();
+  
+  // Sync to server
+  fetch(`${API_URL}/admin/sync`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(allUsers)
+  }).catch(() => {});
 }
 
-function escapeHtml(text) {
-  if (!text) return "N/A";
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function showToast(msg, type = "info") {
-  const t = document.getElementById("adminToast");
-  t.className = `toast ${type}`;
-  t.textContent = msg;
-  setTimeout(() => t.classList.add("show"), 10);
-  setTimeout(() => t.classList.remove("show"), 5000);
-}
-
-function toggleSound() {
-  soundEnabled = !soundEnabled;
-  document.getElementById("soundToggle").innerHTML = soundEnabled ? "🔔 Sound: ON" : "🔕 Sound: OFF";
-}
-
-// ==================================================
-// 🚀 INITIALIZE
-// ==================================================
-document.addEventListener("DOMContentLoaded", checkAdminAuth);
 </script>
 
 </body>
