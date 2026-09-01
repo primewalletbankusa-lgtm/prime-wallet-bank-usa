@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Admin Console — Prime Wallet Bank USA">
+  <meta name="theme-color" content="#0047AB">
+  <title>Admin Console — Prime Wallet Bank USA 🇺🇸</title>
+  <style>
+    :root{
+      --pri:#0047AB; --pri-hover:#003380; --pri-light:#2563EB;
+      --gold:#B8860B; --gold-light:#F59E0B;
+      --success:#059669; --success-bg:#ECFDF5;
+      --error:#DC2626; --error-bg:#FEE2E2;
+      --warn:#F59E0B; --warn-bg:#FFFBEB;
+      --white:#FFFFFF; --bg:#F8FAFC; --card:#FFFFFF;
+      --text-dark:#1E293B; --text-muted:#64748B; --border:#E2E8F0;
+      --shadow-sm:0 1px 3px rgba(0,0,0,.05);
+      --shadow-md:0 4px 12px rgba(0,0,0,.08);
+      --shadow-lg:0 8px 30px rgba(0,0,0,.12);
+      --radius-sm:8px; --radius-md:12px; --radius-lg:20px;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Roboto,'Helvetica Neue',sans-serif}
+    body{background:var(--bg);color:var(--text-dark);line-height:1.5;min-height:100vh}
+    .hidden{display:none !important}
+    button{cursor:pointer;border:none;border-radius:var(--radius-sm);font-weight:600;transition:all .2s ease}
+    input,select,textarea{border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;font-size:14px;outline:none;width:100%;margin-bottom:12px;background:var(--white)}
+    input:focus,select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(0,71,171,.1)}
+    label{font-weight:600;color:var(--text-dark);margin-bottom:6px;display:block;margin-top:14px;font-size:14px}
+    .container{max-width:1200px;margin:0 auto;padding:20px}
+    .header-top{background:linear-gradient(135deg,var(--pri),var(--pri-hover));color:white;padding:20px 0;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-md)}
+    .header-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .brand{font-size:22px;font-weight:800;display:flex;align-items:center;gap:10px}
+    .brand span{font-size:26px}
+    .login-card{max-width:420px;margin:80px auto;background:var(--white);padding:32px;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+    .login-title{font-size:24px;font-weight:800;color:var(--pri);margin-bottom:8px;text-align:center}
+    .login-sub{text-align:center;color:var(--text-muted);margin-bottom:24px}
+    .btn-primary{background:linear-gradient(135deg,var(--pri),var(--pri-hover));color:white;padding:14px 20px;font-size:16px;width:100%;box-shadow:0 4px 12px rgba(0,71,171,.2)}
+    .btn-primary:hover{transform:translateY(-1px)}
+    .btn-success{background:var(--success);color:white;padding:10px 16px;font-size:14px}
+    .btn-danger{background:var(--error);color:white;padding:10px 16px;font-size:14px}
+    .btn-warning{background:var(--warn);color:white;padding:10px 16px;font-size:14px}
+    .btn-secondary{background:var(--white);color:var(--pri);border:2px solid var(--pri);padding:8px 14px;font-size:13px}
+    .btn-sm{padding:6px 12px;font-size:12px}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+    .stat-card{background:var(--white);padding:20px;border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border-left:4px solid var(--pri)}
+    .stat-card h3{font-size:28px;font-weight:800;color:var(--pri);margin-bottom:4px}
+    .stat-card p{color:var(--text-muted);font-size:13px}
+    .stat-card.green{border-left-color:var(--success)}
+    .stat-card.green h3{color:var(--success)}
+    .stat-card.orange{border-left-color:var(--warn)}
+    .stat-card.orange h3{color:var(--warn)}
+    .stat-card.red{border-left-color:var(--error)}
+    .stat-card.red h3{color:var(--error)}
+    .filter-bar{background:var(--white);padding:16px;border-radius:var(--radius-md);margin-bottom:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .filter-bar select,.filter-bar input{max-width:220px;margin:0}
+    .users-table{width:100%;border-collapse:collapse;background:var(--white);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .users-table th{background:var(--pri);color:white;padding:14px 12px;text-align:left;font-size:13px;font-weight:700}
+    .users-table td{padding:12px;border-bottom:1px solid var(--border);font-size:14px}
+    .users-table tr:hover{background:rgba(0,71,171,.02)}
+    .status-badge{display:inline-block;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:700}
+    .badge-pending{background:var(--warn-bg);color:#92400E}
+    .badge-approved{background:var(--success-bg);color:#065F46}
+    .badge-frozen{background:var(--error-bg);color:#991B1B}
+    .badge-card-pending{background:#E0E7FF;color:#3730A3}
+    .user-detail-card{background:var(--white);padding:24px;border-radius:var(--radius-md);box-shadow:var(--shadow-md);margin-bottom:20px}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .detail-item p:first-child{font-size:12px;color:var(--text-muted)}
+    .detail-item p:last-child{font-weight:15px;font-weight:600;color:var(--text-dark)}
+    .image-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .image-box{border:2px solid var(--border);border-radius:var(--radius-sm);padding:12px;background:#FAFAFA}
+    .image-box img{width:100%;height:200px;object-fit:cover;border-radius:6px;margin-top:8px;background:#E2E8F0}
+    .tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+    .tab{padding:10px 18px;border-radius:var(--radius-sm);cursor:pointer;font-weight:600;font-size:14px;border:2px solid transparent}
+    .tab.active{background:var(--pri);color:white}
+    .tab:not(.active):hover{background:rgba(0,71,171,.05);border-color:var(--border)}
+    .action-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .alert-box{padding:14px;border-radius:var(--radius-sm);margin:16px 0}
+    .alert-info{background:#E6F2FF;color:#0047AB;border-left:4px solid var(--pri)}
+    .alert-success{background:var(--success-bg);color:#065F46;border-left:4px solid var(--success)}
+    .alert-warning{background:var(--warn-bg);color:#92400E;border-left:4px solid var(--warn)}
+    .alert-error{background:var(--error-bg);color:#991B1B;border-left:4px solid var(--error)}
+    .divider{height:1px;background:var(--border);margin:20px 0}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--pri);font-weight:600;cursor:pointer;margin-bottom:16px}
+    .back-btn:hover{text-decoration:underline}
+    .new-user-alert{position:fixed;top:20px;right:20px;z-index:9999;max-width:360px;animation:slideIn .3s ease}
+    @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+    .bell-icon{position:relative;cursor:pointer}
+    .bell-badge{position:absolute;top:-6px;right:-6px;background:var(--error);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:10px;min-width:20px;text-align:center}
+    .page-content{padding-bottom:40px}
+    .full-width{width:100%}
+    .text-center{text-align:center}
+    .mt-20{margin-top:20px}
+    .mb-20{margin-bottom:20px}
+    .search-box{max-width:300px}
+    @media(max-width:900px){
+      .stats-row{grid-template-columns:repeat(2,1fr)}
+      .detail-grid{grid-template-columns:1fr}
+      .image-row{grid-template-columns:1fr}
+      .users-table{display:block;overflow-x:auto}
+    }
+    @media(max-width:500px){
+      .stats-row{grid-template-columns:1fr}
+      .filter-bar{flex-direction:column;align-items:stretch}
+      .filter-bar select,.filter-bar input{max-width:100%}
+    }
+  </style>
+</head>
+<body>
+
+<!-- 🔔 NOTIFICATION SOUND -->
+<audio id="notifySound" preload="auto">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-software-interface-start-2574.mp3" type="audio/mpeg">
+
+
+<!-- ============================================== -->
+<!-- 🔐 ADMIN LOGIN -->
+<!-- ============================================== -->
+<div class="page" id="loginPage">
+  <div class="login-card">
+    <div class="login-title">🔐 Admin Console</div>
+    <div class="login-subtitle">Prime Wallet Bank — USA 🇺🇸</div>
+    <div class="divider"></div>
+    
+    <label>📧 Admin Email</label>
+    <input type="email" id="adminEmail" placeholder="primewalletbankusa@gmail.com">
+    
+    <label>🔑 Password</label>
+    <div style="position:relative">
+      <input type="password" id="adminPass" placeholder="Enter admin password" style="margin:0">
+      <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:20px" onclick="toggleAdminPass()">👁️</span>
+    </div>
+    
+    <button class="btn-primary" onclick="adminLogin()" style="margin-top:24px">🔑 Sign In to Console</button>
+    
+    <div class="alert-box alert-info" style="margin-top:20px;font-size:13px">
+      <strong>Admin Login:</strong><br>
+      Email: primewalletbankusa@gmail.com<br>
+      Password: Princelv1993
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- 📊 MAIN ADMIN DASHBOARD -->
+<!-- ============================================== -->
+<div class="page hidden" id="adminPage">
+  <div class="header-top">
+    <div class="header-inner">
+      <div class="brand"><span>🏦</span> Prime Wallet Bank — Admin Console</div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="bell-icon" onclick="toggleNotifications()">
+          🔔 <span class="bell-badge" id="notifBadge">0</span>
+        </div>
+        <span style="font-size:14px">👤 Admin</span>
+        <button class="btn-secondary" onclick="adminLogout()" style="background:rgba(255,255,255,.2);color:white;border:1px solid white">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container page-content">
+    <!-- 📈 STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <h3 id="totalUsers">0</h3>
+        <p>👤 Total Users</p>
+      </div>
+      <div class="stat-card green">
+        <h3 id="approvedUsers">0</h3>
+        <p>✅ Approved</p>
+      </div>
+      <div class="stat-card orange">
+        <h3 id="pendingUsers">0</h3>
+        <p>⏳ Pending Review</p>
+      </div>
+      <div class="stat-card red">
+        <h3 id="frozenUsers">0</h3>
+        <p>❄️ Frozen</p>
+      </div>
+    </div>
+
+    <!-- 📋 TABS -->
+    <div class="tabs">
+      <div class="tab active" onclick="switchAdminTab('all')">👥 All Users</div>
+      <div class="tab" onclick="switchAdminTab('pending')">⏳ Pending Approval</div>
+      <div class="tab" onclick="switchAdminTab('cards')">💳 Card Requests</div>
+      <div class="tab" onclick="switchAdminTab('reset')">🔑 Password Resets</div>
+      <div class="tab" onclick="switchAdminTab('reports')">⚠️ Reports</div>
+    </div>
+
+    <!-- 🔍 FILTER BAR -->
+    <div class="filter-bar">
+      <input type="text" id="searchUser" placeholder="🔍 Search by name, email, account..." class="search-box" oninput="renderUsers()">
+      <select id="filterCountry" onchange="renderUsers()">
+        <option value="">🌍 All Countries</option>
+        <option value="US">🇺🇸 USA</option>
+        <option value="NG">🇳🇬 Nigeria</option>
+        <option value="UK">🇬🇧 UK</option>
+        <option value="CA">🇨🇦 Canada</option>
+        <option value="GH">🇬🇭 Ghana</option>
+        <option value="KE">🇰🇪 Kenya</option>
+        <option value="ZA">🇿🇦 South Africa</option>
+        <option value="OTHER">🌍 Other</option>
+      </select>
+      <select id="filterStatus" onchange="renderUsers()">
+        <option value="">📊 All Status</option>
+        <option value="pending">⏳ Pending</option>
+        <option value="approved">✅ Approved</option>
+        <option value="frozen">❄️ Frozen</option>
+      </select>
+      <button class="btn-secondary" onclick="exportAllData()">📥 Export All</button>
+    </div>
+
+    <!-- 👥 USERS TABLE -->
+    <div id="usersTableContainer">
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>👤 User</th>
+            <th>🌍 Country</th>
+            <th>💰 Balance</th>
+            <th>📊 Status</th>
+            <th>💳 Card</th>
+            <th>📅 Registered</th>
+            <th>⚡ Actions</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- 👤 USER DETAILS PAGE -->
+<!-- ============================================== -->
+<div class="page hidden" id="userDetailPage">
+  <div class="header-top">
+    <div class="header-inner">
+      <div class="brand"><span>🏦</span> User Details</div>
+    </div>
+  </div>
+  <div class="container page-content">
+    <div class="back-btn" onclick="openUserList()">← Back to All Users</div>
+    
+    <div class="user-detail-card" id="userDetailContent">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- ⚙️ JAVASCRIPT — FULL ADMIN FUNCTIONALITY 💯 -->
+<!-- ============================================== -->
+<script>
+// ==================================================
+// 🔐 ADMIN CREDENTIALS — EDIT HERE IF NEEDED
+// ==================================================
+const ADMIN_EMAIL = "primewalletbankusa@gmail.com";
+const ADMIN_PASSWORD = "Princelv1993";
+
+let isAdminLoggedIn = false;
+let allUsers = [];
+let passwordResetRequests = [];
+let reports = [];
+let notifications = [];
+let currentFilter = "all";
+let selectedUserIndex = -1;
+
+// ==================================================
+// 🔐 LOGIN FUNCTIONS
+// ==================================================
+function toggleAdminPass() {
+  const el = document.getElementById("adminPass");
+  el.type = el.type === "password" ? "text" : "password";
+}
+
+function adminLogin() {
+  const email = document.getElementById("adminEmail").value.trim().toLowerCase();
+  const pass = document.getElementById("adminPass").value;
+  
+  if (email === ADMIN_EMAIL && pass === ADMIN_PASSWORD) {
+    isAdminLoggedIn = true;
+    localStorage.setItem("admin_logged_in", "true");
+    showPage("adminPage");
+    loadAllData();
+    startListening();
+  } else {
+    alert("❌ Invalid email or password!");
+  }
+}
+
+function adminLogout() {
+  isAdminLoggedIn = false;
+  localStorage.removeItem("admin_logged_in");
+  allUsers = [];
+  showPage("loginPage");
+  document.getElementById("adminEmail").value = "";
+  document.getElementById("adminPass").value = "";
+}
+
+// ==================================================
+// 📄 PAGE NAVIGATION
+// ==================================================
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function switchAdminTab(tab) {
+  currentFilter = tab;
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  event.target.classList.add("active");
+  renderUsers();
+}
+
+// ==================================================
+// 📥 LISTEN FOR NEW USERS FROM USER SITE
+// ==================================================
+function startListening() {
+  window.addEventListener("message", handleIncomingData);
+  loadFromLocalStorage();
+}
+
+function handleIncomingData(event) {
+  if (!event.data || !event.data.type) return;
+  
+  if (event.data.type === "NEW_REGISTRATION") {
+    handleNewUser(event.data);
+  } else if (event.data.type === "CARD_SUBMISSION") {
+    handleCardSubmission(event.data);
+  } else if (event.data.type === "PASSWORD_RESET_REQUEST") {
+    handleResetRequest(event.data);
+  } else if (event.data.type === "DEPOSIT_ATTEMPT") {
+    handleDeposit(event.data);
+  }
+}
+
+function handleNewUser(userData) {
+  const existingIndex = allUsers.findIndex(u => u.email === userData.email);
+  if (existingIndex === -1) {
+    allUsers.unshift({
+      ...userData,
+      approved: false,
+      frozen: false,
+      card_approved: false,
+      pendingDeposits: [],
+      transactions: [],
+      registered_at: userData.registered_at || new Date().toISOString()
+    });
+    playNotificationSound();
+    addNotification(`🆕 New User: ${userData.full_name}`, userData.email);
+    saveToLocalStorage();
+    renderUsers();
+  }
+}
+
+function handleCardSubmission(data) {
+  const idx = allUsers.findIndex(u => u.email === data.email);
+  if (idx !== -1) {
+    allUsers[idx] = { ...allUsers[idx], ...data };
+    playNotificationSound();
+    addNotification(`💳 Card Request: ${data.full_name}`, data.email);
+    saveToLocalStorage();
+    renderUsers();
+  }
+}
+
+function handleResetRequest(data) {
+  passwordResetRequests.unshift(data);
+  playNotificationSound();
+  addNotification(`🔑 Password Reset: ${data.email}`, data.full_name);
+  saveToLocalStorage();
+  renderUsers();
+}
+
+function handleDeposit(data) {
+  const idx = allUsers.findIndex(u => u.email === data.user_email);
+  if (idx !== -1) {
+    if (!allUsers[idx].pendingDeposits) allUsers[idx].pendingDeposits = [];
+    allUsers[idx].pendingDeposits.unshift({
+      amount: data.amount,
+      method: data.method,
+      note: data.note,
+      date: data.timestamp,
+      status: "pending"
+    });
+    saveToLocalStorage();
+    renderUsers();
+  }
+}
+
+// ==================================================
+// 🔔 NOTIFICATIONS
+// ==================================================
+function addNotification(title, desc) {
+  notifications.unshift({ title, desc, time: new Date().toISOString(), read: false });
+  updateNotificationBadge();
+}
+
+function updateNotificationBadge() {
+  const unread = notifications.filter(n => !n.read).length;
+  document.getElementById("notifBadge").textContent = unread;
+}
+
+function toggleNotifications() {
+  alert(`🔔 Notifications: ${notifications.length} total\n\n${notifications.slice(0,5).map(n => `${n.read ? '✅' : '🔴'} ${n.title} — ${new Date(n.time).toLocaleString()}`).join('\n')}`);
+  notifications.forEach(n => n.read = true);
+  updateNotificationBadge();
+}
+
+function playNotificationSound() {
+  try { document.getElementById("notifySound").play(); } catch(e){}
+}
+
+// ==================================================
+// 💾 LOCAL STORAGE — PERSIST FOREVER
+// ==================================================
+function saveToLocalStorage() {
+  localStorage.setItem("admin_all_users", JSON.stringify(allUsers));
+  localStorage.setItem("admin_reset_requests", JSON.stringify(passwordResetRequests));
+  localStorage.setItem("admin_notifications", JSON.stringify(notifications));
+}
+
+function loadFromLocalStorage() {
+  const savedUsers = localStorage.getItem("admin_all_users");
+  const savedResets = localStorage.getItem("admin_reset_requests");
+  const savedNotifs = localStorage.getItem("admin_notifications");
+  
+  if (savedUsers) allUsers = JSON.parse(savedUsers);
+  if (savedResets) passwordResetRequests = JSON.parse(savedResets);
+  if (savedNotifs) notifications = JSON.parse(savedNotifs);
+  
+  updateStats();
+  renderUsers();
+  updateNotificationBadge();
+}
+
+// ==================================================
+// 📊 STATS & RENDER TABLE
+// ==================================================
+function loadAllData() {
+  loadFromLocalStorage();
+}
+
+function updateStats() {
+  document.getElementById("totalUsers").textContent = allUsers.length;
+  document.getElementById("approvedUsers").textContent = allUsers.filter(u => u.approved).length;
+  document.getElementById("pendingUsers").textContent = allUsers.filter(u => !u.approved).length;
+  document.getElementById("frozenUsers").textContent = allUsers.filter(u => u.frozen).length;
+}
+
+function renderUsers() {
+  const tbody = document.getElementById("usersTableBody");
+  const search = document.getElementById("searchUser")?.value?.toLowerCase() || "";
+  const country = document.getElementById("filterCountry")?.value || "";
+  const status = document.getElementById("filterStatus")?.value || "";
+  
+  let filtered = allUsers.filter(u => {
+    // Tab filter
+    if (currentFilter === "pending" && u.approved) return false;
+    if (currentFilter === "cards" && !u.atmHolder) return false;
+    if (currentFilter === "reset") return false;
+    if (currentFilter === "reports") return false;
+    
+    // Search filter
+    if (search) {
+      const match = (u.full_name || "").toLowerCase().includes(search) ||
+                    (u.email || "").toLowerCase().includes(search) ||
+                    (u.account_number || "").includes(search);
+      if (!match) return false;
+    }
+    
+    // Country filter
+    if (country && u.country !== country && country !== "OTHER") return false;
+    if (country === "OTHER" && ["US","NG","UK","CA","GH","KE","ZA"].includes(u.country)) return false;
+    
+    // Status filter
+    if (status === "pending" && u.approved) return false;
+    if (status === "approved" && !u.approved) return false;
+    if (status === "frozen" && !u.frozen) return false;
+    
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">No users found</td></tr>`;
+    updateStats();
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((u, idx) => {
+    const realIndex = allUsers.indexOf(u);
+    let statusBadge = `<span class="status-badge badge-pending">⏳ Pending</span>`;
+    if (u.frozen) statusBadge = `<span class="status-badge badge-frozen">❄️ Frozen</span>`;
+    else if (u.approved) statusBadge = `<span class="status-badge badge-approved">✅ Approved</span>`;
+    
+    let cardBadge = `<span class="status-badge" style="background:#F3F4F6;color:#6B7280">None</span>`;
+    if (u.card_approved) cardBadge = `<span class="status-badge badge-approved">✅ Approved</span>`;
+    else if (u.atmHolder) cardBadge = `<span class="status-badge badge-card-pending">⏳ Review</span>`;
+
+    return `
+      <tr>
+        <td>
+          <div style="font-weight:700">${u.full_name || '—'}</div>
+          <div style="font-size:12px;color:var(--text-muted)">${u.email || '—'}</div>
+        </td>
+        <td>${u.country || '—'}</td>
+        <td>$${(u.balance || 0).toFixed(2)}</td>
+        <td>${statusBadge}</td>
+        <td>${cardBadge}</td>
+        <td style="font-size:12px">${u.registered_at ? new Date(u.registered_at).toLocaleDateString() : '—'}</td>
+        <td>
+          <button class="btn-secondary btn-sm" onclick="viewUser(${realIndex})">👁️ View</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  updateStats();
+}
+
+// ==================================================
+// 👤 VIEW FULL USER DETAILS
+// ==================================================
+function viewUser(index) {
+  selectedUserIndex = index;
+  const u = allUsers[index];
+  const content = document.getElementById("userDetailContent");
+  
+  let statusBadge = `<span class="status-badge badge-pending">⏳ Pending Approval</span>`;
+  if (u.frozen) statusBadge = `<span class="status-badge badge-frozen">❄️ Account Frozen</span>`;
+  else if (u.approved) statusBadge = `<span class="status-badge badge-approved">✅ Account Approved</span>`;
+  
+  let cardSection = `<p style="color:var(--text-muted)">No card submitted yet.</p>`;
+  if (u.atmHolder) {
+    let cardStatus = u.card_approved ? 
+      `<span class="status-badge badge-approved">✅ Card Approved</span>` : 
+      `<span class="status-badge badge-card-pending">⏳ Card Under Review</span>`;
+    
+    cardSection = `
+      <div class="divider"></div>
+      <h3 style="margin-bottom:12px">💳 ATM Card Details</h3>
+      <div class="detail-grid">
+        <div class="detail-item"><p>Card Type</p><p>${u.cardType || '—'}</p></div>
+        <div class="detail-item"><p>Cardholder Name</p><p>${u.atmHolder || '—'}</p></div>
+        <div class="detail-item"><p>Card Number</p><p>**** **** **** ${(u.atmNumber || '').slice(-4)}</p></div>
+        <div class="detail-item"><p>Expiry</p><p>${u.atmExpiry || '—'}</p></div>
+        <div class="detail-item"><p>Card Status</p><p>${cardStatus}</p></div>
+      </div>
+      <div class="image-row">
+        <div class="image-box">
+          <p style="font-weight:600;margin-bottom:8px">Card Front</p>
+          ${u.atmFront ? `<img src="${u.atmFront}" alt="Card Front">` : '<p style="color:var(--text-muted)">No image</p>'}
+        </div>
+        <div class="image-box">
+          <p style="font-weight:600;margin-bottom:8px">Card Back</p>
+          ${u.atmBack ? `<img src="${u.atmBack}" alt="Card Back">` : '<p style="color:var(--text-muted)">No image</p>'}
+        </div>
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <h2 style="font-size:22px;color:var(--pri)">${u.full_name || 'User Profile'}</h2>
+      ${statusBadge}
+    </div>
+
+    <div class="detail-grid">
+      <div class="detail-item"><p>📧 Email</p><p>${u.email || '—'}</p></div>
+      <div class="detail-item"><p>📱 Phone</p><p>${u.phone || '—'}</p></div>
+      <div class="detail-item"><p>🎂 Date of Birth</p><p>${u.dob || '—'}</p></div>
+      <div class="detail-item"><p>🌍 Country / State / City</p><p>${u.country || '—'} / ${u.state || '—'} / ${u.city || '—'}</p></div>
+      <div class="detail-item"><p>🏦 Account Number</p><p>${u.account_number || '—'}</p></div>
+      <div class="detail-item"><p>💰 Current Balance</p><p style="color:var(--success);font-size:18px">$${(u.balance || 0).toFixed(2)}</p></div>
+      <div class="detail-item"><p>🪪 ID Type</p><p>${u.idType || '—'}</p></div>
+      <div class="detail-item"><p>🆔 ID Number</p><p>${u.idNumber || '—'}</p></div>
+    </div>
+
+    <div class="image-row">
+      <div class="image-box">
+        <p style="font-weight:600;margin-bottom:8px">🪪 ID Front Side</p>
+        ${u.idFront ? `<img src="${u.idFront}" alt="ID Front">` : '<p style="color:var(--text-muted)">No image uploaded</p>'}
+      </div>
+      <div class="image-box">
+        <p style="font-weight:600;margin-bottom:8px">🪪 ID Back Side</p>
+        ${u.idBack ? `<img src="${u.idBack}" alt="ID Back">` : '<p style="color:var(--text-muted)">No image uploaded</p>'}
+      </div>
+    </div>
+
+    ${cardSection}
+
+    <div class="divider"></div>
+    
+    <h3 style="margin-bottom:12px">⚡ Admin Actions</h3>
+    <div class="action-buttons">
+      ${!u.approved ? `<button class="btn-success" onclick="approveAccount(${index})">✅ Approve Account</button>` : ''}
+      ${u.approved ? `<button class="btn-warning" onclick="unapproveAccount(${index})">⏳ Un-Approve Account</button>` : ''}
+      ${!u.card_approved && u.atmHolder ? `<button class="btn-success" onclick="approveCard(${index})">💳 Approve Card</button>` : ''}
+      ${u.card_approved ? `<button class="btn-warning" onclick="unapproveCard(${index})">⏳ Un-Approve Card</button>` : ''}
+      ${!u.frozen ? `<button class="btn-danger" onclick="freezeAccount(${index})">❄️ Freeze Account</button>` : `<button class="btn-success" onclick="unfreezeAccount(${index})">🔥 Unfreeze Account</button>`}
+      <button class="btn-primary" style="background:var(--pri)" onclick="creditUser(${index})">💰 Credit User</button>
+      <button class="btn-danger" onclick="debitUser(${index})">💸 Debit User</button>
+      <button class="btn-secondary" onclick="deleteUser(${index})">🗑️ Delete User</button>
+    </div>
+    
+    <div class="divider"></div>
+    <h3 style="margin-bottom:12px">📋 Pending Deposits</h3>
+    ${(u.pendingDeposits && u.pendingDeposits.length > 0) ? u.pendingDeposits.map((d, di) => `
+      <div style="background:#FFFBEB;padding:12px;border-radius:8px;margin-bottom:10px;border:1px solid #FCD34D">
+        <strong>$${d.amount.toFixed(2)}</strong> — ${d.method || 'No method'}<br>
+        <small>${d.note || 'No note'} — ${new Date(d.date).toLocaleString()}</small><br>
+        <button class="btn-success btn-sm" onclick="approveDeposit(${index}, ${di})" style="margin-top:8px">✅ Approve & Add to Balance</button>
+        <button class="btn-danger btn-sm" onclick="rejectDeposit(${index}, ${di})" style="margin-top:8px">❌ Reject</button>
+      </div>
+    `).join('') : '<p style="color:var(--text-muted)">No pending deposits</p>'}
+  `;
+
+  showPage("userDetailPage");
+}
+
+function openUserList() {
+  selectedUserIndex = -1;
+  showPage("adminPage");
+  renderUsers();
+}
+
+// ==================================================
+// ✅ ADMIN ACTIONS — ALL CONTROLS WORK 💯
+// ==================================================
+function approveAccount(index) {
+  if (!confirm("✅ Approve this user's account?\n\nUser will gain full dashboard access.")) return;
+  allUsers[index].approved = true;
+  allUsers[index].approved_at = new Date().toISOString();
+  saveToLocalStorage();
+  alert("✅ Account Approved! User will be notified instantly!");
+  viewUser(index);
+}
+
+function unapproveAccount(index) {
+  if (!confirm("⏳ Remove approval? User becomes Pending again.")) return;
+  allUsers[index].approved = false;
+  saveToLocalStorage();
+  alert("⏳ Account set to Pending.");
+  viewUser(index);
+}
+
+function approveCard(index) {
+  if (!confirm("💳 Approve this user's ATM Card?\n\nTransfers & Bill Pay will UNLOCK immediately!")) return;
+  allUsers[index].card_approved = true;
+  allUsers[index].card_approved_at = new Date().toISOString();
+  saveToLocalStorage();
+  alert("✅ Card Approved! Send Money & Pay Bills are NOW UNLOCKED for this user!");
+  viewUser(index);
+}
+
+function unapproveCard(index) {
+  if (!confirm("⏳ Revoke card approval? Transactions will be LOCKED.")) return;
+  allUsers[index].card_approved = false;
+  saveToLocalStorage();
+  alert("⏳ Card approval revoked.");
+  viewUser(index);
+}
+
+function freezeAccount(index) {
+  if (!confirm("❄️ FREEZE this account?\n\nAll transactions will be BLOCKED!")) return;
+  allUsers[index].frozen = true;
+  allUsers[index].frozen_at = new Date().toISOString();
+  saveToLocalStorage();
+  alert("❄️ Account FROZEN. All transactions blocked.");
+  viewUser(index);
+}
+
+function unfreezeAccount(index) {
+  if (!confirm("🔥 UNFREEZE this account?\n\nFull access restored!")) return;
+  allUsers[index].frozen = false;
+  saveToLocalStorage();
+  alert("✅ Account UNFROZEN. Full access restored!");
+  viewUser(index);
+}
+
+function creditUser(index) {
+  const amount = prompt("💰 Enter amount to credit (USD):");
+  if (!amount) return;
+  const num = parseFloat(amount);
+  if (isNaN(num) || num <= 0) return alert("❌ Invalid amount!");
+  allUsers[index].balance = (Number(allUsers[index].balance) || 0) + num;
+  if (!allUsers[index].transactions) allUsers[index].transactions = [];
+  allUsers[index].transactions.unshift({
+    type: "Admin Credit", amount: num, date: new Date().toISOString(), status: "Completed"
+  });
+  saveToLocalStorage();
+  alert(`✅ Successfully credited $${num.toFixed(2)}!\n\nNew Balance: $${allUsers[index].balance.toFixed(2)}\n\nUser will see funds INSTANTLY!`);
+  viewUser(index);
+}
+
+function debitUser(index) {
+  const amount = prompt("💸 Enter amount to debit (USD):");
+  if (!amount) return;
+  const num = parseFloat(amount);
+  if (isNaN(num) || num <= 0) return alert("❌ Invalid amount!");
+  if (num > (allUsers[index].balance || 0)) return alert("❌ Insufficient balance!");
+  allUsers[index].balance = (Number(allUsers[index].balance) || 0) - num;
+  if (!allUsers[index].transactions) allUsers[index].transactions = [];
+  allUsers[index].transactions.unshift({
+    type: "Admin Debit", amount: -num, date: new Date().toISOString(), status: "Completed"
+  });
+  saveToLocalStorage();
+  alert(`✅ Successfully debited $${num.toFixed(2)}!\n\nNew Balance: $${allUsers[index].balance.toFixed(2)}`);
+  viewUser(index);
+}
+
+function approveDeposit(userIndex, depositIndex) {
+  const deposit = allUsers[userIndex].pendingDeposits[depositIndex];
+  allUsers[userIndex].balance = (Number(allUsers[userIndex].balance) || 0) + deposit.amount;
+  deposit.status = "approved";
+  if (!allUsers[userIndex].transactions) allUsers[userIndex].transactions = [];
+  allUsers[userIndex].transactions.unshift({
+    type: "Deposit — Approved", amount: deposit.amount, date: new Date().toISOString(), status: "Completed"
+  });
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  saveToLocalStorage();
+  alert(`✅ Deposit Approved! $${deposit.amount.toFixed(2)} added to user's balance!`);
+  viewUser(userIndex);
+}
+
+function rejectDeposit(userIndex, depositIndex) {
+  allUsers[userIndex].pendingDeposits[depositIndex].status = "rejected";
+  allUsers[userIndex].pendingDeposits.splice(depositIndex, 1);
+  saveToLocalStorage();
+  alert("❌ Deposit Rejected.");
+  viewUser(userIndex);
+}
+
+function deleteUser(index) {
+  if (!confirm("⚠️ PERMANENTLY DELETE this user?\n\nThis cannot be undone!")) return;
+  allUsers.splice(index, 1);
+  saveToLocalStorage();
+  alert("✅ User deleted permanently.");
+  openUserList();
+}
+
+// ==================================================
+// 📥 EXPORT ALL DATA
+// ==================================================
+function exportAllData() {
+  const data = {
+    exported_at: new Date().toISOString(),
+    total_users: allUsers.length,
+    users: allUsers,
+    reset_requests: passwordResetRequests,
+    notifications: notifications
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `prime-wallet-admin-export-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  alert("✅ Data Exported Successfully! 📥");
+}
+
+// ==================================================
+// 🚀 AUTO-LOGIN IF SESSION EXISTS
+// ==================================================
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("admin_logged_in") === "true") {
+    isAdminLoggedIn = true;
+    showPage("adminPage");
+    loadAllData();
+    startListening();
+  } else {
+    showPage("loginPage");
+  }
+});
+</script>
+
+</body>
+</html>
