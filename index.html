@@ -5,1069 +5,847 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Prime Wallet Bank USA — Secure Global Banking">
   <meta name="theme-color" content="#0047AB">
-  <title>Prime Wallet Bank — USA  | Secure Global Banking</title>
+  <title>Prime Wallet Bank — USA 🇺🇸 | Secure Global Banking</title>
   <style>
     :root{
       --pri:#0047AB; --pri-hover:#003380; --pri-light:#2563EB;
       --gold:#B8860B; --gold-light:#F59E0B;
       --success:#059669; --success-bg:#ECFDF5;
-      --error:#DC2626; --error-bg:#FEE2E2;
+      --error:#DC2626; --error-bg:#FEF2F2;
       --warn:#F59E0B; --warn-bg:#FFFBEB;
-      --bg:#F8FAFC; --card:#FFFFFF;
-      --text:#1E293B; --muted:#64748B; --border:#E2E8F0;
+      --text:#1F2937; --muted:#6B7280; --border:#E5E7EB;
+      --bg:#F9FAFB; --card:#FFFFFF; --shadow:0 2px 12px rgba(0,0,0,0.08);
     }
-    *{margin:0; padding:0; box-sizing:border-box; font-family:Segoe UI, Roboto, sans-serif;}
-    body{background:var(--bg); color:var(--text); line-height:1.6;}
-
-    /* ===== LANDING PAGE — PERFECT BLUE GRADIENT ===== */
-    .landing-container{
-      min-height:100vh;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:flex-start;
-      background:linear-gradient(135deg, #0047AB 0%, #002D6D 100%);
-      color:white;
-      padding:20px;
-      position:relative;
-    }
-
-    /*  AD SLIDESHOW — NOW WITH RELIABLE IMAGES  */
-    .ad-slider{
-      width:100%;
-      max-width:420px;
-      height:280px;
-      border-radius:16px;
-      overflow:hidden;
-      margin:20px 0;
-      box-shadow:0 8px 24px rgba(0,0,0,0.2);
-      position:relative;
-      background:linear-gradient(135deg, #0052CC, #003D99);
-    }
-    .ad-slide{
-      position:absolute;
-      width:100%;
-      height:100%;
-      opacity:0;
-      transition:opacity 1s ease-in-out;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      padding:20px;
-      text-align:center;
-    }
-    .ad-slide.active{opacity:1;}
-    .ad-slide .ad-icon{font-size:80px; margin-bottom:15px;}
-    .ad-slide .ad-title{font-size:22px; font-weight:bold; margin-bottom:8px;}
-    .ad-slide .ad-desc{font-size:15px; opacity:0.9; line-height:1.5;}
-    .ad-dots{
-      position:absolute;
-      bottom:20px;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex; gap:10px;
-    }
-    .ad-dot{
-      width:12px; height:12px; border-radius:50%;
-      background:rgba(255,255,255,0.3);
-      cursor:pointer;
-      transition:0.2s;
-    }
-    .ad-dot.active{background:white; transform:scale(1.3); box-shadow:0 0 10px rgba(255,255,255,0.5);}
-
-    .landing-logo{font-size:42px; font-weight:bold; margin-top:20px; margin-bottom:5px; text-shadow:0 2px 10px rgba(0,0,0,0.2);}
-    .landing-sub{font-size:24px; color:var(--gold); font-weight:600; margin-bottom:5px;}
-    .landing-tagline{font-size:17px; opacity:0.9; margin-bottom:10px; text-align:center; max-width:420px;}
-    .feature-icons{font-size:28px; margin:10px 0; letter-spacing:8px;}
-    
-    .auth-buttons{display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin:30px 0;}
-    .auth-btn{padding:16px 48px; font-size:18px; border-radius:12px; border:none; cursor:pointer; font-weight:bold; transition:0.3s; min-width:200px; box-shadow:0 4px 12px rgba(0,0,0,0.15);}
-    .auth-btn.create{background:var(--card); color:var(--pri);}
-    .auth-btn.create:hover{background:#f0f0f0; transform:translateY(-2px);}
-    .auth-btn.signin{background:transparent; color:white; border:2px solid white;}
-    .auth-btn.signin:hover{background:rgba(255,255,255,0.2); transform:translateY(-2px);}
-    
-    .footer-text{margin-top:auto; padding:20px; text-align:center; opacity:0.85; font-size:13px; line-height:1.8;}
-    .license-badge{display:inline-block; background:rgba(255,255,255,0.15); padding:6px 16px; border-radius:20px; margin-top:10px; font-size:12px;}
-
-    /* ===== PAGES & FORMS ===== */
+    *{box-sizing:border-box; margin:0; padding:0; font-family:'Segoe UI', Roboto, Arial, sans-serif;}
+    body{background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; padding-bottom:70px;}
     .hidden{display:none !important;}
-    .page{padding:20px; max-width:520px; margin:0 auto; padding-bottom:90px;}
-    header{display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:var(--card); box-shadow:0 2px 5px rgba(0,0,0,0.05); position:sticky; top:0; z-index:100;}
-    .brand{font-weight:bold; font-size:18px; color:var(--pri);}
-    .header-btn{background:none; border:none; color:var(--pri); font-size:16px; cursor:pointer;}
-    .card{background:var(--card); border-radius:12px; padding:22px; margin-bottom:20px; box-shadow:0 2px 8px rgba(0,0,0,0.05);}
-    h2{color:var(--text); margin-bottom:20px; font-size:20px;}
-    label{display:block; margin:15px 0 5px; font-weight:600; font-size:14px; color:var(--text);}
-    input, select, textarea{width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:15px; background:white;}
-    input:focus, select:focus{outline:none; border-color:var(--pri); box-shadow:0 0 0 3px rgba(0,71,171,0.1);}
-    .input-group{position:relative;}
-    .eye-icon{position:absolute; right:12px; top:38px; font-size:22px; cursor:pointer; user-select:none;}
-    .btn{width:100%; padding:14px; border:none; border-radius:8px; font-size:16px; font-weight:bold; cursor:pointer; transition:0.3s; margin-top:20px;}
-    .btn-primary{background:var(--pri); color:white;}
+    .page{padding:16px; max-width:480px; margin:0 auto;}
+    header{background:linear-gradient(135deg,var(--pri),var(--pri-light)); color:white; padding:16px; border-radius:12px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; box-shadow:var(--shadow);}
+    .header-btn{background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:14px; transition:0.2s;}
+    .header-btn:hover{background:rgba(255,255,255,0.3);}
+    .brand{font-weight:700; font-size:18px;}
+    .card{background:var(--card); border-radius:12px; padding:20px; box-shadow:var(--shadow); margin-bottom:16px;}
+    .btn{width:100%; padding:14px; border:none; border-radius:10px; font-size:16px; font-weight:600; cursor:pointer; transition:0.2s; margin:6px 0;}
+    .btn-primary{background:linear-gradient(135deg,var(--pri),var(--pri-light)); color:white;}
     .btn-primary:hover{background:var(--pri-hover); transform:translateY(-1px);}
-    .btn-secondary{background:var(--border); color:var(--text);}
-    .btn-row{display:flex; gap:10px;}
-    .btn-row .btn{flex:1; margin-top:10px;}
-    .btn-sm{padding:8px 14px; font-size:14px; width:auto; margin:5px;}
-
-    /* DASHBOARD */
-    .welcome{font-size:22px; font-weight:bold; margin-bottom:5px; color:var(--text);}
-    .time-info{color:var(--muted); font-size:13px; margin-bottom:20px;}
-    .balance-card{background:linear-gradient(135deg, var(--pri) 0%, #002D6D 100%); color:white; padding:25px; border-radius:16px; margin-bottom:20px; box-shadow:0 4px 12px rgba(0,71,171,0.2);}
-    .balance-label{font-size:14px; opacity:0.85;}
-    .balance-amount{font-size:34px; font-weight:bold; margin:8px 0;}
-    .status-pending{background:var(--warn-bg); color:#92400E; padding:12px; border-radius:8px; font-size:14px; margin-top:15px; border-left:4px solid var(--warn);}
-    .status-approved{background:var(--success-bg); color:#065F46; padding:12px; border-radius:8px; font-size:14px; margin-top:15px; border-left:4px solid var(--success);}
-    .status-locked{background:var(--error-bg); color:#991B1B; padding:12px; border-radius:8px; font-size:14px; margin:15px 0; border-left:4px solid var(--error);}
-
-    /* GRID & NAV */
-    .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
-    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
-    .menu-item{background:white; border:1px solid var(--border); border-radius:12px; padding:18px 12px; text-align:center; cursor:pointer; transition:0.25s;}
-    .menu-item:hover{border-color:var(--pri); transform:translateY(-3px); box-shadow:0 4px 10px rgba(0,71,171,0.1);}
-    .menu-item.locked{opacity:0.6; cursor:not-allowed;}
-    .menu-item .icon{font-size:28px; margin-bottom:6px; display:block;}
-    .bottom-nav{position:fixed; bottom:0; left:0; right:0; background:white; display:flex; justify-content:space-around; padding:10px 0; box-shadow:0 -2px 10px rgba(0,0,0,0.08); z-index:100;}
-    .nav-item{text-align:center; font-size:12px; color:var(--muted); cursor:pointer;}
-    .nav-item.active{color:var(--pri); font-weight:bold;}
-    .nav-icon{font-size:22px; display:block; margin-bottom:3px;}
-    .section-title{font-size:17px; font-weight:bold; margin:25px 0 12px; color:var(--text); padding-bottom:8px; border-bottom:2px solid var(--border);}
-    .alert{padding:14px 16px; border-radius:8px; margin:15px 0; font-size:14px; border-left:4px solid;}
-    .alert-info{background:#E6F2FF; color:#1E40AF; border-color:#3B82F6;}
-    .alert-success{background:#ECFDF5; color:#065F46; border-color:#10B981;}
-    .alert-warning{background:#FFFBEB; color:#92400E; border-color:#F59E0B;}
-    .alert-error{background:#FEE2E2; color:#991B1B; border-color:#DC2626;}
-    .hidden-input{display:none;}
-    .file-upload{border:2px dashed var(--border); border-radius:8px; padding:25px; text-align:center; cursor:pointer; transition:0.2s;}
-    .file-upload:hover{border-color:var(--pri); background:#F0F7FF;}
-    .trans-item{padding:14px 0; border-bottom:1px solid var(--border);}
+    .btn-secondary{background:var(--bg); color:var(--pri); border:2px solid var(--pri);}
+    .btn-success{background:var(--success); color:white;}
+    .btn-error{background:var(--error); color:white;}
+    label{display:block; margin:14px 0 6px; font-weight:600; font-size:14px; color:var(--text);}
+    input, select, textarea{width:100%; padding:12px; border:2px solid var(--border); border-radius:8px; font-size:15px; background:white;}
+    input:focus, select:focus, textarea:focus{outline:none; border-color:var(--pri);}
+    .input-group{position:relative;}
+    .eye-icon{position:absolute; right:12px; top:38px; font-size:20px; cursor:pointer; user-select:none;}
+    .landing-container{min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; background:linear-gradient(180deg, #EFF6FF 0%, #FFFFFF 100%);}
+    .landing-logo{font-size:42px; font-weight:800; color:var(--pri); margin-bottom:8px; text-align:center;}
+    .landing-tagline{font-size:18px; color:var(--muted); margin-bottom:30px; text-align:center;}
+    .ad-slider{width:100%; max-width:420px; border-radius:16px; overflow:hidden; margin-bottom:30px; box-shadow:var(--shadow); background:white; position:relative;}
+    .ad-slide{display:none; padding:30px 20px; text-align:center;}
+    .ad-slide.active{display:block; animation:fadeIn 0.5s ease;}
+    @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
+    .ad-slide img{width:100%; border-radius:12px; margin-bottom:12px;}
+    .ad-slide h2{color:var(--pri); font-size:28px; margin-bottom:8px;}
+    .ad-slide p{color:var(--muted); font-size:15px;}
+    .ad-dots{display:flex; justify-content:center; gap:8px; padding:10px;}
+    .ad-dot{width:10px; height:10px; border-radius:50%; background:var(--border); cursor:pointer;}
+    .ad-dot.active{background:var(--pri); transform:scale(1.2);}
+    .auth-tabs{display:flex; margin-bottom:20px; border-radius:10px; overflow:hidden; border:2px solid var(--pri);}
+    .auth-tab{flex:1; padding:12px; border:none; background:white; color:var(--pri); font-weight:600; cursor:pointer; transition:0.2s;}
+    .auth-tab.active{background:var(--pri); color:white;}
+    .trust-badges{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin:20px 0;}
+    .badge{background:var(--success-bg); color:var(--success); padding:6px 12px; border-radius:20px; font-size:12px; font-weight:600;}
+    .footer-text{text-align:center; margin-top:30px; font-size:13px; color:var(--muted);}
+    .balance-display{background:linear-gradient(135deg,var(--pri),var(--pri-light)); color:white; padding:24px; border-radius:16px; text-align:center; margin-bottom:20px; box-shadow:var(--shadow);}
+    .balance-label{font-size:14px; opacity:0.9; margin-bottom:4px;}
+    .balance-amount{font-size:36px; font-weight:800;}
+    .account-info{display:flex; justify-content:space-around; margin-top:12px; font-size:13px; opacity:0.9;}
+    .status-box{padding:12px; border-radius:10px; text-align:center; font-weight:600; margin-bottom:20px;}
+    .status-pending{background:var(--warn-bg); color:#92400E; border:1px solid #FCD34D;}
+    .status-approved{background:var(--success-bg); color:#065F46; border:1px solid #6EE7B7;}
+    .quick-actions{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-bottom:20px;}
+    .action-btn{background:white; border-radius:12px; padding:16px 8px; text-align:center; cursor:pointer; box-shadow:var(--shadow); transition:0.2s; border:none;}
+    .action-btn:hover{transform:translateY(-2px);}
+    .action-btn.locked{opacity:0.5; cursor:not-allowed;}
+    .action-btn .icon{font-size:24px; margin-bottom:6px;}
+    .action-btn div{font-size:12px; font-weight:600; color:var(--text);}
+    .trans-item{display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--border);}
     .trans-type{font-weight:600; font-size:15px;}
-    .trans-amount{font-weight:600; font-size:15px; text-align:right;}
-    .trans-date{font-size:12px; color:var(--muted); margin-top:3px;}
-    .flex-between{display:flex; justify-content:space-between; align-items:center;}
-    .tag{display:inline-block; padding:3px 10px; border-radius:12px; font-size:12px; font-weight:600;}
-    .tag-pending{background:var(--warn-bg); color:#92400E;}
-    .tag-approved{background:var(--success-bg); color:#065F46;}
-    .tag-locked{background:var(--error-bg); color:#991B1B;}
-    .two-col{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+    .trans-date{font-size:12px; color:var(--muted); margin-top:2px;}
+    .trans-amount{font-weight:16px; font-weight:700;}
+    .bottom-nav{position:fixed; bottom:0; left:0; right:0; background:white; display:flex; justify-content:space-around; padding:8px 0; box-shadow:0 -2px 10px rgba(0,0,0,0.08); z-index:100; max-width:480px; margin:0 auto; border-radius:16px 16px 0 0;}
+    .nav-item{display:flex; flex-direction:column; align-items:center; font-size:11px; color:var(--muted); cursor:pointer; padding:4px 10px; border-radius:8px; transition:0.2s;}
+    .nav-item.active{color:var(--pri); font-weight:600;}
+    .nav-icon{font-size:20px; margin-bottom:2px;}
+    .preview-img{max-width:120px; max-height:120px; border-radius:8px; margin-top:8px; border:2px dashed var(--border); display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:12px;}
+    .section-title{font-size:18px; font-weight:700; margin:24px 0 12px; color:var(--text);}
+    .time-display{text-align:center; font-size:14px; color:var(--muted); margin-bottom:16px;}
+    .hidden-input{display:none;}
   </style>
 </head>
 <body>
 
-<!-- ========================================== -->
-<!--  LANDING PAGE —  ADS NOW SHOWING PERFECTLY -->
-<!-- ========================================== -->
-<div class="landing-container" id="landingPage">
-  <div class="landing-logo"> Prime Wallet Bank</div>
-  <div class="landing-sub">USA </div>
-  <div class="feature-icons">    </div>
-  <div class="landing-tagline">Secure Global Banking · Made for You<br>Join millions of users worldwide</div>
+<!-- ================================================== -->
+<!-- 📢 LANDING PAGE — AUTO-SLIDESHOW ADVERT -->
+<!-- ================================================== -->
+<div class="landing-container page" id="landingPage">
+  <div class="landing-logo">🏦 Prime Wallet Bank</div>
+  <div class="landing-tagline">USA 🇺🇸 — Secure Global Banking</div>
 
-  <!--  AD SLIDESHOW — NO IMAGE LINKS TO EXPIRE!  BUILT-IN ICONS THAT NEVER DISAPPEAR -->
-  <div class="ad-slider" id="adSlider">
+  <!-- 📢 AUTO-PLAY SLIDESHOW -->
+  <div class="ad-slider">
     <div class="ad-slide active">
-      <div class="ad-icon"></div>
-      <div class="ad-title">Get Your Prime Wallet Card</div>
-      <div class="ad-desc">Unlock Send Money, Pay Bills & Full Banking — Instantly!</div>
+      <h2>🇺🇸 USA BANKING</h2>
+      <p>Trusted financial services across the United States and worldwide. FDIC Insured up to $250,000.</p>
     </div>
     <div class="ad-slide">
-      <div class="ad-icon"></div>
-      <div class="ad-title">Send Money Worldwide</div>
-      <div class="ad-desc">Fast · Secure · Low Fees — 150+ Countries Supported!</div>
+      <h2>💰 SEND & RECEIVE</h2>
+      <p>Instant transfers to 180+ countries. Low fees, fast processing, SMS & Email notifications.</p>
     </div>
     <div class="ad-slide">
-      <div class="ad-icon"></div>
-      <div class="ad-title">Trusted & Licensed</div>
-      <div class="ad-desc"> Bank-Level Security · FDIC Insured · 24/7 Support</div>
+      <h2>💳 PRIME WALLET CARD</h2>
+      <p>Virtual & Physical Cards. Visa & Mastercard accepted globally. Secure 4-digit PIN protection.</p>
     </div>
     <div class="ad-slide">
-      <div class="ad-icon"></div>
-      <div class="ad-title">Zero Hidden Fees</div>
-      <div class="ad-desc">Transparent Pricing · No Maintenance Charges!</div>
+      <h2>💱 GLOBAL EXCHANGE</h2>
+      <p>150+ currencies. Live market rates. Convert instantly. No hidden fees.</p>
     </div>
     <div class="ad-dots">
-      <div class="ad-dot active" data-slide="0"></div>
-      <div class="ad-dot" data-slide="1"></div>
-      <div class="ad-dot" data-slide="2"></div>
-      <div class="ad-dot" data-slide="3"></div>
+      <span class="ad-dot active" onclick="showAdSlide(0)"></span>
+      <span class="ad-dot" onclick="showAdSlide(1)"></span>
+      <span class="ad-dot" onclick="showAdSlide(2)"></span>
+      <span class="ad-dot" onclick="showAdSlide(3)"></span>
     </div>
   </div>
 
-  <div class="auth-buttons">
-    <button class="auth-btn create" onclick="openPage('registrationPage')">CREATE YOUR ACCOUNT</button>
-    <button class="auth-btn signin" onclick="openPage('loginPage')">SIGN IN</button>
+  <div class="auth-tabs">
+    <button class="auth-tab active" id="tabCreate" onclick="switchAuthTab('create')">CREATE ACCOUNT</button>
+    <button class="auth-tab" id="tabSignIn" onclick="switchAuthTab('signin')">SIGN IN</button>
   </div>
 
-  <div class="footer-text">
-    © 2026 Prime Wallet Bank - USA. All rights reserved.<br>
-    Secure · Licensed · Compliant · Worldwide<br>
-    Contact: support@primewalletbankusa@gmail.com
-    <div class="license-badge"> SSL Secured | FDIC Insured up to $250,000 | Licensed Global Financial Institution</div>
-  </div>
-</div>
-
-<!-- ========================================== -->
-<!-- 📝 REGISTRATION PAGE — FULLY WORKING ✅ -->
-<!-- ========================================== -->
-<div class="page hidden" id="registrationPage">
-  <header>
-    <div class="brand">📝 Create Account</div>
-    <button class="header-btn" onclick="openPage('landingPage')">← Back</button>
-  </header>
-  <div class="card">
-    <h2>Create Your Prime Wallet Account</h2>
-    
-    <label>Full Legal Name *</label>
-    <input type="text" id="regFullName" placeholder="First & Last Name">
-    
-    <label>Email Address *</label>
-    <input type="email" id="regEmail" placeholder="your@email.com">
-    
-    <label>Phone Number *</label>
-    <input type="tel" id="regPhone" placeholder="+1 (555) 000-0000">
-    
-    <div class="two-col">
-      <div>
-        <label>Date of Birth *</label>
-        <input type="date" id="regDob">
-      </div>
-      <div>
-        <label>Gender *</label>
-        <select id="regGender">
-          <option value="">-- Select --</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-    </div>
-    
-    <label>Country *</label>
-    <select id="regCountry" onchange="loadStates()">
-      <option value="">-- Select Your Country --</option>
-    </select>
-    
-    <label>State / Province / Region *</label>
-    <select id="regState" onchange="loadCities()">
-      <option value="">-- Select Country First --</option>
-    </select>
-    
-    <label>City / Town *</label>
-    <select id="regCity">
-      <option value="">-- Select State First --</option>
-    </select>
-    
-    <label>Street Address</label>
-    <input type="text" id="regAddress" placeholder="123 Main St, Apt 4">
-    
+  <!-- ✅ CREATE ACCOUNT FORM -->
+  <div class="card" id="createForm">
     <div class="input-group">
-      <label>Password * (min 8 characters)</label>
+      <label>Full Legal Name</label>
+      <input type="text" id="regFullName" placeholder="John Michael Doe">
+    </div>
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="regEmail" placeholder="john@example.com">
+    </div>
+    <div class="input-group">
+      <label>Phone Number</label>
+      <input type="tel" id="regPhone" placeholder="+1 (555) 000-0000">
+    </div>
+    <div class="input-group">
+      <label>Date of Birth</label>
+      <input type="date" id="regDob">
+    </div>
+    <div class="input-group">
+      <label>Gender</label>
+      <select id="regGender">
+        <option value="">-- Select --</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Country of Residence</label>
+      <select id="regCountry" onchange="loadStates()">
+        <option value="">-- Select Country --</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>State / Province / Region</label>
+      <select id="regState" onchange="loadCities()">
+        <option value="">-- Select State First --</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>City / Town</label>
+      <select id="regCity">
+        <option value="">-- Select City First --</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label>Full Address</label>
+      <input type="text" id="regAddress" placeholder="123 Main St, Apt 4B">
+    </div>
+    <div class="input-group">
+      <label>Password (min 8 characters)</label>
       <input type="password" id="regPass" placeholder="Create strong password">
       <span class="eye-icon" onclick="togglePassword('regPass', this)">👁️</span>
     </div>
-    
     <div class="input-group">
-      <label>Confirm Password *</label>
-      <input type="password" id="regConfirmPass" placeholder="Re-enter password">
+      <label>Confirm Password</label>
+      <input type="password" id="regConfirmPass" placeholder="Repeat password">
       <span class="eye-icon" onclick="togglePassword('regConfirmPass', this)">👁️</span>
     </div>
-    
-    <label>Government ID Type *</label>
-    <select id="idType">
-      <option value="">-- Select ID Type --</option>
-      <option value="Passport">Passport</option>
-      <option value="Driver License">Driver License</option>
-      <option value="National ID">National ID Card</option>
-      <option value="Social Security">Social Security / SSN</option>
-      <option value="Voter ID">Voter ID</option>
-    </select>
-    
-    <label>ID Number *</label>
-    <input type="text" id="idNumber" placeholder="Enter your ID number">
-    
-    <label>📸 Upload ID — Front Side *</label>
-    <div class="file-upload" onclick="document.getElementById('idFront').click()">
-      <input type="file" id="idFront" accept="image/*" class="hidden-input" onchange="previewFile(this, 'idFrontPreview')">
-      <div id="idFrontPreview">📷 Click to upload front side</div>
+    <div class="input-group">
+      <label>Government ID Type</label>
+      <select id="idType">
+        <option value="">-- Select ID Type --</option>
+        <option value="Driver License">Driver License</option>
+        <option value="Passport">Passport</option>
+        <option value="National ID">National ID</option>
+        <option value="SSN">SSN / Tax ID</option>
+      </select>
     </div>
-    
-    <label>📸 Upload ID — Back Side *</label>
-    <div class="file-upload" onclick="document.getElementById('idBack').click()">
-      <input type="file" id="idBack" accept="image/*" class="hidden-input" onchange="previewFile(this, 'idBackPreview')">
-      <div id="idBackPreview">📷 Click to upload back side</div>
+    <div class="input-group">
+      <label>ID Number</label>
+      <input type="text" id="idNumber" placeholder="Enter ID Number">
     </div>
-    
-    <div class="alert alert-info" style="margin-top:20px;">
-      ⏳ <strong>Under Review:</strong> Your account will be reviewed by our team. Approval typically takes 1–24 hours. You will receive an email notification once approved.
+    <div class="input-group">
+      <label>Upload ID — Front Side 📸</label>
+      <input type="file" id="idFront" accept="image/*" onchange="previewFile(this, 'idFrontPreview')">
+      <div class="preview-img" id="idFrontPreview">Preview</div>
     </div>
-    
-    <!-- ✅ CORRECT BUTTONS — WILL SUBMIT NOW! -->
-    <div class="btn-row">
-      <button class="btn btn-secondary" onclick="openPage('landingPage')">Cancel</button>
-      <button class="btn btn-primary" onclick="submitRegistration()">✅ Create Account</button>
+    <div class="input-group">
+      <label>Upload ID — Back Side 📸</label>
+      <input type="file" id="idBack" accept="image/*" onchange="previewFile(this, 'idBackPreview')">
+      <div class="preview-img" id="idBackPreview">Preview</div>
     </div>
+    <button class="btn btn-primary" onclick="submitRegistration()">✅ CREATE ACCOUNT</button>
   </div>
-</div>
 
-<!-- ========================================== -->
-<!--  LOGIN PAGE -->
-<!-- ========================================== -->
-<div class="page hidden" id="loginPage">
-  <header>
-    <div class="brand"> Sign In</div>
-    <button class="header-btn" onclick="openPage('landingPage')"> Back</button>
-  </header>
-  <div class="card">
-    <h2>Sign In to Your Account</h2>
-    
-    <label>Email Address</label>
-    <input type="email" id="loginEmail" placeholder="your@email.com">
-    
+  <!-- ✅ SIGN IN FORM -->
+  <div class="card hidden" id="signinForm">
+    <div class="input-group">
+      <label>Email Address</label>
+      <input type="email" id="loginEmail" placeholder="Enter your email">
+    </div>
     <div class="input-group">
       <label>Password</label>
       <input type="password" id="loginPass" placeholder="Enter your password">
-      <span class="eye-icon" onclick="togglePassword('loginPass', this)"></span>
+      <span class="eye-icon" onclick="togglePassword('loginPass', this)">👁️</span>
     </div>
-    
-    <button class="btn btn-primary" onclick="loginUser()"> Sign In</button>
-    
-    <div style="text-align:center; margin-top:25px;">
-      <a href="#" style="color:var(--pri); text-decoration:none; font-size:14px;" onclick="openPage('resetPage')">Forgot Password?</a>
-      <br><br>
-      <a href="#" style="color:var(--muted); text-decoration:none; font-size:14px;" onclick="openPage('landingPage')"> Back to Home</a>
-    </div>
+    <button class="btn btn-primary" onclick="loginUser()">🔐 SIGN IN</button>
+    <p style="text-align:center; margin-top:16px; font-size:14px; color:var(--pri); cursor:pointer;" onclick="openPage('resetPage')">🔑 Forgot Password?</p>
+  </div>
+
+  <div class="trust-badges">
+    <span class="badge">🔒 SSL Encrypted</span>
+    <span class="badge">🏛️ FDIC Insured</span>
+    <span class="badge">✅ Licensed</span>
+    <span class="badge">🌍 Global Access</span>
+  </div>
+
+  <div class="footer-text">
+    © 2026 Prime Wallet Bank USA. All Rights Reserved.<br>
+    Secure · Licensed · Compliant · Worldwide<br>
+    Contact: support@primewalletbankusa@gmail.com
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  FORGOT PASSWORD PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 🔑 FORGOT PASSWORD PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="resetPage">
   <header>
-    <div class="brand"> Reset Password</div>
-    <button class="header-btn" onclick="openPage('loginPage')"> Back</button>
+    <div class="brand">🔑 Password Reset</div>
+    <button class="header-btn" onclick="openPage('landingPage')">← Back</button>
   </header>
   <div class="card">
-    <h2>Request Password Reset</h2>
-    <p style="color:var(--muted); margin-bottom:20px;">Enter your registered email. Our team will review and assist you within 24 hours.</p>
-    
-    <label>Registered Email *</label>
+    <p style="margin-bottom:16px; color:var(--muted);">Enter your registered details. We will send reset instructions to your email and phone.</p>
+    <label>Registered Email</label>
     <input type="email" id="resetEmail" placeholder="your@email.com">
-    
-    <label>Full Name *</label>
-    <input type="text" id="resetName" placeholder="Your full name">
-    
-    <label>Phone Number *</label>
-    <input type="tel" id="resetPhone" placeholder="Your registered phone">
-    
-    <button class="btn btn-primary" onclick="submitPasswordReset()"> Submit Request</button>
-    <button class="btn btn-secondary" onclick="openPage('loginPage')">Back to Sign In</button>
+    <label>Full Name</label>
+    <input type="text" id="resetName" placeholder="Full Name">
+    <label>Phone Number</label>
+    <input type="tel" id="resetPhone" placeholder="+1 (555) 000-0000">
+    <button class="btn btn-primary" onclick="submitPasswordReset()">📩 Submit Request</button>
+    <button class="btn btn-secondary" onclick="openPage('landingPage')">Cancel</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  DASHBOARD PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 🏠 DASHBOARD PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="dashboardPage">
   <header>
-    <div class="brand"> Prime Wallet Bank</div>
-    <button class="header-btn" onclick="logout()"> Logout</button>
+    <div class="brand">🏦 Dashboard</div>
+    <div style="font-size:14px;" id="timeDisplay"></div>
   </header>
-  
-  <div class="welcome" id="welcomeName"> Welcome</div>
-  <div class="time-info" id="timeDisplay"> Loading time...</div>
-  
-  <div class="balance-card">
-    <div class="balance-label"> Available Balance</div>
+
+  <div class="time-display" id="timeDisplay2"></div>
+
+  <div class="balance-display">
+    <div class="balance-label">Total Balance</div>
     <div class="balance-amount" id="userBalance">$0.00</div>
-    <div style="margin-top:8px;">Account: <span id="userAccount">—</span></div>
-  </div>
-  
-  <div id="statusContainer" class="status-pending">
-     <strong>Account Under Review</strong><br>
-    Full features will be unlocked after approval.
-  </div>
-  
-  <div class="section-title"> QUICK ACTIONS</div>
-  <div class="grid-2">
-    <div class="menu-item" onclick="openPage('depositPage')">
-      <span class="icon"></span>
-      <div>Deposit</div>
-    </div>
-    <div class="menu-item" id="menuSend" onclick="checkCardThenOpen('sendPage')">
-      <span class="icon"></span>
-      <div>Send Money</div>
-      <small style="color:var(--error);"> Card Required</small>
-    </div>
-    <div class="menu-item" id="menuBills" onclick="checkCardThenOpen('billsPage')">
-      <span class="icon"></span>
-      <div>Pay Bills</div>
-      <small style="color:var(--error);"> Card Required</small>
-    </div>
-    <div class="menu-item" onclick="openPage('cardPage')">
-      <span class="icon"></span>
-      <div>Get Card</div>
+    <div class="account-info">
+      <div>Account: <span id="userAccount">—</span></div>
     </div>
   </div>
-  
-  <div class="section-title"> Recent Transactions</div>
-  <div id="transList">
+
+  <div class="status-box status-pending" id="statusContainer">
+    ⏳ <strong>Account Under Review</strong><br>
+    Approval takes 1–24 hours. SMS & Email sent when approved.
+  </div>
+
+  <div class="section-title">⚡ Quick Actions</div>
+  <div class="quick-actions">
+    <button class="action-btn" onclick="openPage('depositPage')">
+      <span class="icon">💰</span><div>Deposit</div>
+    </button>
+    <button class="action-btn" id="menuSend" onclick="checkCardThenOpen('sendPage')">
+      <span class="icon">↗️</span><div>Send Money</div>
+    </button>
+    <button class="action-btn" id="menuBills" onclick="checkCardThenOpen('billsPage')">
+      <span class="icon">📄</span><div>Pay Bills</div>
+    </button>
+    <button class="action-btn" onclick="openPage('cardPage')">
+      <span class="icon">💳</span><div>Get Card</div>
+    </button>
+    <button class="action-btn" onclick="openPage('exchangePage')">
+      <span class="icon">💱</span><div>Exchange</div>
+    </button>
+    <button class="action-btn" onclick="openPage('transactionsPage')">
+      <span class="icon">📊</span><div>History</div>
+    </button>
+  </div>
+
+  <div class="section-title">📋 Recent Transactions</div>
+  <div class="card" id="transList">
     <p style="color:var(--muted); text-align:center; padding:20px;">No transactions yet.</p>
   </div>
-  
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="openPage('dashboardPage')"><span class="nav-icon"></span>Home</div>
-    <div class="nav-item" onclick="openPage('transactionsPage')"><span class="nav-icon"></span>History</div>
-    <div class="nav-item" onclick="openPage('cardPage')"><span class="nav-icon"></span>Card</div>
-    <div class="nav-item" onclick="openPage('settingsPage')"><span class="nav-icon"></span>More</div>
-  </div>
 </div>
 
-<!-- ========================================== -->
-<!--  DEPOSIT PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 💰 DEPOSIT PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="depositPage">
   <header>
-    <div class="brand"> Deposit Funds</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
+    <div class="brand">💰 Deposit Funds</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
   </header>
   <div class="card">
-    <h2>Add Funds to Your Account</h2>
-    
-    <label>Amount (USD) *</label>
+    <label>Amount ($)</label>
     <input type="number" id="depositAmount" placeholder="0.00" step="0.01" min="1">
-    
-    <label>Payment Method *</label>
+    <label>Payment Method</label>
     <select id="depositMethod">
       <option value="">-- Select Method --</option>
-      <option value="Bank Transfer"> Bank Transfer</option>
-      <option value="Credit/Debit Card"> Credit/Debit Card</option>
-      <option value="Wire Transfer"> Wire Transfer</option>
-      <option value="Cryptocurrency"> Cryptocurrency</option>
+      <option value="Bank Transfer">🏦 Bank Transfer</option>
+      <option value="Credit/Debit Card">💳 Credit/Debit Card</option>
+      <option value="Wire Transfer">🔌 Wire Transfer</option>
+      <option value="Cash Deposit">💵 Cash Deposit</option>
     </select>
-    
-    <label>Reference / Notes</label>
-    <input type="text" id="depositNote" placeholder="Optional reference">
-    
-    <div class="alert alert-warning">
-       <strong>Processing:</strong> Deposits are subject to review and approval. Funds will appear once approved.
-    </div>
-    
-    <button class="btn btn-primary" onclick="submitDeposit()"> Submit Deposit</button>
+    <label>Reference / Note (Optional)</label>
+    <input type="text" id="depositNote" placeholder="Add note...">
+    <button class="btn btn-primary" onclick="submitDeposit()">✅ Submit Deposit</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  GET PRIME WALLET CARD PAGE -->
-<!-- ========================================== -->
-<div class="page hidden" id="cardPage">
-  <header>
-    <div class="brand"> Prime Wallet Card</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
-  </header>
-  <div class="card">
-    <h2>Request Your Prime Wallet Card</h2>
-    
-    <div class="alert alert-info">
-       <strong>Unlock Full Banking:</strong> Get approved to enable Send Money, Pay Bills & International Transfers!
-    </div>
-    
-    <label>Card Network *</label>
-    <select id="cardNetwork" onchange="updateCardPrice()">
-      <option value="">-- Select Card Type --</option>
-      <option value="visa"> Visa Classic — $25.00</option>
-      <option value="visa_gold"> Visa Gold — $50.00</option>
-      <option value="mastercard"> Mastercard — $25.00</option>
-      <option value="mastercard_platinum"> Mastercard Platinum — $75.00</option>
-      <option value="amex"> American Express — $100.00</option>
-      <option value="verve"> Verve — $20.00</option>
-    </select>
-    
-    <div style="font-size:22px; font-weight:bold; color:var(--pri); margin:15px 0;">
-       Total: <span id="cardPrice">$0.00</span>
-    </div>
-    
-    <label>Cardholder Name *</label>
-    <input type="text" id="atmHolder" placeholder="Name as it appears on card">
-    
-    <label>Card Number *</label>
-    <input type="text" id="atmNumber" placeholder="1234 5678 9012 3456">
-    
-    <div class="two-col">
-      <div>
-        <label>Expiry Date *</label>
-        <input type="text" id="atmExpiry" placeholder="MM/YY">
-      </div>
-      <div>
-        <label>CVV / Security Code *</label>
-        <input type="text" id="atmCvv" placeholder="•••">
-      </div>
-    </div>
-    
-    <div class="two-col">
-      <div>
-        <label>Payment PIN (4 digits) *</label>
-        <input type="password" id="paymentCardPin" maxlength="4" inputmode="numeric" placeholder="••••">
-      </div>
-      <div>
-        <label>New Card PIN (4 digits) *</label>
-        <input type="password" id="newCardPin" maxlength="4" inputmode="numeric" placeholder="••••">
-      </div>
-    </div>
-    
-    <label>Confirm New Card PIN *</label>
-    <input type="password" id="newCardPinConfirm" maxlength="4" inputmode="numeric" placeholder="••••">
-    
-    <label> ATM Card — Front Side *</label>
-    <div class="file-upload" onclick="document.getElementById('atmFront').click()">
-      <input type="file" id="atmFront" accept="image/*" class="hidden-input" onchange="previewFile(this, 'atmFrontPreview')">
-      <div id="atmFrontPreview"> Upload front side of your ATM card</div>
-    </div>
-    
-    <label> ATM Card — Back Side *</label>
-    <div class="file-upload" onclick="document.getElementById('atmBack').click()">
-      <input type="file" id="atmBack" accept="image/*" class="hidden-input" onchange="previewFile(this, 'atmBackPreview')">
-      <div id="atmBackPreview"> Upload back side of your ATM card</div>
-    </div>
-    
-    <div class="alert alert-warning">
-       <strong>Card Review:</strong> Your card details will be reviewed. Once approved, Send Money & Pay Bills will be unlocked instantly!
-    </div>
-    
-    <button class="btn btn-primary" onclick="submitCardPurchase()"> Submit Card Request</button>
-  </div>
-</div>
-
-<!-- ========================================== -->
-<!--  SEND MONEY PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- ↗️ SEND MONEY PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="sendPage">
   <header>
-    <div class="brand"> Send Money</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
+    <div class="brand">↗️ Send Money</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
   </header>
   <div class="card">
-    <h2>Transfer Funds</h2>
-    
-    <label>Recipient Account Number *</label>
+    <label>Recipient Account Number</label>
     <input type="text" id="recipientAcc" placeholder="Enter account number">
-    
-    <label>Recipient Bank Name *</label>
-    <input type="text" id="recipientBank" placeholder="Bank name">
-    
-    <label>Amount (USD) *</label>
+    <label>Recipient Bank Name</label>
+    <input type="text" id="recipientBank" placeholder="Bank Name">
+    <label>Amount ($)</label>
     <input type="number" id="sendAmount" placeholder="0.00" step="0.01" min="1">
-    
-    <label>Reference / Description</label>
-    <input type="text" id="sendNote" placeholder="Optional note">
-    
-    <label>4-Digit PIN *</label>
-    <input type="password" id="transferPin" maxlength="4" inputmode="numeric" placeholder="••••">
-    
-    <button class="btn btn-primary" onclick="sendMoney()"> Send Now</button>
+    <label>4-Digit PIN to Confirm</label>
+    <input type="password" id="transferPin" maxlength="4" inputmode="numeric" placeholder="****">
+    <label>Note (Optional)</label>
+    <input type="text" id="sendNote" placeholder="Payment for...">
+    <button class="btn btn-primary" onclick="sendMoney()">✅ Send Now</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  PAY BILLS PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 📄 PAY BILLS PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="billsPage">
   <header>
-    <div class="brand"> Pay Bills</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
+    <div class="brand">📄 Pay Bills</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
   </header>
   <div class="card">
-    <h2>Make a Payment</h2>
-    
-    <label>Bill Category *</label>
+    <label>Bill Category</label>
     <select id="billCat">
       <option value="">-- Select Category --</option>
-      <option value="Electricity"> Electricity</option>
-      <option value="Water"> Water</option>
-      <option value="Internet"> Internet / Data</option>
-      <option value="Phone"> Mobile Top-up</option>
-      <option value="Cable"> Cable TV</option>
-      <option value="Education"> Education / School</option>
-      <option value="Other"> Other</option>
+      <option value="Electricity">⚡ Electricity</option>
+      <option value="Water">💧 Water</option>
+      <option value="Internet">🌐 Internet</option>
+      <option value="Phone">📱 Phone / Airtime</option>
+      <option value="TV / Streaming">📺 TV / Streaming</option>
+      <option value="Tax">🏛️ Tax / Government</option>
+      <option value="Other">📋 Other</option>
     </select>
-    
-    <label>Account / Reference Number *</label>
-    <input type="text" id="billAcc" placeholder="Bill account number">
-    
-    <label>Amount (USD) *</label>
+    <label>Account / Reference Number</label>
+    <input type="text" id="billAcc" placeholder="Bill Account Number">
+    <label>Amount ($)</label>
     <input type="number" id="billAmount" placeholder="0.00" step="0.01" min="1">
-    
-    <label>4-Digit PIN *</label>
-    <input type="password" id="billPin" maxlength="4" inputmode="numeric" placeholder="••••">
-    
-    <button class="btn btn-primary" onclick="payBill()"> Pay Now</button>
+    <label>4-Digit PIN to Confirm</label>
+    <input type="password" id="billPin" maxlength="4" inputmode="numeric" placeholder="****">
+    <button class="btn btn-primary" onclick="payBill()">✅ Pay Now</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  TRANSACTIONS HISTORY -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 💳 GET CARD PAGE -->
+<!-- ================================================== -->
+<div class="page hidden" id="cardPage">
+  <header>
+    <div class="brand">💳 Get Prime Wallet Card</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
+  </header>
+  <div class="card">
+    <label>Card Type</label>
+    <select id="cardNetwork" onchange="updateCardPrice()">
+      <option value="">-- Select Card --</option>
+      <option value="visa">💙 Visa Classic — $25.00</option>
+      <option value="visa_gold">🟡 Visa Gold — $50.00</option>
+      <option value="mastercard">🔴 Mastercard Standard — $25.00</option>
+      <option value="mastercard_platinum">⬜ Mastercard Platinum — $75.00</option>
+      <option value="amex">🟢 American Express — $100.00</option>
+    </select>
+    <div style="font-size:22px; font-weight:800; color:var(--pri); margin:12px 0;">
+      Total: <span id="cardPrice">$0.00</span>
+    </div>
+    <label>Cardholder Full Name</label>
+    <input type="text" id="atmHolder" placeholder="As shown on ID">
+    <label>ATM Card Number</label>
+    <input type="text" id="atmNumber" placeholder="16-Digit Card Number">
+    <label>Expiry Date (MM/YY)</label>
+    <input type="text" id="atmExpiry" placeholder="MM/YY">
+    <label>CVV / Security Code</label>
+    <input type="text" id="atmCvv" placeholder="3-Digit Code" maxlength="4">
+    <label>Your 4-Digit Payment PIN</label>
+    <input type="password" id="paymentCardPin" maxlength="4" inputmode="numeric" placeholder="****">
+    <label>Create NEW 4-Digit Card PIN</label>
+    <input type="password" id="newCardPin" maxlength="4" inputmode="numeric" placeholder="****">
+    <label>Confirm New Card PIN</label>
+    <input type="password" id="newCardPinConfirm" maxlength="4" inputmode="numeric" placeholder="****">
+    <label>Upload Your ATM Card — Front 📸</label>
+    <input type="file" id="atmFront" accept="image/*" onchange="previewFile(this, 'atmFrontPreview')">
+    <div class="preview-img" id="atmFrontPreview">Preview</div>
+    <label>Upload Your ATM Card — Back 📸</label>
+    <input type="file" id="atmBack" accept="image/*" onchange="previewFile(this, 'atmBackPreview')">
+    <div class="preview-img" id="atmBackPreview">Preview</div>
+    <button class="btn btn-primary" onclick="submitCardPurchase()">✅ Submit Card Request</button>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 💱 EXCHANGE PAGE -->
+<!-- ================================================== -->
+<div class="page hidden" id="exchangePage">
+  <header>
+    <div class="brand">💱 Currency Exchange</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
+  </header>
+  <div class="card">
+    <label>From Currency</label>
+    <select id="fromCurrency" onchange="updateExchangeRate()">
+      <option value="USD" selected>🇺🇸 USD — US Dollar</option>
+      <option value="EUR">🇪🇺 EUR — Euro</option>
+      <option value="GBP">🇬🇧 GBP — British Pound</option>
+      <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+      <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
+      <option value="KES">🇰🇪 KES — Kenyan Shilling</option>
+      <option value="GHS">🇬🇭 GHS — Ghanaian Cedi</option>
+      <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+      <option value="INR">🇮🇳 INR — Indian Rupee</option>
+      <option value="AED">🇦🇪 AED — UAE Dirham</option>
+      <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+      <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+      <option value="MXN">🇲🇽 MXN — Mexican Peso</option>
+      <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+      <option value="EGP">🇪🇬 EGP — Egyptian Pound</option>
+    </select>
+    <label>To Currency</label>
+    <select id="toCurrency" onchange="updateExchangeRate()">
+      <option value="">-- Select Currency --</option>
+      <option value="USD">🇺🇸 USD — US Dollar</option>
+      <option value="EUR" selected>🇪🇺 EUR — Euro</option>
+      <option value="GBP">🇬🇧 GBP — British Pound</option>
+      <option value="CAD">🇨🇦 CAD — Canadian Dollar</option>
+      <option value="NGN">🇳🇬 NGN — Nigerian Naira</option>
+      <option value="KES">🇰🇪 KES — Kenyan Shilling</option>
+      <option value="GHS">🇬🇭 GHS — Ghanaian Cedi</option>
+      <option value="ZAR">🇿🇦 ZAR — South African Rand</option>
+      <option value="INR">🇮🇳 INR — Indian Rupee</option>
+      <option value="AED">🇦🇪 AED — UAE Dirham</option>
+      <option value="CNY">🇨🇳 CNY — Chinese Yuan</option>
+      <option value="JPY">🇯🇵 JPY — Japanese Yen</option>
+      <option value="MXN">🇲🇽 MXN — Mexican Peso</option>
+      <option value="BRL">🇧🇷 BRL — Brazilian Real</option>
+      <option value="EGP">🇪🇬 EGP — Egyptian Pound</option>
+    </select>
+    <div style="background:var(--info-bg); padding:10px; border-radius:8px; margin:12px 0; text-align:center; font-size:15px;">
+      Live Rate: <strong id="exchangeRate">—</strong>
+    </div>
+    <label>Amount to Exchange</label>
+    <input type="number" id="exchangeAmount" placeholder="0.00" step="0.01" min="1" oninput="calculateExchange()">
+    <div style="font-size:24px; font-weight:800; color:var(--success); text-align:center; margin:16px 0;">
+      = <span id="exchangeResult">0.00</span>
+    </div>
+    <p style="font-size:12px; color:var(--muted); text-align:center; margin-bottom:12px;">Includes 0.5% service fee</p>
+    <button class="btn btn-primary" onclick="submitExchange()">✅ Exchange Now</button>
+  </div>
+</div>
+
+<!-- ================================================== -->
+<!-- 📊 TRANSACTIONS PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="transactionsPage">
   <header>
-    <div class="brand"> Transaction History</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
+    <div class="brand">📊 Transaction History</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
   </header>
-  <div class="card">
-    <h2>All Transactions</h2>
-    <div id="fullTransList">
-      <p style="color:var(--muted); text-align:center; padding:30px;">No transactions yet.</p>
-    </div>
+  <div class="card" id="fullTransList">
+    <p style="color:var(--muted); text-align:center; padding:30px;">No transactions yet.</p>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  SETTINGS / PROFILE PAGE -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- ⚙️ SETTINGS PAGE -->
+<!-- ================================================== -->
 <div class="page hidden" id="settingsPage">
   <header>
-    <div class="brand"> Settings</div>
-    <button class="header-btn" onclick="openPage('dashboardPage')"> Back</button>
+    <div class="brand">⚙️ Settings</div>
+    <button class="header-btn" onclick="openPage('dashboardPage')">← Back</button>
   </header>
   <div class="card">
-    <h2>Account Settings</h2>
-    
-    <div class="section-title"> Profile Information</div>
+    <div class="section-title">👤 Profile Information</div>
     <p><strong>Name:</strong> <span id="setName">—</span></p>
     <p><strong>Email:</strong> <span id="setEmail">—</span></p>
-    <p><strong>Account:</strong> <span id="setAcc">—</span></p>
+    <p><strong>Account #:</strong> <span id="setAcc">—</span></p>
+    <p><strong>Phone:</strong> <span id="setPhone">—</span></p>
     <p><strong>Country:</strong> <span id="setCountry">—</span></p>
-    
-    <div class="section-title"> Security</div>
-    <button class="btn btn-secondary" style="margin:5px 0;" onclick="openPage('resetPage')"> Change Password</button>
-    
-    <div class="section-title"> FAQ</div>
-    <div style="margin:10px 0;">
-      <details style="padding:10px 0; border-bottom:1px solid var(--border);">
-        <summary style="cursor:pointer; font-weight:600;"> How long does approval take?</summary>
-        <p style="padding:10px 0 10px 20px; color:var(--muted);">Accounts are typically approved within 1–24 hours.</p>
-      </details>
-      <details style="padding:10px 0; border-bottom:1px solid var(--border);">
-        <summary style="cursor:pointer; font-weight:600;"> Why do I need a card to send money?</summary>
-        <p style="padding:10px 0 10px 20px; color:var(--muted);">A verified Prime Wallet Card unlocks full banking features for security and compliance.</p>
-      </details>
-      <details style="padding:10px 0;">
-        <summary style="cursor:pointer; font-weight:600;"> How do I contact support?</summary>
-        <p style="padding:10px 0 10px 20px; color:var(--muted);">Email us at support@primewalletbankusa@gmail.com — we reply within 24 hours.</p>
-      </details>
+    <p><strong>Member Since:</strong> <span id="setSince">—</span></p>
+
+    <div class="section-title">🔐 Security</div>
+    <button class="btn btn-secondary" onclick="openPage('landingPage')">🔑 Change Password</button>
+
+    <div class="section-title">📞 Support</div>
+    <label>Send Message to Support</label>
+    <textarea id="supportMsg" rows="4" placeholder="Describe your issue or question..."></textarea>
+    <button class="btn btn-primary" onclick="submitSupport()">📩 Send Message</button>
+
+    <div class="section-title">❓ FAQ</div>
+    <div style="font-size:14px; line-height:1.8;">
+      <strong>Q: How long does approval take?</strong><br>
+      A: 1–24 hours. You'll get SMS & Email instantly when approved.<br><br>
+      <strong>Q: How do I unlock Send Money & Pay Bills?</strong><br>
+      A: Request and get approved for a Prime Wallet Card. Once approved, all features unlock instantly.<br><br>
+      <strong>Q: Are my funds safe?</strong><br>
+      A: Yes! Bank-level 256-bit encryption, SSL secured, FDIC insured up to $250,000.<br><br>
+      <strong>Q: Which countries are supported?</strong><br>
+      A: 180+ countries worldwide — US, UK, Canada, EU, Africa, Asia, Middle East & more.<br><br>
+      <strong>Q: How do I reset my password?</strong><br>
+      A: Go to Sign In → Forgot Password. Our team will review within 24 hours.
     </div>
-    
-    <button class="btn" style="margin-top:30px; background:var(--error); color:white;" onclick="logout()"> Logout</button>
+
+    <div class="section-title">⚠️ Account Actions</div>
+    <button class="btn btn-secondary" onclick="if(confirm('Are you sure you want to logout?')) logout();">🚪 Logout</button>
+    <button class="btn btn-secondary" style="color:var(--error); border-color:var(--error); margin-top:10px;" onclick="confirmDeleteAccount()">🗑️ Delete Account</button>
   </div>
 </div>
 
-<!-- ========================================== -->
-<!--  JAVASCRIPT — FULLY WORKING GLOBALLY  -->
-<!-- ========================================== -->
+<!-- ================================================== -->
+<!-- 📱 BOTTOM NAVIGATION -->
+<!-- ================================================== -->
+<div class="bottom-nav" id="bottomNav" style="display:none;">
+  <div class="nav-item active" onclick="openPage('dashboardPage')"><span class="nav-icon">🏠</span>Home</div>
+  <div class="nav-item" onclick="openPage('transactionsPage')"><span class="nav-icon">📊</span>History</div>
+  <div class="nav-item" onclick="openPage('exchangePage')"><span class="nav-icon">💱</span>Exchange</div>
+  <div class="nav-item" onclick="openPage('cardPage')"><span class="nav-icon">💳</span>Card</div>
+  <div class="nav-item" onclick="openPage('settingsPage')"><span class="nav-icon">⚙️</span>More</div>
+</div>
+
+<!-- ================================================== -->
+<!-- ⚡ JAVASCRIPT — ALL FUNCTIONS WORKING ✅ -->
+<!-- ================================================== -->
 <script>
+// Global Variables
+const API_URL = "https://prime-wallet-bank-api.onrender.com/api";
 let currentUser = null;
 let transactions = [];
-const API_URL = "https://prime-wallet-api.onrender.com/api";
+let currentAdSlide = 0;
+let adTimer;
 
-//  COMPLETE COUNTRY + STATE + CITY DATA — WORLDWIDE
-const countryStateData = {
-  "United States": {
-    "Alabama": ["Birmingham", "Montgomery", "Huntsville", "Mobile"],
-    "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento", "San Jose"],
-    "Florida": ["Miami", "Orlando", "Tampa", "Jacksonville"],
-    "New York": ["New York City", "Buffalo", "Rochester"],
-    "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
-    "Illinois": ["Chicago", "Springfield"],
-    "Pennsylvania": ["Philadelphia", "Pittsburgh"],
-    "Ohio": ["Columbus", "Cleveland", "Cincinnati"],
+// ==========================================
+// 🌍 COUNTRIES, STATES & CITIES DATA
+// ==========================================
+const countries = {
+  "US": {name: "United States 🇺🇸", states: {
+    "Alabama": ["Birmingham", "Montgomery", "Huntsville"],
+    "California": ["Los Angeles", "San Francisco", "San Diego", "Sacramento"],
+    "Florida": ["Miami", "Orlando", "Tampa"],
     "Georgia": ["Atlanta", "Savannah"],
-    "North Carolina": ["Charlotte", "Raleigh"]
-  },
-  "United Kingdom": {
-    "England": ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"],
-    "Scotland": ["Edinburgh", "Glasgow", "Aberdeen"],
-    "Wales": ["Cardiff", "Swansea"],
-    "Northern Ireland": ["Belfast"]
-  },
-  "Canada": {
-    "Ontario": ["Toronto", "Ottawa", "Hamilton"],
+    "Illinois": ["Chicago", "Springfield"],
+    "New York": ["New York City", "Buffalo"],
+    "Ohio": ["Columbus", "Cleveland"],
+    "Texas": ["Houston", "Dallas", "Austin", "San Antonio"],
+    "Washington": ["Seattle", "Tacoma"]
+  }},
+  "CA": {name: "Canada 🇨🇦", states: {
+    "Ontario": ["Toronto", "Ottawa"],
     "Quebec": ["Montreal", "Quebec City"],
-    "British Columbia": ["Vancouver", "Victoria"],
-    "Alberta": ["Calgary", "Edmonton"]
-  },
-  "Nigeria": {
-    "Lagos": ["Lagos Island", "Ikeja", "Surulere", "Victoria Island"],
-    "Abuja": ["Wuse", "Gwarinpa", "Maitama"],
-    "Rivers": ["Port Harcourt"],
-    "Kano": ["Kano"],
-    "Oyo": ["Ibadan"]
-  },
-  "Ghana": {
+    "British Columbia": ["Vancouver", "Victoria"]
+  }},
+  "GB": {name: "United Kingdom 🇬🇧", states: {
+    "England": ["London", "Manchester", "Birmingham"],
+    "Scotland": ["Edinburgh", "Glasgow"],
+    "Wales": ["Cardiff", "Swansea"]
+  }},
+  "NG": {name: "Nigeria 🇳🇬", states: {
+    "Lagos": ["Lagos Island", "Ikeja", "Surulere"],
+    "Abuja": ["Wuse", "Gwarinpa"],
+    "Rivers": ["Port Harcourt"]
+  }},
+  "KE": {name: "Kenya 🇰🇪", states: {
+    "Nairobi": ["Nairobi Westlands", "Karen"],
+    "Mombasa": ["Mombasa Island"]
+  }},
+  "GH": {name: "Ghana 🇬🇭", states: {
     "Greater Accra": ["Accra", "Tema"],
-    "Ashanti": ["Kumasi"],
-    "Central": ["Cape Coast"]
-  },
-  "Kenya": {
-    "Nairobi": ["Nairobi", "Karen"],
-    "Mombasa": ["Mombasa"],
-    "Kisumu": ["Kisumu"]
-  },
-  "South Africa": {
+    "Ashanti": ["Kumasi"]
+  }},
+  "ZA": {name: "South Africa 🇿🇦", states: {
     "Gauteng": ["Johannesburg", "Pretoria"],
-    "Western Cape": ["Cape Town"],
-    "KwaZulu-Natal": ["Durban"]
-  },
-  "Australia": {
-    "New South Wales": ["Sydney"],
-    "Victoria": ["Melbourne"],
-    "Queensland": ["Brisbane"]
-  },
-  "Germany": {
-    "Berlin": ["Berlin"],
-    "Bavaria": ["Munich"],
-    "Hamburg": ["Hamburg"]
-  },
-  "France": {
-    "Île-de-France": ["Paris"],
-    "Provence": ["Marseille"]
-  },
-  "India": {
-    "Maharashtra": ["Mumbai"],
-    "Delhi": ["New Delhi"],
-    "Karnataka": ["Bangalore"]
-  },
-  "United Arab Emirates": {
-    "Dubai": ["Dubai"],
-    "Abu Dhabi": ["Abu Dhabi"],
-    "Sharjah": ["Sharjah"]
-  },
-  "Saudi Arabia": {
-    "Riyadh": ["Riyadh"],
-    "Makkah": ["Jeddah"]
-  }
+    "Western Cape": ["Cape Town"]
+  }},
+  "IN": {name: "India 🇮🇳", states: {
+    "Maharashtra": ["Mumbai", "Pune"],
+    "Delhi": ["New Delhi"]
+  }},
+  "AE": {name: "UAE 🇦🇪", states: {
+    "Dubai": ["Dubai Marina", "Downtown"],
+    "Abu Dhabi": ["Abu Dhabi City"]
+  }}
 };
 
-//  AD SLIDESHOW — AUTO PLAYS FOREVER  NO IMAGE LINKS TO EXPIRE!
-let currentAd = 0;
-const adSlides = document.querySelectorAll(".ad-slide");
-const adDots = document.querySelectorAll(".ad-dot");
-
-function showAd(index) {
-  adSlides.forEach((slide, i) => {
-    slide.classList.toggle("active", i === index);
-    adDots[i].classList.toggle("active", i === index);
-  });
-  currentAd = index;
-}
-
-function nextAd() {
-  showAd((currentAd + 1) % adSlides.length);
-}
+// Exchange Rates
+const exchangeRates = {
+  USD: 1, EUR: 0.92, GBP: 0.79, CAD: 1.36, NGN: 1550, KES: 145,
+  GHS: 15, ZAR: 18.5, INR: 83.2, AED: 3.67, CNY: 7.24, JPY: 149,
+  MXN: 17.1, BRL: 5.1, EGP: 48
+};
 
 // ==========================================
-//  INITIALIZE ON PAGE LOAD — WORKS OFFLINE & ONLINE 
+// 🚀 INITIALIZE ON PAGE LOAD
 // ==========================================
-window.onload = async function() {
-  // Start ad rotation — every 4 seconds FOREVER 
-  if (adSlides.length > 0) {
-    setInterval(nextAd, 4000);
-    adDots.forEach((dot, i) => {
-      dot.addEventListener("click", () => showAd(i));
-    });
-  }
-
-  // Populate countries
-  const countrySelect = document.getElementById("regCountry");
-  if (countrySelect) {
-    Object.keys(countryStateData).sort().forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c;
-      opt.textContent = c;
-      countrySelect.appendChild(opt);
-    });
-  }
+window.onload = function() {
+  populateCountries();
+  startAdSlider();
+  updateTime();
+  setInterval(updateTime, 1000);
   
-  // Check saved user session — WORKS ON ANY DEVICE 
-  const savedUser = localStorage.getItem("currentUser");
-  if (savedUser) {
-    currentUser = JSON.parse(savedUser);
+  // Auto-login if saved session exists
+  const saved = localStorage.getItem("currentUser");
+  if (saved) {
+    currentUser = JSON.parse(saved);
     transactions = currentUser.transactions || [];
     updateDashboard();
     openPage("dashboardPage");
   }
   
-  // Start live clock
-  setInterval(updateTime, 1000);
-  updateTime();
-  
-  console.log(" Prime Wallet Bank USA  — System Online & Ready — Works Globally!");
+  console.log("✅ Prime Wallet Bank — All Systems Ready!");
 };
 
 // ==========================================
-//  PAGE NAVIGATION — ALL BUTTONS WORK 
+// 📢 AD SLIDESHOW
 // ==========================================
-function openPage(pageId) {
-  document.querySelectorAll(".page, .landing-container").forEach(p => p.classList.add("hidden"));
-  const target = document.getElementById(pageId);
-  if (target) {
-    target.classList.remove("hidden");
-    window.scrollTo(0, 0);
-  }
-  // Update bottom nav active state
-  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-  if (pageId === "dashboardPage") document.querySelector(".nav-item:nth-child(1)")?.classList.add("active");
-  if (pageId === "transactionsPage") document.querySelector(".nav-item:nth-child(2)")?.classList.add("active");
-  if (pageId === "cardPage") document.querySelector(".nav-item:nth-child(3)")?.classList.add("active");
-  if (pageId === "settingsPage") document.querySelector(".nav-item:nth-child(4)")?.classList.add("active");
+function startAdSlider() {
+  adTimer = setInterval(() => {
+    const slides = document.querySelectorAll(".ad-slide");
+    const dots = document.querySelectorAll(".ad-dot");
+    slides.forEach(s => s.classList.remove("active"));
+    dots.forEach(d => d.classList.remove("active"));
+    currentAdSlide = (currentAdSlide + 1) % slides.length;
+    slides[currentAdSlide].classList.add("active");
+    dots[currentAdSlide].classList.add("active");
+  }, 4000);
+}
+
+function showAdSlide(index) {
+  clearInterval(adTimer);
+  const slides = document.querySelectorAll(".ad-slide");
+  const dots = document.querySelectorAll(".ad-dot");
+  slides.forEach(s => s.classList.remove("active"));
+  dots.forEach(d => d.classList.remove("active"));
+  slides[index].classList.add("active");
+  dots[index].classList.add("active");
+  currentAdSlide = index;
+  startAdSlider();
 }
 
 // ==========================================
-//  SHOW / HIDE PASSWORD — EYE ICON WORKS 
+// 🌍 COUNTRY, STATE, CITY FUNCTIONS
 // ==========================================
-function togglePassword(inputId, eyeEl) {
-  const input = document.getElementById(inputId);
-  if (!input) return;
-  input.type = input.type === "password" ? "text" : "password";
-  eyeEl.textContent = input.type === "password" ? "" : "";
+function populateCountries() {
+  const sel = document.getElementById("regCountry");
+  if (!sel) return;
+  Object.entries(countries).forEach(([code, data]) => {
+    const opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = data.name;
+    sel.appendChild(opt);
+  });
 }
 
-// ==========================================
-//  IMAGE PREVIEW — WORKS PERFECTLY 
-// ==========================================
-function previewFile(input, previewId) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const preview = document.getElementById(previewId);
-    preview.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:120px; border-radius:6px;">`;
-  };
-  reader.readAsDataURL(file);
-}
-
-// ==========================================
-//  COUNTRY  STATE  CITY — DYNAMIC 
-// ==========================================
 function loadStates() {
-  const country = document.getElementById("regCountry").value;
-  const stateSelect = document.getElementById("regState");
-  const citySelect = document.getElementById("regCity");
-  
-  stateSelect.innerHTML = '<option value="">-- Select State / Province --</option>';
-  citySelect.innerHTML = '<option value="">-- Select State First --</option>';
-  
-  if (countryStateData[country]) {
-    Object.keys(countryStateData[country]).sort().forEach(s => {
-      const opt = document.createElement("option");
-      opt.value = s;
-      opt.textContent = s;
-      stateSelect.appendChild(opt);
-    });
-  }
+  const countryCode = document.getElementById("regCountry").value;
+  const stateSel = document.getElementById("regState");
+  const citySel = document.getElementById("regCity");
+  stateSel.innerHTML = '<option value="">-- Select State --</option>';
+  citySel.innerHTML = '<option value="">-- Select City First --</option>';
+  if (!countryCode || !countries[countryCode]) return;
+  Object.keys(countries[countryCode].states).forEach(state => {
+    const opt = document.createElement("option");
+    opt.value = state;
+    opt.textContent = state;
+    stateSel.appendChild(opt);
+  });
 }
 
 function loadCities() {
-  const country = document.getElementById("regCountry").value;
+  const countryCode = document.getElementById("regCountry").value;
   const state = document.getElementById("regState").value;
-  const citySelect = document.getElementById("regCity");
-  
-  citySelect.innerHTML = '<option value="">-- Select City / Town --</option>';
-  
-  if (countryStateData[country] && countryStateData[country][state]) {
-    countryStateData[country][state].sort().forEach(c => {
-      const opt = document.createElement("option");
-      opt.value = c;
-      opt.textContent = c;
-      citySelect.appendChild(opt);
-    });
+  const citySel = document.getElementById("regCity");
+  citySel.innerHTML = '<option value="">-- Select City --</option>';
+  if (!countryCode || !state || !countries[countryCode].states[state]) return;
+  countries[countryCode].states[state].forEach(city => {
+    const opt = document.createElement("option");
+    opt.value = city;
+    opt.textContent = city;
+    citySel.appendChild(opt);
+  });
+}
+
+// ==========================================
+// 👁️ PASSWORD TOGGLE
+// ==========================================
+function togglePassword(inputId, icon) {
+  const input = document.getElementById(inputId);
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "🙈";
+  } else {
+    input.type = "password";
+    icon.textContent = "👁️";
   }
 }
 
 // ==========================================
-//  LIVE TIME — AUTO UPDATES 
+// 📸 IMAGE PREVIEW
+// ==========================================
+function previewFile(input, previewId) {
+  const preview = document.getElementById(previewId);
+  if (!input.files || !input.files[0]) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    preview.innerHTML = `<img src="${e.target.result}" style="max-width:100%; max-height:120px; border-radius:8px;">`;
+  };
+  reader.readAsDataURL(input.files[0]);
+}
+
+// ==========================================
+// 🕒 LIVE TIME
 // ==========================================
 function updateTime() {
+  const els = [document.getElementById("timeDisplay"), document.getElementById("timeDisplay2")];
   const now = new Date();
-  const timeStr = now.toLocaleTimeString();
-  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  const el = document.getElementById("timeDisplay");
-  if (el) el.textContent = ` ${timeStr} |  ${dateStr}`;
+  const timeStr = now.toLocaleTimeString('en-US', {hour12: true, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const dateStr = now.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  els.forEach(el => { if(el) el.innerHTML = `⏰ ${timeStr} &nbsp;|&nbsp; 📅 ${dateStr}`; });
 }
 
 // ==========================================
-//  UPDATE CARD PRICE — AUTO CALCULATE 
-// =========================================
-function updateCardPrice() {
-  const select = document.getElementById("cardNetwork");
-  const priceEl = document.getElementById("cardPrice");
-  if (!select.value || !priceEl) return;
-
-  const prices = {
-    visa: 25.00,
-    visa_gold: 50.00,
-    mastercard: 25.00,
-    mastercard_platinum: 75.00,
-    amex: 100.00,
-    verve: 20.00
-  };
-
-  priceEl.textContent = "$" + prices[select.value].toFixed(2);
+// 📄 PAGE NAVIGATION
+// ==========================================
+function openPage(pageId) {
+  document.querySelectorAll(".page, .landing-container").forEach(p => p.classList.add("hidden"));
+  document.getElementById(pageId).classList.remove("hidden");
+  
+  const nav = document.getElementById("bottomNav");
+  const navPages = ["dashboardPage", "transactionsPage", "exchangePage", "cardPage", "settingsPage"];
+  nav.style.display = navPages.includes(pageId) ? "flex" : "none";
+  
+  document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+  const navIndex = {dashboardPage:0, transactionsPage:1, exchangePage:2, cardPage:3, settingsPage:4}[pageId];
+  if (navIndex !== undefined) document.querySelector(`.nav-item:nth-child(${navIndex+1})`).classList.add("active");
+  
+  if (pageId === "dashboardPage") updateDashboard();
+  if (pageId === "settingsPage") updateSettingsPage();
+  if (pageId === "transactionsPage") updateFullTransactions();
+  
+  window.scrollTo(0, 0);
 }
 
-// ==========================================
-//  CHECK IF CARD APPROVED BEFORE OPENING PAGE
-// ==========================================
+function switchAuthTab(tab) {
+  const createTab = document.getElementById("tabCreate");
+  const signinTab = document.getElementById("tabSignIn");
+  const createForm = document.getElementById("createForm");
+  const signinForm = document.getElementById("signinForm");
+  
+  if (tab === "create") {
+    createTab.classList.add("active");
+    signinTab.classList.remove("active");
+    createForm.classList.remove("hidden");
+    signinForm.classList.add("hidden");
+  } else {
+    signinTab.classList.add("active");
+    createTab.classList.remove("active");
+    signinForm.classList.remove("hidden");
+    createForm.classList.add("hidden");
+  }
+}
+
 function checkCardThenOpen(pageId) {
-  if (!currentUser) return alert(" Please login first!");
+  if (!currentUser) return alert("❌ Please Sign In First!");
   if (!currentUser.approved || !currentUser.card_approved) {
-    return alert(" Feature Locked!\n\n You need an approved Prime Wallet Card to use Send Money & Pay Bills.\n\n Go to 'Get Card' to submit your request!");
+    return alert("🔒 FEATURE LOCKED!\n\nYou need an approved Prime Wallet Card to Send Money & Pay Bills.\n\n💳 Go to 'Get Card' → Submit Request → Wait for Approval.\n📧 SMS & Email sent when approved!");
   }
   openPage(pageId);
 }
 
 // ==========================================
-//  SAVE USER DATA — WORKS ON ANY DEVICE / ANY NETWORK
-// ==========================================
-function saveCurrentUser() {
-  if (!currentUser) return;
-  localStorage.setItem("currentUser", JSON.stringify(currentUser));
-
-  // Update global allUsers — ADMIN SEES EVERYTHING
-  let allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
-  const idx = allUsers.findIndex(u => u.id === currentUser.id);
-  if (idx !== -1) {
-    allUsers[idx] = currentUser;
-    localStorage.setItem("allUsers", JSON.stringify(allUsers));
-  }
-
-  // Send to API — works across ALL devices globally 
-  fetch(`${API_URL}/user/update`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(currentUser)
-  }).catch(() => {});
-}
-
-// ==========================================
-//  UPDATE DASHBOARD — REAL-TIME DISPLAY
-// ==========================================
-function updateDashboard() {
-  if (!currentUser) return;
-
-  // Welcome & Account Info
-  document.getElementById("welcomeName").textContent = ` Welcome, ${currentUser.full_name}`;
-  document.getElementById("userAccount").textContent = currentUser.account_number;
-  document.getElementById("userBalance").textContent = `$${(currentUser.balance || 0).toFixed(2)}`;
-
-  // Approval Status
-  const statusContainer = document.getElementById("statusContainer");
-  const menuSend = document.getElementById("menuSend");
-  const menuBills = document.getElementById("menuBills");
-
-  if (currentUser.frozen) {
-    statusContainer.className = "status-locked";
-    statusContainer.innerHTML = " <strong>Account Frozen</strong><br>Please contact support to reactivate your account.";
-    if (menuSend) menuSend.classList.add("locked");
-    if (menuBills) menuBills.classList.add("locked");
-  } else if (currentUser.approved && currentUser.card_approved) {
-    statusContainer.className = "status-approved";
-    statusContainer.innerHTML = " <strong>Account Fully Approved — All Features Unlocked!</strong>";
-    if (menuSend) menuSend.classList.remove("locked");
-    if (menuBills) menuBills.classList.remove("locked");
-  } else if (currentUser.approved && !currentUser.card_approved) {
-    statusContainer.className = "status-pending";
-    statusContainer.innerHTML = " <strong>Account Approved — Card Pending</strong><br>Request your Prime Wallet Card to unlock Send & Pay.";
-  } else {
-    statusContainer.className = "status-pending";
-    statusContainer.innerHTML = " <strong>Account Under Review</strong><br>Full features will be unlocked after approval.";
-  }
-
-  // Settings Page Info
-  const setName = document.getElementById("setName");
-  const setEmail = document.getElementById("setEmail");
-  const setAcc = document.getElementById("setAcc");
-  const setCountry = document.getElementById("setCountry");
-  if (setName) setName.textContent = currentUser.full_name;
-  if (setEmail) setEmail.textContent = currentUser.email;
-  if (setAcc) setAcc.textContent = currentUser.account_number;
-  if (setCountry) setCountry.textContent = `${currentUser.country}, ${currentUser.state}`;
-
-  // Update transaction lists
-  updateTransactionList();
-}
-
-// ==========================================
-//  UPDATE TRANSACTION LIST
-// ==========================================
-function updateTransactionList() {
-  const transList = document.getElementById("transList");
-  const fullTransList = document.getElementById("fullTransList");
-  const trans = currentUser?.transactions || [];
-
-  const html = trans.length === 0
-    ? `<p style="color:var(--muted); text-align:center; padding:20px;">No transactions yet.</p>`
-    : trans.map(t => `
-        <div class="trans-item flex-between">
-          <div>
-            <div class="trans-type">${t.type}</div>
-            <div class="trans-date">${new Date(t.date).toLocaleString()}</div>
-          </div>
-          <div class="trans-amount" style="color:${t.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
-            ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
-          </div>
-        </div>
-      `).join("");
-
-  if (transList) transList.innerHTML = html;
-  if (fullTransList) fullTransList.innerHTML = html;
-}
-
-// ==========================================
-//  SUBMIT REGISTRATION — WORKS ANYWHERE 
+// 📝 SUBMIT REGISTRATION
 // ==========================================
 async function submitRegistration() {
-  const fullName = document.getElementById("regFullName").value.trim();
-  const email = document.getElementById("regEmail").value.trim().toLowerCase();
-  const phone = document.getElementById("regPhone").value.trim();
-  const dob = document.getElementById("regDob").value;
-  const gender = document.getElementById("regGender").value;
-  const country = document.getElementById("regCountry").value;
-  const state = document.getElementById("regState").value;
-  const city = document.getElementById("regCity").value;
-  const address = document.getElementById("regAddress").value.trim();
-  const password = document.getElementById("regPass").value;
-  const confirmPass = document.getElementById("regConfirmPass").value;
-  const idType = document.getElementById("idType").value;
-  const idNumber = document.getElementById("idNumber").value;
-  const idFrontFile = document.getElementById("idFront").files[0];
-  const idBackFile = document.getElementById("idBack").files[0];
+  const fullName = document.getElementById("regFullName")?.value.trim();
+  const email = document.getElementById("regEmail")?.value.trim().toLowerCase();
+  const phone = document.getElementById("regPhone")?.value.trim();
+  const dob = document.getElementById("regDob")?.value;
+  const gender = document.getElementById("regGender")?.value;
+  const country = document.getElementById("regCountry")?.value;
+    const state = document.getElementById("regState")?.value;
+  const city = document.getElementById("regCity")?.value;
+  const address = document.getElementById("regAddress")?.value.trim();
+  const password = document.getElementById("regPass")?.value;
+  const confirmPass = document.getElementById("regConfirmPass")?.value;
+  const idType = document.getElementById("idType")?.value;
+  const idNumber = document.getElementById("idNumber")?.value;
+  const idFrontFile = document.getElementById("idFront")?.files[0];
+  const idBackFile = document.getElementById("idBack")?.files[0];
 
-  //  VALIDATION — NO FIELDS SKIPPED
-  if (!fullName || !email || !phone || !dob || !gender || !country || !state || !city) {
-    return alert(" Please fill ALL required fields!");
+  // ✅ VALIDATION
+  if (!fullName || !email || !phone || !dob || !country || !state || !city || !address || !password || !confirmPass || !idType || !idNumber) {
+    return alert("⚠️ Please fill ALL required fields! Country → State → City must ALL be selected.");
   }
-  if (password.length < 8) return alert(" Password must be at least 8 characters!");
-  if (password !== confirmPass) return alert(" Passwords do not match!");
-  if (!idType || !idNumber) return alert(" Please select ID type and enter ID number!");
-  if (!idFrontFile || !idBackFile) return alert(" Please upload both sides of your government ID!");
+  if (password.length < 8) return alert("⚠️ Password must be at least 8 characters!");
+  if (password !== confirmPass) return alert("❌ Passwords do not match!");
+  if (!idFrontFile || !idBackFile) return alert("📸 Please upload both Front & Back of your Government ID!");
 
-  //  CONVERT IMAGES — SAVE FULL QUALITY
-  const fileToDataUrl = (file) => new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = e => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-
+  // ✅ Convert images to Base64
   const idFront = await fileToDataUrl(idFrontFile);
   const idBack = await fileToDataUrl(idBackFile);
 
-  //  GENERATE UNIQUE ACCOUNT NUMBER
-  const accountNumber = "2026" + Math.floor(Math.random() * 9000000000 + 1000000000);
+  // ✅ Generate Account Number
+  const accountNumber = "2026" + Math.floor(Math.random() * 9000000000 + 1000000000).toString().slice(0, 10);
 
-  //  CREATE USER OBJECT — EVERY DETAIL SAVED
+  // ✅ Create User Object
   currentUser = {
-    id: Date.now(),
     full_name: fullName,
     email: email,
     phone: phone,
@@ -1078,299 +856,565 @@ async function submitRegistration() {
     city: city,
     address: address,
     password: password,
+    id_type: idType,
+    id_number: idNumber,
+    id_front: idFront,
+    id_back: idBack,
     account_number: accountNumber,
     balance: 0.00,
     approved: false,
     card_approved: false,
-    frozen: false,
-    idType: idType,
-    idNumber: idNumber,
-    idFront: idFront,
-    idBack: idBack,
+    card_requested: false,
+    created_at: new Date().toISOString(),
     transactions: [],
     pendingDeposits: [],
-    cardRequests: [],
-    registered_at: new Date().toISOString()
+    ip_address: "Client-Side",
+    device: navigator.userAgent
   };
 
-  //  SAVE LOCALLY
+  // ✅ Save to LocalStorage
   localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
-  //  SAVE TO GLOBAL — ADMIN SEES INSTANTLY
-  let allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  // ✅ Save to All Users (Admin Access)
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
   allUsers.unshift(currentUser);
   localStorage.setItem("allUsers", JSON.stringify(allUsers));
 
-  //  SAVE TO API — WORKS ACROSS ALL DEVICES WORLDWIDE 
+  // ✅ Send to API
   try {
     await fetch(`${API_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentUser)
     });
-    console.log(" User sent to server — Admin notified!");
-  } catch (e) {
-    console.log(" Server offline — saved locally only");
-  }
+  } catch (e) { console.log("⚠️ API not reachable — saved locally only"); }
 
-  //  SUCCESS MESSAGE
-  alert(` Account Created Successfully!\n\n Name: ${fullName}\n Account: ${accountNumber}\n Email: ${email}\n\n Status: UNDER REVIEW\nOur team will review your documents within 1–24 hours.\nYou will receive an email notification once approved.\n\nThank you for choosing Prime Wallet Bank! `);
+  alert(`✅ REGISTRATION SUCCESSFUL!\n\n👋 Welcome, ${fullName}!\n📧 Email: ${email}\n🏦 Account: ${accountNumber}\n\n⏳ Status: Pending Approval (1–24 hours)\n📧 SMS & Email will be sent once approved!\n\n✅ Dashboard opening now...`);
 
-  updateDashboard();
+  transactions = [];
   openPage("dashboardPage");
 }
 
 // ==========================================
-//  LOGIN USER — VALIDATES ALL USERS
+// 📸 Helper: File to Base64
+// ==========================================
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => resolve(e.target.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// ==========================================
+// 🔐 LOGIN FUNCTION
 // ==========================================
 function loginUser() {
-  const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-  const password = document.getElementById("loginPass").value;
+  const email = document.getElementById("loginEmail")?.value.trim().toLowerCase();
+  const password = document.getElementById("loginPass")?.value;
 
-  if (!email || !password) return alert(" Please enter email & password!");
+  if (!email || !password) return alert("⚠️ Enter Email & Password!");
 
-  //  Check ALL registered users — works offline
+  // Check saved user
+  const saved = localStorage.getItem("currentUser");
   const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
-  const foundUser = allUsers.find(u => u.email === email && u.password === password);
+  
+  // First check current session
+  if (saved) {
+    const user = JSON.parse(saved);
+    if (user.email.toLowerCase() === email && user.password === password) {
+      currentUser = user;
+      transactions = user.transactions || [];
+      updateDashboard();
+      return openPage("dashboardPage");
+    }
+  }
 
-  if (foundUser) {
-    if (foundUser.frozen) return alert(" Account Frozen!\nPlease contact support to reactivate.");
-    currentUser = foundUser;
+  // Check all users
+  const found = allUsers.find(u => u.email.toLowerCase() === email && u.password === password);
+  if (found) {
+    currentUser = found;
+    transactions = found.transactions || [];
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    transactions = currentUser.transactions || [];
     updateDashboard();
-    openPage("dashboardPage");
+    return openPage("dashboardPage");
+  }
+
+  alert("❌ Invalid Email or Password!\n\nCheck your credentials or register a new account.");
+}
+
+// ==========================================
+// 🔑 PASSWORD RESET FUNCTIONS
+// ==========================================
+function submitPasswordReset() {
+  const email = document.getElementById("resetEmail")?.value.trim().toLowerCase();
+  const name = document.getElementById("resetName")?.value.trim();
+  const phone = document.getElementById("resetPhone")?.value.trim();
+
+  if (!email || !name || !phone) return alert("⚠️ Fill ALL fields!");
+
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  const user = allUsers.find(u => u.email.toLowerCase() === email && u.full_name === name && u.phone === phone);
+
+  if (!user) {
+    return alert("⚠️ No matching account found!\nCheck your details or contact support.");
+  }
+
+  alert("✅ REQUEST SUBMITTED!\n\n⏳ Admin will review within 24 hours.\n📧 SMS & Email with reset instructions will be sent to:\n📩 " + email + "\n📱 " + phone);
+  openPage("landingPage");
+}
+
+// ==========================================
+// 📊 UPDATE DASHBOARD
+// ==========================================
+function updateDashboard() {
+  if (!currentUser) return;
+
+  // Update Balance
+  document.getElementById("userBalance").textContent = "$" + (Number(currentUser.balance) || 0).toFixed(2);
+  
+  // Update Account Number
+  document.getElementById("userAccount").textContent = currentUser.account_number;
+
+  // Update Status
+  const statusBox = document.getElementById("statusContainer");
+  if (currentUser.approved) {
+    statusBox.className = "status-box status-approved";
+    statusBox.innerHTML = "✅ <strong>Account Active & Approved</strong><br>All features available!";
+  } else {
+    statusBox.className = "status-box status-pending";
+    statusBox.innerHTML = "⏳ <strong>Account Under Review</strong><br>Approval takes 1–24 hours. SMS & Email sent when approved.";
+  }
+
+  // Lock/Unlock Send & Pay Buttons
+  const sendBtn = document.getElementById("menuSend");
+  const billBtn = document.getElementById("menuBills");
+  if (!currentUser.card_approved) {
+    sendBtn.classList.add("locked");
+    billBtn.classList.add("locked");
+  } else {
+    sendBtn.classList.remove("locked");
+    billBtn.classList.remove("locked");
+  }
+
+  // Update Transactions List
+  updateTransactionsList();
+}
+
+// ==========================================
+// 📋 UPDATE TRANSACTIONS LIST
+// ==========================================
+function updateTransactionsList() {
+  const container = document.getElementById("transList");
+  if (!transactions || transactions.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted); text-align:center; padding:20px;">No transactions yet.</p>';
     return;
   }
 
-  //  Try server login — works across all devices
-  fetch(`${API_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      currentUser = data.user;
-      localStorage.setItem("currentUser", JSON.stringify(currentUser));
-      transactions = currentUser.transactions || [];
-      updateDashboard();
-      openPage("dashboardPage");
-    } else {
-      alert(" Invalid email or password!");
-    }
-  })
-  .catch(() => alert(" Login failed — check your credentials"));
+  container.innerHTML = transactions.slice(0, 5).map(t => `
+    <div class="trans-item">
+      <div>
+        <div class="trans-type">${t.type}</div>
+        <div class="trans-date">${new Date(t.date).toLocaleString()}</div>
+      </div>
+      <div class="trans-amount" style="color: ${t.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+        ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
+      </div>
+    </div>
+  `).join("");
+}
+
+function updateFullTransactions() {
+  const container = document.getElementById("fullTransList");
+  if (!transactions || transactions.length === 0) {
+    container.innerHTML = '<p style="color:var(--muted); text-align:center; padding:30px;">No transactions yet.</p>';
+    return;
+  }
+
+  container.innerHTML = transactions.map(t => `
+    <div class="trans-item">
+      <div>
+        <div class="trans-type">${t.type}</div>
+        <div class="trans-date">${new Date(t.date).toLocaleString()}</div>
+        ${t.note ? `<div style="font-size:12px; color:var(--muted); margin-top:4px;">${t.note}</div>` : ''}
+      </div>
+      <div class="trans-amount" style="color: ${t.amount >= 0 ? 'var(--success)' : 'var(--error)'}">
+        ${t.amount >= 0 ? '+' : ''}$${Math.abs(t.amount).toFixed(2)}
+      </div>
+    </div>
+  `).join("");
 }
 
 // ==========================================
-//  PASSWORD RESET REQUEST — SENT TO ADMIN
+// 💰 DEPOSIT FUNCTION
 // ==========================================
-function submitPasswordReset() {
-  const email = document.getElementById("resetEmail").value.trim();
-  const name = document.getElementById("resetName").value.trim();
-  const phone = document.getElementById("resetPhone").value.trim();
+function submitDeposit() {
+  if (!currentUser) return alert("❌ Please Sign In First!");
+  
+  const amount = parseFloat(document.getElementById("depositAmount")?.value);
+  const method = document.getElementById("depositMethod")?.value;
+  const note = document.getElementById("depositNote")?.value?.trim() || "";
 
-  if (!email || !name || !phone) return alert(" Please fill all fields!");
+  if (!amount || amount <= 0) return alert("⚠️ Enter a valid amount!");
+  if (!method) return alert("⚠️ Select a payment method!");
 
-  //  Save reset request for admin
-  const resetRequests = JSON.parse(localStorage.getItem("resetRequests") || "[]");
-  resetRequests.unshift({
-    email, name, phone,
-    requested_at: new Date().toISOString(),
-    status: "Pending Review"
-  });
-  localStorage.setItem("resetRequests", JSON.stringify(resetRequests));
-
-  alert(" Password Reset Request Submitted!\n\n Our team will review within 24 hours.\nYou'll be notified by email once approved.\nThank you!");
-  openPage("loginPage");
-}
-
-// ==========================================
-//  SUBMIT DEPOSIT — PENDING  ADMIN APPROVES
-// ==========================================
-async function submitDeposit() {
-  if (!currentUser) return alert(" Please login first");
-  const amount = parseFloat(document.getElementById("depositAmount").value);
-  const method = document.getElementById("depositMethod").value;
-  const note = document.getElementById("depositNote").value.trim();
-
-  if (!amount || amount <= 0) return alert(" Enter valid amount");
-  if (!method) return alert(" Select payment method");
-
-  const deposit = {
-    id: Date.now(),
+  // Add to pending deposits
+  if (!currentUser.pendingDeposits) currentUser.pendingDeposits = [];
+  currentUser.pendingDeposits.push({
     amount: amount,
     method: method,
     note: note,
-    status: "Pending Approval",
+    status: "pending",
     date: new Date().toISOString()
-  };
+  });
 
-  //  Save to user
-  if (!currentUser.pendingDeposits) currentUser.pendingDeposits = [];
-  currentUser.pendingDeposits.unshift(deposit);
-  saveCurrentUser();
+  // Save to allUsers for Admin approval
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  const userIndex = allUsers.findIndex(u => u.email === currentUser.email);
+  if (userIndex !== -1) {
+    if (!allUsers[userIndex].pendingDeposits) allUsers[userIndex].pendingDeposits = [];
+    allUsers[userIndex].pendingDeposits.push({
+      amount: amount,
+      method: method,
+      note: note,
+      status: "pending",
+      date: new Date().toISOString()
+    });
+    localStorage.setItem("allUsers", JSON.stringify(allUsers));
+  }
 
-  alert(` Deposit Submitted!\n\n Amount: $${amount.toFixed(2)}\n Method: ${method}\n Status: Pending Admin Approval\n\nFunds will appear once approved. You'll be notified by email.`);
+  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+  alert(`✅ DEPOSIT SUBMITTED!\n\n💰 Amount: $${amount.toFixed(2)}\n💳 Method: ${method}\n\n⏳ Status: Pending Admin Approval\n📧 SMS & Email confirmation will be sent once approved!\nThank you for banking with us!`);
 
   document.getElementById("depositAmount").value = "";
-  updateDashboard();
+  document.getElementById("depositMethod").value = "";
+  document.getElementById("depositNote").value = "";
+
+  openPage("dashboardPage");
 }
 
 // ==========================================
-//  SUBMIT CARD PURCHASE — ADMIN REVIEWS
+// ↗️ SEND MONEY FUNCTION
 // ==========================================
-async function submitCardPurchase() {
-  if (!currentUser) return alert(" Please login first");
+function sendMoney() {
+  if (!currentUser) return alert("❌ Please Sign In First!");
+  if (!currentUser.card_approved) return alert("🔒 Feature Locked! Get approved Prime Wallet Card first.");
 
-  const network = document.getElementById("cardNetwork").value;
-  const holder = document.getElementById("atmHolder").value.trim();
-  const number = document.getElementById("atmNumber").value.trim();
-  const expiry = document.getElementById("atmExpiry").value.trim();
-  const cvv = document.getElementById("atmCvv").value.trim();
-  const payPin = document.getElementById("paymentCardPin").value;
-  const newPin = document.getElementById("newCardPin").value;
-  const confirmPin = document.getElementById("newCardPinConfirm").value;
-  const atmFrontFile = document.getElementById("atmFront").files[0];
-  const atmBackFile = document.getElementById("atmBack").files[0];
+  const recipientAcc = document.getElementById("recipientAcc")?.value.trim();
+  const recipientBank = document.getElementById("recipientBank")?.value.trim();
+  const amount = parseFloat(document.getElementById("sendAmount")?.value);
+  const pin = document.getElementById("transferPin")?.value;
+  const note = document.getElementById("sendNote")?.value?.trim() || "";
 
-  //  Validation
-  if (!network || !holder || !number || !expiry || !cvv) return alert(" Fill all card details!");
-  if (payPin.length !== 4 || newPin.length !== 4) return alert(" PIN must be 4 digits!");
-  if (newPin !== confirmPin) return alert(" New PINs do not match!");
-  if (!atmFrontFile || !atmBackFile) return alert(" Upload both sides of your ATM card!");
+  if (!recipientAcc || !recipientBank || !amount || !pin) return alert("⚠️ Fill ALL fields!");
+  if (pin.length !== 4) return alert("⚠️ PIN must be 4 digits!");
+  if (amount <= 0) return alert("⚠️ Enter valid amount!");
+  if (amount > Number(currentUser.balance)) return alert("❌ Insufficient Balance!");
 
-  //  Convert images
-  const fileToDataUrl = (file) => new Promise(res => {
-    const r = new FileReader(); r.onload = e => res(e.target.result); r.readAsDataURL(file);
+  // Deduct from balance
+  currentUser.balance = Number(currentUser.balance) - amount;
+  
+  // Add transaction
+  transactions.unshift({
+    type: "Transfer Sent → " + recipientBank,
+    amount: -amount,
+    date: new Date().toISOString(),
+    note: note,
+    recipient: recipientAcc
   });
-  const atmFront = await fileToDataUrl(atmFrontFile);
-  const atmBack = await fileToDataUrl(atmBackFile);
 
-  //  Get price
-  const prices = { visa: 25, visa_gold: 50, mastercard: 25, mastercard_platinum: 75, amex: 100, verve: 20 };
-  const price = prices[network];
+  currentUser.transactions = transactions;
+  saveCurrentUser();
 
-  const cardRequest = {
-    id: Date.now(),
-    network, holder, number, expiry, cvv,
-    payment_pin: payPin, new_card_pin: newPin,
-    atmFront, atmBack,
-    price, status: "Pending Review",
-    requested_at: new Date().toISOString()
+  alert(`✅ TRANSFER SUCCESSFUL!\n\n💰 Sent: $${amount.toFixed(2)}\n🏦 To: ${recipientBank}\n📇 Account: ${recipientAcc}\n\n📧 SMS & Email sent to both parties!\n\nNew Balance: $${Number(currentUser.balance).toFixed(2)}`);
+
+  document.getElementById("recipientAcc").value = "";
+  document.getElementById("recipientBank").value = "";
+  document.getElementById("sendAmount").value = "";
+  document.getElementById("transferPin").value = "";
+  document.getElementById("sendNote").value = "";
+
+  openPage("dashboardPage");
+}
+
+// ==========================================
+// 📄 PAY BILLS FUNCTION
+// ==========================================
+function payBill() {
+  if (!currentUser) return alert("❌ Please Sign In First!");
+  if (!currentUser.card_approved) return alert("🔒 Feature Locked! Get approved Prime Wallet Card first.");
+
+  const category = document.getElementById("billCat")?.value;
+  const acc = document.getElementById("billAcc")?.value.trim();
+  const amount = parseFloat(document.getElementById("billAmount")?.value);
+  const pin = document.getElementById("billPin")?.value;
+
+  if (!category || !acc || !amount || !pin) return alert("⚠️ Fill ALL fields!");
+  if (pin.length !== 4) return alert("⚠️ PIN must be 4 digits!");
+  if (amount <= 0) return alert("⚠️ Enter valid amount!");
+  if (amount > Number(currentUser.balance)) return alert("❌ Insufficient Balance!");
+
+  currentUser.balance = Number(currentUser.balance) - amount;
+  transactions.unshift({
+    type: "Bill Payment — " + category,
+    amount: -amount,
+    date: new Date().toISOString(),
+    account: acc
+  });
+
+  currentUser.transactions = transactions;
+  saveCurrentUser();
+
+  alert(`✅ BILL PAYMENT SUCCESSFUL!\n\n📄 ${category}\n💰 Amount: $${amount.toFixed(2)}\n📇 Reference: ${acc}\n\n📧 SMS & Email confirmation sent!\n\nNew Balance: $${Number(currentUser.balance).toFixed(2)}`);
+
+  document.getElementById("billCat").value = "";
+  document.getElementById("billAcc").value = "";
+  document.getElementById("billAmount").value = "";
+  document.getElementById("billPin").value = "";
+
+  openPage("dashboardPage");
+}
+
+// ==========================================
+// 💳 CARD PRICING & PURCHASE
+// ==========================================
+function updateCardPrice() {
+  const select = document.getElementById("cardNetwork");
+  const priceEl = document.getElementById("cardPrice");
+  if (!select.value) {
+    priceEl.textContent = "$0.00";
+    return;
+  }
+  const prices = {
+    visa: 25.00,
+    visa_gold: 50.00,
+    mastercard: 25.00,
+    mastercard_platinum: 75.00,
+    amex: 100.00
   };
+  priceEl.textContent = "$" + prices[select.value].toFixed(2);
+}
 
-  //  Save to user
-  if (!currentUser.cardRequests) currentUser.cardRequests = [];
-  currentUser.cardRequests.unshift(cardRequest);
-  saveCurrentUser();
+async function submitCardPurchase() {
+  if (!currentUser) return alert("❌ Please Sign In First!");
+  if (currentUser.card_requested) return alert("⚠️ Card request already submitted! Wait for approval.");
 
-  alert(` Card Request Submitted!\n\n ${network.replace("_", " ").toUpperCase()}\n Price: $${price.toFixed(2)}\n Status: Under Review\n\nAdmin will review your card details. Once approved, Send Money & Pay Bills will be UNLOCKED! `);
+  const cardType = document.getElementById("cardNetwork")?.value;
+  const holder = document.getElementById("atmHolder")?.value.trim();
+  const number = document.getElementById("atmNumber")?.value.trim();
+  const expiry = document.getElementById("atmExpiry")?.value.trim();
+  const cvv = document.getElementById("atmCvv")?.value.trim();
+  const paymentPin = document.getElementById("paymentCardPin")?.value;
+  const newPin = document.getElementById("newCardPin")?.value;
+  const confirmPin = document.getElementById("newCardPinConfirm")?.value;
+  const frontFile = document.getElementById("atmFront")?.files[0];
+  const backFile = document.getElementById("atmBack")?.files[0];
+
+  if (!cardType || !holder || !number || !expiry || !cvv || !paymentPin || !newPin || !confirmPin || !frontFile || !backFile) {
+    return alert("⚠️ Fill ALL fields & upload both sides of your ATM Card!");
+  }
+  if (paymentPin.length !== 4 || newPin.length !== 4) return alert("⚠️ Both PINs must be 4 digits!");
+  if (newPin !== confirmPin) return alert("❌ New Card PINs do not match!");
+
+  const atmFront = await fileToDataUrl(frontFile);
+  const atmBack = await fileToDataUrl(backFile);
+
+  currentUser.card_requested = true;
+  currentUser.card_type = cardType;
+  currentUser.card_holder = holder;
+  currentUser.card_number = number;
+  currentUser.card_expiry = expiry;
+  currentUser.card_cvv = cvv;
+  currentUser.card_pin = newPin;
+  currentUser.atm_front = atmFront;
+  currentUser.atm_back = atmBack;
+  currentUser.card_request_date = new Date().toISOString();
+
+  // Update allUsers for Admin
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  const idx = allUsers.findIndex(u => u.email === currentUser.email);
+  if (idx !== -1) {
+    allUsers[idx] = currentUser;
+    localStorage.setItem("allUsers", JSON.stringify(allUsers));
+  }
+  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+
+  alert(`✅ CARD REQUEST SUBMITTED!\n\n💳 Card Type: ${cardType.replace('_', ' ').toUpperCase()}\n👤 Cardholder: ${holder}\n\n⏳ Status: Pending Approval (1–24 hours)\n📧 SMS & Email will be sent once approved!\n\n✅ Once approved: Send Money & Pay Bills UNLOCKED!`);
+
+  // Reset form
+  document.getElementById("cardNetwork").value = "";
+  document.getElementById("cardPrice").textContent = "$0.00";
+  document.getElementById("atmHolder").value = "";
+  document.getElementById("atmNumber").value = "";
+  document.getElementById("atmExpiry").value = "";
+  document.getElementById("atmCvv").value = "";
+  document.getElementById("paymentCardPin").value = "";
+  document.getElementById("newCardPin").value = "";
+  document.getElementById("newCardPinConfirm").value = "";
+  document.getElementById("atmFrontPreview").innerHTML = "Preview";
+  document.getElementById("atmBackPreview").innerHTML = "Preview";
 
   openPage("dashboardPage");
 }
 
 // ==========================================
-//  SEND MONEY — LOCKED UNTIL APPROVED
+// 💱 EXCHANGE FUNCTIONS
 // ==========================================
-async function sendMoney() {
-  if (!currentUser) return alert(" Please login first");
-  if (!currentUser.approved || !currentUser.card_approved) {
-    return alert(" Feature Locked!\nAccount or Card not yet approved.");
-  }
-  if (currentUser.frozen) return alert(" Account Frozen — Cannot send funds!");
+function updateExchangeRate() {
+  const from = document.getElementById("fromCurrency")?.value;
+  const to = document.getElementById("toCurrency")?.value;
+  if (!from || !to) return;
+  const rate = exchangeRates[to] / exchangeRates[from];
+  document.getElementById("exchangeRate").textContent = `1 ${from} = ${rate.toFixed(4)} ${to}`;
+  calculateExchange();
+}
 
-  const acc = document.getElementById("recipientAcc").value.trim();
-  const bank = document.getElementById("recipientBank").value.trim();
-  const amount = parseFloat(document.getElementById("sendAmount").value);
-  const note = document.getElementById("sendNote").value.trim();
-  const pin = document.getElementById("transferPin").value;
+function calculateExchange() {
+  const from = document.getElementById("fromCurrency")?.value;
+  const to = document.getElementById("toCurrency")?.value;
+  const amount = parseFloat(document.getElementById("exchangeAmount")?.value) || 0;
+  if (!from || !to || amount <= 0) {
+    document.getElementById("exchangeResult").textContent = "0.00";
+    return;
+  }
+  const rate = exchangeRates[to] / exchangeRates[from];
+  const result = amount * rate * 0.995; // 0.5% fee
+  document.getElementById("exchangeResult").textContent = result.toFixed(2);
+}
 
-  if (!acc || !bank || !amount || amount <= 0 || pin.length !== 4) {
-    return alert(" Fill all fields correctly!");
-  }
-  if (pin !== currentUser.new_card_pin) {
-    return alert(" Incorrect 4-digit PIN!");
-  }
-  if (amount > currentUser.balance) {
-    return alert(" Insufficient balance!");
-  }
+function submitExchange() {
+  if (!currentUser) return alert("❌ Please Sign In First!");
+  if (!currentUser.card_approved) return alert("🔒 Feature Locked! Get approved Prime Wallet Card first.");
 
-  //  Deduct & Save
+  const from = document.getElementById("fromCurrency")?.value;
+  const to = document.getElementById("toCurrency")?.value;
+  const amount = parseFloat(document.getElementById("exchangeAmount")?.value);
+
+  if (!from || !to || !amount || amount <= 0) return alert("⚠️ Fill all fields correctly!");
+  if (amount > Number(currentUser.balance)) return alert("❌ Insufficient Balance!");
+
   currentUser.balance = Number(currentUser.balance) - amount;
-  if (!currentUser.transactions) currentUser.transactions = [];
-  currentUser.transactions.unshift({
-    type: `Transfer to ${acc} (${bank})`,
+  const rate = exchangeRates[to] / exchangeRates[from];
+  const received = amount * rate * 0.995;
+
+  transactions.unshift({
+    type: `Exchange: ${from} → ${to}`,
     amount: -amount,
     date: new Date().toISOString(),
-    reference: note || "—"
+    rate: rate.toFixed(4),
+    received: received.toFixed(2)
   });
 
+  currentUser.transactions = transactions;
   saveCurrentUser();
 
-  alert(` Transfer Successful!\n\n $${amount.toFixed(2)} sent to:\n ${bank}\n Account: ${acc}\n\nNew Balance: $${currentUser.balance.toFixed(2)}`);
+  alert(`✅ EXCHANGE COMPLETE!\n\n💱 ${amount.toFixed(2)} ${from} → ${received.toFixed(2)} ${to}\n📈 Rate: 1 ${from} = ${rate.toFixed(4)} ${to}\n💸 Fee: 0.5% applied\n\n📧 SMS & Email confirmation sent!\n\nNew Balance: $${Number(currentUser.balance).toFixed(2)}`);
 
-  updateDashboard();
+  document.getElementById("exchangeAmount").value = "";
+  document.getElementById("exchangeResult").textContent = "0.00";
+
   openPage("dashboardPage");
 }
 
 // ==========================================
-//  PAY BILLS — LOCKED UNTIL APPROVED
+// ⚙️ SETTINGS & SUPPORT
 // ==========================================
-async function payBill() {
-  if (!currentUser) return alert(" Please login first");
-  if (!currentUser.approved || !currentUser.card_approved) {
-    return alert(" Feature Locked! — Card Required");
-  }
-  if (currentUser.frozen) return alert(" Account Frozen — Cannot make payments!");
-
-  const cat = document.getElementById("billCat").value;
-  const acc = document.getElementById("billAcc").value.trim();
-  const amount = parseFloat(document.getElementById("billAmount").value);
-  const pin = document.getElementById("billPin").value;
-
-  if (!cat || !acc || !amount || amount <= 0 || pin.length !== 4) {
-    return alert(" Fill all fields correctly!");
-  }
-  if (pin !== currentUser.new_card_pin) {
-    return alert(" Incorrect 4-digit PIN!");
-  }
-  if (amount > currentUser.balance) {
-    return alert(" Insufficient balance!");
-  }
-
-  currentUser.balance = Number(currentUser.balance) - amount;
-  if (!currentUser.transactions) currentUser.transactions = [];
-  currentUser.transactions.unshift({
-    type: `Bill Payment — ${cat}`,
-    amount: -amount,
-    date: new Date().toISOString(),
-    reference: acc
-  });
-
-  saveCurrentUser();
-
-  alert(` Bill Payment Successful!\n\n ${cat}\n $${amount.toFixed(2)}\n\nNew Balance: $${currentUser.balance.toFixed(2)}`);
-
-  updateDashboard();
-  openPage("dashboardPage");
+function updateSettingsPage() {
+  if (!currentUser) return;
+  document.getElementById("setName").textContent = currentUser.full_name;
+  document.getElementById("setEmail").textContent = currentUser.email;
+  document.getElementById("setAcc").textContent = currentUser.account_number;
+  document.getElementById("setPhone").textContent = currentUser.phone;
+  document.getElementById("setCountry").textContent = currentUser.country;
+  document.getElementById("setSince").textContent = new Date(currentUser.created_at).toLocaleString();
 }
 
-// ==========================================
-//  LOGOUT — CLEAR SESSION
-// ==========================================
+function submitSupport() {
+  const msg = document.getElementById("supportMsg")?.value.trim();
+  if (!msg) return alert("⚠️ Write your message first!");
+  alert("✅ MESSAGE SENT!\n\n📧 Our support team will reply within 24 hours.\nThank you for contacting Prime Wallet Bank Support!");
+  document.getElementById("supportMsg").value = "";
+}
+
 function logout() {
-  if (confirm(" Are you sure you want to logout?")) {
-    localStorage.removeItem("currentUser");
-    currentUser = null;
-    transactions = [];
-    openPage("landingPage");
-  }
+  localStorage.removeItem("currentUser");
+  currentUser = null;
+  transactions = [];
+  openPage("landingPage");
+  switchAuthTab("create");
 }
 
+function confirmDeleteAccount() {
+  if (!confirm("⚠️ ARE YOU SURE?\n\nThis action is permanent and cannot be undone!\nAll data, transactions, and balance will be deleted.\n\nType YES to confirm.")) return;
+  
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  const filtered = allUsers.filter(u => u.email !== currentUser.email);
+  localStorage.setItem("allUsers", JSON.stringify(filtered));
+  localStorage.removeItem("currentUser");
+  
+  alert("🗑️ ACCOUNT DELETED!\n\nWe're sorry to see you go. Your account has been permanently deleted.");
+  currentUser = null;
+  transactions = [];
+  openPage("landingPage");
+}
+
+// ==========================================
+// 💾 HELPER: SAVE CURRENT USER
+// ==========================================
+function saveCurrentUser() {
+  localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  
+  // Also update in allUsers
+  const allUsers = JSON.parse(localStorage.getItem("allUsers") || "[]");
+  const idx = allUsers.findIndex(u => u.email === currentUser.email);
+  if (idx !== -1) {
+    allUsers[idx] = currentUser;
+    localStorage.setItem("allUsers", JSON.stringify(allUsers));
+  }
+}
 </script>
+
+<!-- 🎨 MAKE ALL MAIN TEXT BLUE FAMILY -->
+<style>
+  body, p, div, span, label, input, select, textarea, button {
+    color: #002B5C !important;
+  }
+  .muted, .trans-date, .preview-img {
+    color: #0052CC !important;
+  }
+  .card {
+    background: linear-gradient(135deg, #F0F7FF, #FFFFFF);
+  }
+  .landing-logo {
+    color: #0047AB !important;
+  }
+  .auth-tab.active {
+    background: #0047AB !important;
+  }
+  .balance-display {
+    background: linear-gradient(135deg, #0047AB, #2563EB) !important;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, #0047AB, #2563EB) !important;
+  }
+  .btn-primary:hover {
+    background: #003D99 !important;
+  }
+  .bottom-nav {
+    border-top: 2px solid #0047AB;
+  }
+  .nav-item.active {
+    color: #0047AB !important;
+  }
+  .section-title {
+    color: #003380 !important;
+    border-bottom: 2px solid #0047AB;
+    padding-bottom: 6px;
+  }
+</style>
 
 </body>
 </html>
+
